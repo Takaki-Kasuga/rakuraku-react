@@ -1,2 +1,4 @@
 import { combineReducers } from 'redux'
-// export default combineReducers()
+import itemState from './items'
+
+export default combineReducers({ itemState })
