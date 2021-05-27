@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 
 
-import Header from './components/Head.js';
+import Header from './components/Header.js';
 import { Home } from './components/Home';
 import { CartList } from './components/CartList';
 import { Detail } from './components/Detail';
