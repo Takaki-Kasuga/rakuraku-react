@@ -6,9 +6,9 @@ import {
 } from 'react-router-dom';
 
 import Header from './Head.js';
-import Home from './Home.js';
-import CartList from './CartList.js';
-import Detail from './Detail.js';
+import { Home } from './components/Home';
+import { CartList } from './components/CartList';
+import { Detail } from './components/Detail';
 import ResettingEmail from './ResettingEmail.js';
 import Login from './Login.js';
 import OrderComplete from 'OrderComplete.js';
