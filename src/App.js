@@ -3,18 +3,19 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Link
 } from 'react-router-dom';
 
 import Header from './Head.js';
 import Home from './Home.js';
 import CartList from './CartList.js';
 import Detail from './Detail.js';
-import ResettingEmail from './ResettingEmail.js';
-import Login from './Login.js';
+import { ResettingEmail } from './components/ResettingEmail.js';
+import { Login } from './components/Login.js';
 import OrderComplete from 'OrderComplete.js';
 import OrderConfirm from 'OrderConfirm.js';
 import OrderHistory from 'OrderHistory.js';
-import RegisterEmail from 'RegisterEmail.js';
+import { RegisterEmail } from './components/RegisterEmail.js';
 import TermOfUse from 'TermOfUse.js';
 import UserAccount from 'UserAccount.js';
 
