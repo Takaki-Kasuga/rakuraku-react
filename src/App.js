@@ -6,12 +6,12 @@ import {
 } from 'react-router-dom';
 
 import Header from './components/Head.js';
-import Home from './Home.js';
-import CartList from './CartList.js';
-import Detail from './Detail.js';
+import { Home } from './components/Home';
+import { CartList } from './components/CartList';
+import { Detail } from './components/Detail';
 import ResettingEmail from './ResettingEmail.js';
 import Login from './Login.js';
-import OrderComplete from 'OrderComplete.js';
+import OrderComplete from '/components/OrderComplete.js';
 import OrderConfirm from './components/OrderConfirm.js';
 import OrderHistory from 'OrderHistory.js';
 import RegisterEmail from 'RegisterEmail.js';
