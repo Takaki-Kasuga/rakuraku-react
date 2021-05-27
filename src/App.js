@@ -6,18 +6,18 @@ import {
   Link
 } from 'react-router-dom';
 
-import Header from './Head.js';
-import Home from './Home.js';
-import CartList from './CartList.js';
-import Detail from './Detail.js';
+import Header from './components/Head.js';
+import { Home } from './components/Home';
+import { CartList } from './components/CartList';
+import { Detail } from './components/Detail';
 import { ResettingEmail } from './components/ResettingEmail.js';
 import { Login } from './components/Login.js';
-import OrderComplete from 'OrderComplete.js';
-import OrderConfirm from 'OrderConfirm.js';
+import OrderComplete from '/components/OrderComplete.js';
+import OrderConfirm from './components/OrderConfirm.js';
 import OrderHistory from 'OrderHistory.js';
 import { RegisterEmail } from './components/RegisterEmail.js';
 import TermOfUse from 'TermOfUse.js';
-import UserAccount from 'UserAccount.js';
+import UserAccount from './components/UserAccount.js';
 
 function App() {
   return (
