@@ -11,11 +11,11 @@ import CartList from './CartList.js';
 import Detail from './Detail.js';
 import ResettingEmail from './ResettingEmail.js';
 import Login from './Login.js';
-import OrderComplete from 'OrderComplete.js';
+import { OrderComplete } from './components/OrderComplete.js';
 import OrderConfirm from 'OrderConfirm.js';
-import OrderHistory from 'OrderHistory.js';
+import { OrderHistory } from './components/OrderHistory.js';
 import RegisterEmail from 'RegisterEmail.js';
-import TermOfUse from 'TermOfUse.js';
+import { TermOfUse } from './components/TermOfUse.js';
 import UserAccount from 'UserAccount.js';
 
 function App() {
