@@ -3,6 +3,7 @@ import firebase, { providerGoogle } from '../firebase/firebase';
 export const SET_ITEMS = 'SET_ITEMS'
 export const SET_TOPPINGS = 'SET_TOPPINGS'
 export const SET_USER_INFO = 'SET_USER_INFO';
+export const DELETE_USER_INFO = 'DELETE_USER_INFO';
 
 export const items = (items) => {
   console.log(items)
@@ -31,6 +32,18 @@ export const setUserInfo = (uid, name, email) => {
       name: name,
       email: email,
       login_user: true
+    }
+  )
+}
+
+export const deleteUserInfo = () => {
+  return (
+    {
+      type: DELETE_USER_INFO,
+      uid: '',
+      name: '',
+      email: '',
+      login_user: false
     }
   )
 }
