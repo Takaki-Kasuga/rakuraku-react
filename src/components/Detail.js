@@ -51,8 +51,7 @@ const useStyles = makeStyles((theme) => ({
   // セレクトボックス
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
-    display: 'flex',
+    width: '300px',
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -64,19 +63,27 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(2),
     },
   },
+  flex: {
+    display: 'flex',
+    'flex-wrap': 'wrap',
+    'justify-content': 'center',
+  }
 }));
 
 export const Detail = () => {
   const classes = useStyles();
   const dispatch = useDispatch()
   const itemState = useSelector((state) => state.itemState)
+  const toppingState = useSelector((state) => state.toppingState)
   const [selectedItem, setSelectedItem] = useState('')
+  const [toppingList, setToppingList] = useState('')
 
   // パラメーター受け取り
   const { id } = useParams()
   console.log(id)
 
 
+  // パラメーターで受け取ったidと合致するオブジェクトを返す
   useEffect(() => {
     const selectedItem = itemState.filter((item) => {
       console.log(item)
@@ -84,7 +91,10 @@ export const Detail = () => {
       return item.id === Number(id)
     })
     setSelectedItem(selectedItem[0])
+    console.log(toppingState)
   }, [])
+
+
 
 
 
@@ -113,6 +123,7 @@ export const Detail = () => {
   return (
     <>
       <h1>商品詳細</h1>
+      {console.log(toppingState)}
       <div className={classes.root}>
         {!selectedItem ? <div className={classes.loading}>
           <LinearProgress variant="query" />
@@ -172,20 +183,27 @@ export const Detail = () => {
                   </Select>
                 </FormControl>
                 <h3>トッピング</h3>
-                <FormControl className={classes.formControl}>
-                  <span>ハワイアンソルト</span>
-                  <InputLabel id="demo-simple-select-label">トッピング</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={topping}
-                    onChange={selectTopping}
-                  >
-                    <MenuItem value=''>なし</MenuItem>
-                    <MenuItem value='l'>M</MenuItem>
-                    <MenuItem value='m'>L</MenuItem>
-                  </Select>
-                </FormControl>
+                <div className={classes.flex}>
+                  {toppingState.map((topping) => {
+                    return (
+                      <FormControl key={topping.id} className={classes.formControl}>
+                        <span>{topping.name}</span>
+                        <InputLabel id="demo-simple-select-label">{topping.id}</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={topping}
+                          onChange={selectTopping}
+                        >
+                          <MenuItem value=''>なし</MenuItem>
+                          <MenuItem value='l'>M：{topping.Msize}円  </MenuItem>
+                          <MenuItem value='m'>L：{topping.Lsize}円 </MenuItem>
+                        </Select>
+                      </FormControl>
+                    )
+                  })}
+                </div>
+
                 <p>合計金額：{Number(value).toLocaleString()}円</p>
                 <Button variant="contained">カートに入れる</Button>
               </Paper>
