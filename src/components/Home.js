@@ -158,12 +158,56 @@ export const Home = () => {
             <Grid item xs={12}>
               <Grid container justify="center" spacing={spacing}>
                 {!itemState.length ? <h1>Loding..</h1> :
-                  itemState.map((item) => {
-                    console.log(item)
-                    return (
-                      <h1>ああ</h1>
-                    )
-                  })
+                  <Grid item className={classes.flex}>
+                    {itemState.map((item) => {
+                      console.log(item)
+                      return (
+                        <Card className={classes.root} >
+                          <CardHeader
+                            avatar={
+                              <Avatar aria-label="recipe" className={classes.avatar}>
+                                Me
+                          </Avatar>
+                            }
+                            action={
+                              <IconButton aria-label="settings">
+                                <MoreVertIcon />
+                              </IconButton>
+                            }
+                            title="Shrimp and Chorizo Paella"
+                            subheader="September 14, 2016"
+                          />
+                          <CardMedia
+                            className={classes.media}
+                            image={item.imagePath}
+                            title="Paella dish"
+                          />
+                          <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                              {item.name}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                              {item.description}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                              Lサイズ：{(item.price.Lsize).toLocaleString()}円（税抜き）
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                              Mサイズ：{(item.price.Msize).toLocaleString()}円（税抜き）
+                            </Typography>
+                          </CardContent>
+                          <CardActions disableSpacing>
+                            <IconButton aria-label="add to favorites">
+                              <FavoriteIcon />
+                            </IconButton>
+                            <IconButton aria-label="share">
+                              <ShareIcon />
+                            </IconButton>
+                          </CardActions>
+                        </Card>
+                      )
+                    })}
+                  </Grid>
                 }
               </Grid>
             </Grid>
@@ -280,3 +324,4 @@ export const Home = () => {
   </Card>
   <Paper className={classes.paper} />
 </Grid> */}
+
