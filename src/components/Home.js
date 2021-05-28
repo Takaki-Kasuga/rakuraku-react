@@ -2,7 +2,8 @@
 import firebase from '../firebase/firebase'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { items } from '../actions/index'
+import { useHistory } from 'react-router-dom'
+import { items, toppings } from '../actions/index'
 // マテリアルUI
 // コンテイナー
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -41,6 +42,7 @@ import Button from '@material-ui/core/Button';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    cursor: 'pointer'
   },
   searchbox: {
     display: 'flex',
@@ -96,6 +98,7 @@ const useStyles = makeStyles((theme) => ({
 export const Home = () => {
   const dispatch = useDispatch()
   const itemState = useSelector((state) => state.itemState)
+  const toppingState = useSelector((state) => state.toppingState)
 
   // グリッドスタイル
   const [spacing, setSpacing] = React.useState(2);
@@ -113,21 +116,44 @@ export const Home = () => {
     setExpanded(!expanded);
   };
 
+  const history = useHistory()
+  const changeToDetail = path => history.push(path)
 
+  // アイテムリスト取得
   useEffect(() => {
-    const itemArray = []
     firebase
       .firestore()
       .collection(`items/`)
       .get()
       .then((snapshot) => {
+        const itemArray = []
         snapshot.forEach((doc) => {
           itemArray.push(doc.data())
         })
+        dispatch(items(itemArray))
       });
-    console.log(itemArray)
-    dispatch(items(itemArray))
   }, [])
+
+  // トッピングリスト取得
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection(`topping/`)
+      .get()
+      .then((snapshot) => {
+        const toppingArray = []
+        snapshot.forEach((doc) => {
+          toppingArray.push(doc.data())
+        })
+        console.log(toppingArray[0].array)
+        console.log(toppingArray[0].array.length)
+        dispatch(toppings(toppingArray[0].array))
+      });
+  }, [])
+
+  console.log(itemState)
+  console.log(itemState.length)
+
 
   return (
     <>
@@ -154,119 +180,170 @@ export const Home = () => {
           <Grid container className={classes.root} spacing={2}>
             <Grid item xs={12}>
               <Grid container justify="center" spacing={spacing}>
-                {itemState.length ? <h1>Loding..</h1> :
+                {!itemState.length ? <h1>Loding..</h1> :
                   <Grid item className={classes.flex}>
-                    <Card className={classes.root} >
-                      <CardHeader
-                        avatar={
-                          <Avatar aria-label="recipe" className={classes.avatar}>
-                            Me
+                    {itemState.map((item) => {
+                      return (
+                        <Card onClick={() => { changeToDetail(`/detail/${item.id}`) }} key={item.id} className={classes.root} >
+                          <CardHeader
+                            avatar={
+                              <Avatar aria-label="recipe" className={classes.avatar}>
+                                Me
                           </Avatar>
-                        }
-                        action={
-                          <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                          </IconButton>
-                        }
-                        title="Shrimp and Chorizo Paella"
-                        subheader="September 14, 2016"
-                      />
-                      <CardMedia
-                        className={classes.media}
-                        image='https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037'
-                        title="Paella dish"
-                      />
-                      <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                          デスクリプション
-                        </Typography>
-                      </CardContent>
-                      <CardActions disableSpacing>
-                        <IconButton aria-label="add to favorites">
-                          <FavoriteIcon />
-                        </IconButton>
-                        <IconButton aria-label="share">
-                          <ShareIcon />
-                        </IconButton>
-                      </CardActions>
-                    </Card>
-                    <Card className={classes.root}>
-                      <CardHeader
-                        avatar={
-                          <Avatar aria-label="recipe" className={classes.avatar}>
-                            R
-                          </Avatar>
-                        }
-                        action={
-                          <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                          </IconButton>
-                        }
-                        title="Shrimp and Chorizo Paella"
-                        subheader="September 14, 2016"
-                      />
-                      <CardMedia
-                        className={classes.media}
-                        image='https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037'
-                        title="Paella dish"
-                      />
-                      <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                          デスクリプション
-                        </Typography>
-                      </CardContent>
-                      <CardActions disableSpacing>
-                        <IconButton aria-label="add to favorites">
-                          <FavoriteIcon />
-                        </IconButton>
-                        <IconButton aria-label="share">
-                          <ShareIcon />
-                        </IconButton>
-                      </CardActions>
-                    </Card>
-                    <Card className={classes.root}>
-                      <CardHeader
-                        avatar={
-                          <Avatar aria-label="recipe" className={classes.avatar}>
-                            R
-                          </Avatar>
-                        }
-                        action={
-                          <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                          </IconButton>
-                        }
-                        title="Shrimp and Chorizo Paella"
-                        subheader="September 14, 2016"
-                      />
-                      <CardMedia
-                        className={classes.media}
-                        image='https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037'
-                        title="Paella dish"
-                      />
-                      <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                          デスクリプション
-                        </Typography>
-                      </CardContent>
-                      <CardActions disableSpacing>
-                        <IconButton aria-label="add to favorites">
-                          <FavoriteIcon />
-                        </IconButton>
-                        <IconButton aria-label="share">
-                          <ShareIcon />
-                        </IconButton>
-                      </CardActions>
-                    </Card>
-                    <Paper className={classes.paper} />
-                  </Grid>}
+                            }
+                            action={
+                              <IconButton aria-label="settings">
+                                <MoreVertIcon />
+                              </IconButton>
+                            }
+                            title="Shrimp and Chorizo Paella"
+                            subheader="September 14, 2016"
+                          />
+                          <CardMedia
+                            className={classes.media}
+                            image={item.imagePath}
+                            title="Paella dish"
+                          />
+                          <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                              {item.name}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                              {item.description}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                              Lサイズ：{(item.price.Lsize).toLocaleString()}円（税抜き）
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                              Mサイズ：{(item.price.Msize).toLocaleString()}円（税抜き）
+                            </Typography>
+                          </CardContent>
+                          <CardActions disableSpacing>
+                            <IconButton aria-label="add to favorites">
+                              <FavoriteIcon />
+                            </IconButton>
+                            <IconButton aria-label="share">
+                              <ShareIcon />
+                            </IconButton>
+                          </CardActions>
+                        </Card>
+                      )
+                    })}
+                  </Grid>
+                }
               </Grid>
             </Grid>
           </Grid>
-          {/* <h1>Home</h1> */}
         </Typography>
       </Container>
     </>
   )
 }
+
+
+{/* <Grid item className={classes.flex}>
+  <Card className={classes.root} >
+    <CardHeader
+      avatar={
+        <Avatar aria-label="recipe" className={classes.avatar}>
+          Me
+                          </Avatar>
+      }
+      action={
+        <IconButton aria-label="settings">
+          <MoreVertIcon />
+        </IconButton>
+      }
+      title="Shrimp and Chorizo Paella"
+      subheader="September 14, 2016"
+    />
+    <CardMedia
+      className={classes.media}
+      image='https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037'
+      title="Paella dish"
+    />
+    <CardContent>
+      <Typography variant="body2" color="textSecondary" component="p">
+        デスクリプション
+                        </Typography>
+    </CardContent>
+    <CardActions disableSpacing>
+      <IconButton aria-label="add to favorites">
+        <FavoriteIcon />
+      </IconButton>
+      <IconButton aria-label="share">
+        <ShareIcon />
+      </IconButton>
+    </CardActions>
+  </Card>
+  <Card className={classes.root}>
+    <CardHeader
+      avatar={
+        <Avatar aria-label="recipe" className={classes.avatar}>
+          R
+                          </Avatar>
+      }
+      action={
+        <IconButton aria-label="settings">
+          <MoreVertIcon />
+        </IconButton>
+      }
+      title="Shrimp and Chorizo Paella"
+      subheader="September 14, 2016"
+    />
+    <CardMedia
+      className={classes.media}
+      image='https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037'
+      title="Paella dish"
+    />
+    <CardContent>
+      <Typography variant="body2" color="textSecondary" component="p">
+        デスクリプション
+                        </Typography>
+    </CardContent>
+    <CardActions disableSpacing>
+      <IconButton aria-label="add to favorites">
+        <FavoriteIcon />
+      </IconButton>
+      <IconButton aria-label="share">
+        <ShareIcon />
+      </IconButton>
+    </CardActions>
+  </Card>
+  <Card className={classes.root}>
+    <CardHeader
+      avatar={
+        <Avatar aria-label="recipe" className={classes.avatar}>
+          R
+                          </Avatar>
+      }
+      action={
+        <IconButton aria-label="settings">
+          <MoreVertIcon />
+        </IconButton>
+      }
+      title="Shrimp and Chorizo Paella"
+      subheader="September 14, 2016"
+    />
+    <CardMedia
+      className={classes.media}
+      image='https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037'
+      title="Paella dish"
+    />
+    <CardContent>
+      <Typography variant="body2" color="textSecondary" component="p">
+        デスクリプション
+                        </Typography>
+    </CardContent>
+    <CardActions disableSpacing>
+      <IconButton aria-label="add to favorites">
+        <FavoriteIcon />
+      </IconButton>
+      <IconButton aria-label="share">
+        <ShareIcon />
+      </IconButton>
+    </CardActions>
+  </Card>
+  <Paper className={classes.paper} />
+</Grid> */}
 

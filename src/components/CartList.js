@@ -67,7 +67,7 @@ export const CartList = () => {
           </TableHead>
           <TableBody>
             {rows.map(row => (
-              <TableRow key={row.name}>
+              <TableRow key={row.calories}>
 
                 <TableCell component="th" scope="row">
 
@@ -75,7 +75,7 @@ export const CartList = () => {
                     <CardContent>
                       <Typography variant="body2" color="textSecondary" component="p">
                         ハワイアンパラダイス
-          </Typography>
+                        </Typography>
                     </CardContent>
                     <CardMedia
                       className={classes.media}
