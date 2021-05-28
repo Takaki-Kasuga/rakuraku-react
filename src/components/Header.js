@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
 //ロゴ画像
@@ -14,6 +14,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
+import firebase from '../firebase/firebase';
+import { setUserInfo, deleteUserInfo } from "../actions/index.js";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -26,6 +29,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const getState = (state) => state;
+
 const Header = () => {
     const history = useHistory();
     const dispatch = useDispatch();
@@ -35,12 +40,37 @@ const Header = () => {
         height: "25.2px",
     }
 
-    const getState = (state) => state;
     const stateContent = useSelector(getState);
+    const [loginUser, setLoginUser] = useState(false);
 
-    console.log('stateContentです')
-    console.log(stateContent.userIdState.login_user)
-    const login_user = stateContent.userIdState.login_user;
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                const user_name = firebase.auth().currentUser.displayName;
+                const user_email = firebase.auth().currentUser.email;
+                const user_id = firebase.auth().currentUser.uid;
+                dispatch(setUserInfo(user_id, user_name, user_email));
+            } else {
+                dispatch(deleteUserInfo());
+            }
+            setLoginUser(stateContent.userIdState.login_user);
+        })
+    }, []);
+
+
+    const LoginOrLogout = (props) => {
+        console.log(props);
+        if (props.user === true) {
+            return (
+                <React.Fragment>
+                    <Button color="secondary" onClick={() => history.push('/useraccount')}>アカウント</Button>
+                    <Button color="secondary" onClick={() => { dispatch(logout()) }}>ログアウト</Button>
+                </React.Fragment>
+            )
+        } else {
+            return <Button color="secondary" onClick={() => history.push('/login')}>ログイン</Button>
+        }
+    }
 
     return (
         <React.Fragment>
@@ -50,9 +80,7 @@ const Header = () => {
                         <Typography variant="h6" className={classes.title}>
                             <a href="/"><img src={logo} style={style} /></a>
                         </Typography>
-                        <Button color="secondary" onClick={() => history.push('/useraccount')}>アカウント</Button>
-                        <Button color="secondary" onClick={() => history.push('/login')}>ログイン</Button>
-                        <Button color="secondary" onClick={() => { dispatch(logout()) }}>ログアウト</Button>
+                        <LoginOrLogout user={loginUser} />
                         <Button color="secondary" onClick={() => history.push('/cartlist')}>ショッピングカート</Button>
                         <Button color="secondary" onClick={() => history.push('/orderhistory')}>注文履歴</Button>
                     </Toolbar>
