@@ -31,10 +31,31 @@ import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+// テキストフィールド
+import TextField from '@material-ui/core/TextField';
+
+// 検索ボタン
+import Button from '@material-ui/core/Button';
+
 // グリッドスタイル
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+  },
+  searchbox: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    'text-align': 'center',
+    'justify-content': 'center',
+    width: '80%',
+    margin: '0 auto'
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    display: 'inline-block',
+    width: '300px',
+    'text-align': 'center',
   },
   paper: {
     height: 'auto',
@@ -112,6 +133,23 @@ export const Home = () => {
 
   return (
     <>
+      <div className={classes.searchbox}>
+        <TextField
+          className={classes.textField}
+          id="filled-full-width"
+          label="Label"
+          placeholder="Search Items"
+          fullWidth
+          // style={{ margin: '0 auto' }}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          variant="filled"
+        />
+        <Button variant="contained" color="primary">
+          検索
+        </Button>
+      </div>
       <CssBaseline />
       <Container maxWidth="lg">
         <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} >
