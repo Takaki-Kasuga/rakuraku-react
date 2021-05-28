@@ -5,7 +5,7 @@ export const OrderHistory = () => {
     return (
       <React.Fragment>
         <table border="1">
-         <tr>
+          <tr>
             <th>商品画像</th>
             <th>商品名</th>
             <th>商品価格</th>
@@ -27,11 +27,11 @@ export const OrderHistory = () => {
             <td>商品個数が入る</td>
             <td>配達指定日</td>
           </tr>
-            </table>
-            <button>キャンセル</button>
-            <button>発送済み</button>
-            <button>キャンセル済み</button>
-            <button>この商品をもう一度注文</button>
+        </table>
+        <button>キャンセル</button>
+        <a href="/detail/:id">
+          <button>この商品をもう一度注文</button>
+        </a>
         <a href="/">
           <Button variant="contained" color="primary">
             メニューの一覧に戻る
