@@ -57,21 +57,61 @@ const OrderConfirm =()=>{
                 <div>
                     <p>配達希望時間 destinationPreTime</p>
                     <p>ラジオボタン入れる</p>
-                    {/* <label> */}
-                        {/* <input type="radio" name="desitinationPreTime" value="10" checked>10時</input> */}
-                        {/* <input type="radio" name="desitinationPreTime" value="11">11時</input>
-                        <input type="radio" name="desitinationPreTime" value="12">12時</input>
-                        <input type="radio" name="desitinationPreTime" value="13">13時</input>
-                        <input type="radio" name="desitinationPreTime" value="14">14時</input>
-                        <input type="radio" name="desitinationPreTime" value="15">15時</input>
-                        <input type="radio" name="desitinationPreTime" value="16">16時</input>
-                        <input type="radio" name="desitinationPreTime" value="17">17時</input>
-                        <input type="radio" name="desitinationPreTime" value="18">18時</input> */}
-                    {/* </label> */}
+                    {/* <FormControl component="fieldset">
+                        <FormLabel component="legend">配達希望時間</FormLabel>
+                        <RadioGroup
+                            aria-label="destinationPreTime"
+                            defaultValue="18"
+                            name="radio-buttons-group"
+                        >
+                            <FormControlLabel value="10" control={<Radio />} label="10時" />
+                            <FormControlLabel value="11" control={<Radio />} label="11時" />
+                            <FormControlLabel value="12" control={<Radio />} label="12時" />
+                            <FormControlLabel value="13" control={<Radio />} label="13時" />
+                            <FormControlLabel value="14" control={<Radio />} label="14時" />
+                            <FormControlLabel value="15" control={<Radio />} label="15時" />
+                            <FormControlLabel value="16" control={<Radio />} label="16時" />
+                            <FormControlLabel value="17" control={<Radio />} label="17時" />
+                            <FormControlLabel value="18" control={<Radio />} label="18時" />
+                        </RadioGroup>
+                    </FormControl> */}
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">labelPlacement</FormLabel>
+                        <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                            <FormControlLabel
+                            value="top"
+                            control={<Radio />}
+                            label="Top"
+                            labelPlacement="top"
+                            />
+                            <FormControlLabel
+                            value="start"
+                            control={<Radio />}
+                            label="Start"
+                            labelPlacement="start"
+                            />
+                            <FormControlLabel
+                            value="bottom"
+                            control={<Radio />}
+                            label="Bottom"
+                            labelPlacement="bottom"
+                            />
+                            <FormControlLabel value="end" control={<Radio />} label="End" />
+                        </RadioGroup>
+                    </FormControl>
                 </div>
                 <div>
-                    <p>支払い方法 destination</p>
-                    <p>ラジオボタン</p>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">お支払い方法 paymentMethod</FormLabel>
+                        <RadioGroup
+                            aria-label="paymentMethod"
+                            // defaultValue="credit"
+                            name="radio-buttons-group"
+                        >
+                            <FormControlLabel value="daibiki" control={<Radio />} label="代金引換" />
+                            <FormControlLabel value="credit" control={<Radio />} label="クレジットカード" />
+                        </RadioGroup>
+                    </FormControl>
                     <p>クレジットカート番号 creditcardNo</p>
                     <input type="text"></input>
                 </div>
