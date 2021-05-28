@@ -1,5 +1,6 @@
 import React from 'react';
-import {useHistory, useHittory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
+import { connect } from 'react-redux';
 
 //マテリアルUIテーブル
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -14,24 +15,6 @@ import Paper from '@material-ui/core/Paper';
 //マテリアルUIボタン
 import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
-
-// const StyledTableCell = withStyles((theme) => ({
-//   head: {
-//     backgroundColor: theme.palette.common.black,
-//     color: theme.palette.common.white,
-//   },
-//   body: {
-//     fontSize: 14,
-//   },
-// }))(TableCell);
-
-// const StyledTableRow = withStyles((theme) => ({
-//   root: {
-//     '&:nth-of-type(odd)': {
-//       backgroundColor: theme.palette.action.hover,
-//     },
-//   },
-// }))(TableRow);
 
 function createData(username, useremail) {
   return { username,useremail};
@@ -51,9 +34,11 @@ const useStyles = makeStyles(() => ({
       },
   }));
 
+
 const UserAccount =()=>{
     const history = useHistory();
     const classes = useStyles();
+    // const props = this.props
     return (
         <React.Fragment>
             <Grid alignItems="center" justify="center">
@@ -83,8 +68,12 @@ const UserAccount =()=>{
                     <Button variant="outlined" color="default" onClick={()=>history.push('/')}>トップ画面を表示する</Button>
                 </Grid> 
             </Grid>
+            {/* <p>{props.userName}</p> */}
         </React.Fragment>
-    )
-}
+    )}
+// }
+// const mapStateToProps = state =>({
+//     userName: state.userIdState.name
+// })
 
 export default UserAccount;
