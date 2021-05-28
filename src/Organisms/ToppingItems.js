@@ -419,7 +419,7 @@ export const ToppingItems = () => {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={anchovy}
-            onChange={setAnchovy}
+            onChange={setAnchovyMethod}
           >
             <MenuItem value='0'></MenuItem>
             <MenuItem value={toppingState[5].Msize}>M：{toppingState[5].Msize}円  </MenuItem>
@@ -531,7 +531,7 @@ export const ToppingItems = () => {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={pineapple}
-            onChange={setPineapple}
+            onChange={setPineappleMethod}
           >
             <MenuItem value='0'></MenuItem>
             <MenuItem value={toppingState[12].Msize}>M：{toppingState[12].Msize}円  </MenuItem>
@@ -563,7 +563,7 @@ export const ToppingItems = () => {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={coffee}
-            onChange={setCoffee}
+            onChange={setCoffeeMethod}
           >
             <MenuItem value='0'></MenuItem>
             <MenuItem value={toppingState[14].Msize}>M：{toppingState[14].Msize}円  </MenuItem>
