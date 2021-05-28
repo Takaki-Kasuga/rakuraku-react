@@ -2,6 +2,7 @@ import firebase, { providerGoogle } from '../firebase/firebase';
 
 export const SET_ITEMS = 'SET_ITEMS'
 export const SET_TOPPINGS = 'SET_TOPPINGS'
+export const SET_USER_INFO = 'SET_USER_INFO';
 
 export const items = (items) => {
   console.log(items)
@@ -21,6 +22,17 @@ export const toppings = (toppings) => {
   })
 }
 
+
+export const setUserInfo = (uid, name, email) => {
+  return (
+    {
+      type: SET_USER_INFO,
+      uid: uid,
+      name: name,
+      email: email
+    }
+  )
+}
 
 export const loginWithGoogle = () =>
   async () => {
