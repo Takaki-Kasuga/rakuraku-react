@@ -42,8 +42,8 @@ const UserAccount =()=>{
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                     <TableRow>
-                        <TableCell align="static">UserName</TableCell>
-                        <TableCell align="static">UserEmail</TableCell>
+                        <TableCell align="center">UserName</TableCell>
+                        <TableCell align="center">UserEmail</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
@@ -51,7 +51,7 @@ const UserAccount =()=>{
                             <TableCell component="th" scope="row">
                                 {stateContent.userIdState.name}
                             </TableCell>
-                            <TableCell align="static">{stateContent.userIdState.email}</TableCell>
+                            <TableCell align="center">{stateContent.userIdState.email}</TableCell>
                         </TableRow>
  
                     </TableBody>
