@@ -3,8 +3,15 @@ import { Button, TextField } from '@material-ui/core';
 import {
   Link
 } from 'react-router-dom';
+import firebase from '../firebase/firebase';
+
 
 export const Login = () => {
+  const handleLogin = () => {
+    console.log('やあ');
+    // props.loginWithGoogle();
+  };
+
   return (
     <React.Fragment>
       <h2>メールアドレスでログインする</h2>
@@ -21,7 +28,7 @@ export const Login = () => {
           </label>
           <TextField />
         </div>
-        <Button variant="contained" color="primary">ログイン</Button>
+        <Button variant="contained" color="primary" onClick={handleLogin}>ログイン</Button>
       </form>
 
       <div>
