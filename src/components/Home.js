@@ -2,6 +2,7 @@
 import firebase from '../firebase/firebase'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { items } from '../actions/index'
 // マテリアルUI
 // コンテイナー
@@ -41,6 +42,7 @@ import Button from '@material-ui/core/Button';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    cursor: 'pointer'
   },
   searchbox: {
     display: 'flex',
@@ -113,6 +115,9 @@ export const Home = () => {
     setExpanded(!expanded);
   };
 
+  const history = useHistory()
+  const changeToDetail = path => history.push(path)
+
 
   useEffect(() => {
 
@@ -162,7 +167,7 @@ export const Home = () => {
                     {itemState.map((item) => {
                       console.log(item)
                       return (
-                        <Card className={classes.root} >
+                        <Card onClick={() => { changeToDetail(`/detail/${item.id}`) }} key={item.id} className={classes.root} >
                           <CardHeader
                             avatar={
                               <Avatar aria-label="recipe" className={classes.avatar}>

@@ -1,5 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -27,6 +29,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 
+// ローディング
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -52,13 +57,41 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  // ローディイング
+  loading: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
 }));
 
 export const Detail = () => {
   const classes = useStyles();
+  const dispatch = useDispatch()
+  const itemState = useSelector((state) => state.itemState)
+  const [selectedItem, setSelectedItem] = useState('')
+
+  // パラメーター受け取り
+  const { id } = useParams()
+  console.log(id)
+
+
+  useEffect(() => {
+    const selectedItem = itemState.filter((item) => {
+      console.log(item)
+      // 文字列のNOを受け取っているためNumberで囲む
+      return item.id === Number(id)
+    })
+    setSelectedItem(selectedItem[0])
+  }, [])
+
+
+
+
 
   // ラジオボタン
-  const [value, setValue] = React.useState('female');
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -81,82 +114,85 @@ export const Detail = () => {
     <>
       <h1>商品詳細</h1>
       <div className={classes.root}>
-        <Grid container spacing={3}>
+        {!selectedItem ? <div className={classes.loading}>
+          <LinearProgress variant="query" />
+          <LinearProgress variant="query" color="secondary" />
+        </div> :
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <Paper className={classes.paper}>
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.media}
+                    image={selectedItem.imagePath}
+                    title="Contemplative Reptile"
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {selectedItem.name}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      {selectedItem.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Paper>
+            </Grid>
+            <Grid item xs={6}>
+              <Paper className={classes.paper}>
+                <h2> {selectedItem.name}</h2>
+                <p>{selectedItem.description}</p>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Size</FormLabel>
+                  <RadioGroup aria-label="topping" name="topping" value={value} onChange={handleChange}>
+                    <FormControlLabel value={selectedItem.price.Msize} control={<Radio />} label={`Mサイズ：${Number(selectedItem.price.Msize).toLocaleString()}円`} />
+                    <FormControlLabel value={selectedItem.price.Lsize} control={<Radio />} label={`Lサイズ：${Number(selectedItem.price.Lsize).toLocaleString()}円`}
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <h3>数量</h3>
+                <FormControl className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-label">数量</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={itemCount}
+                    onChange={setItemCount}
+                  >
+                    <MenuItem value='1'>1</MenuItem>
+                    <MenuItem value='2'>2</MenuItem>
+                    <MenuItem value='3'>3</MenuItem>
+                    <MenuItem value='4'>4</MenuItem>
+                    <MenuItem value='5'>5</MenuItem>
+                    <MenuItem value='6'>6</MenuItem>
+                    <MenuItem value='7'>7</MenuItem>
+                    <MenuItem value='8'>8</MenuItem>
+                    <MenuItem value='9'>9</MenuItem>
+                    <MenuItem value='10'>10</MenuItem>
+                  </Select>
+                </FormControl>
+                <h3>トッピング</h3>
+                <FormControl className={classes.formControl}>
+                  <span>ハワイアンソルト</span>
+                  <InputLabel id="demo-simple-select-label">トッピング</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={topping}
+                    onChange={selectTopping}
+                  >
+                    <MenuItem value=''>なし</MenuItem>
+                    <MenuItem value='l'>M</MenuItem>
+                    <MenuItem value='m'>L</MenuItem>
+                  </Select>
+                </FormControl>
+                <p>合計金額：{Number(value).toLocaleString()}円</p>
+                <Button variant="contained">カートに入れる</Button>
+              </Paper>
+            </Grid>
+          </Grid>
+        }
 
-          <Grid item xs={6}>
-            <Paper className={classes.paper}>
-              <Card className={classes.card}>
-                <CardMedia
-                  className={classes.media}
-                  image='https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037'
-                  title="Contemplative Reptile"
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    Lizard
-          </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-                    across all continents except Antarctica
-          </Typography>
-                </CardContent>
-              </Card>
-            </Paper>
-          </Grid>
-          <Grid item xs={6}>
-            <Paper className={classes.paper}>
-              <h2>Hawaiianパラダイス</h2>
-              <p>ハワイで取れる名産物でかつオーガニックな食料がふんだんに使われたローカルフーズです。健康志向の方に大人気の商品です。</p>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Size</FormLabel>
-                <RadioGroup aria-label="topping" name="topping" value={value} onChange={handleChange}>
-                  <FormControlLabel value="Msize" control={<Radio />} label="価格M:
-                  " />
-                  <FormControlLabel value="Lsize" control={<Radio />} label="価格L:
-                  " />
-                </RadioGroup>
-              </FormControl>
-              <h3>数量</h3>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">数量</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={itemCount}
-                  onChange={setItemCount}
-                >
-                  <MenuItem value='1'>1</MenuItem>
-                  <MenuItem value='2'>2</MenuItem>
-                  <MenuItem value='3'>3</MenuItem>
-                  <MenuItem value='4'>4</MenuItem>
-                  <MenuItem value='5'>5</MenuItem>
-                  <MenuItem value='6'>6</MenuItem>
-                  <MenuItem value='7'>7</MenuItem>
-                  <MenuItem value='8'>8</MenuItem>
-                  <MenuItem value='9'>9</MenuItem>
-                  <MenuItem value='10'>10</MenuItem>
-                </Select>
-              </FormControl>
-              <h3>トッピング</h3>
-              <FormControl className={classes.formControl}>
-                <span>ハワイアンソルト</span>
-                <InputLabel id="demo-simple-select-label">トッピング</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={topping}
-                  onChange={selectTopping}
-                >
-                  <MenuItem value=''>なし</MenuItem>
-                  <MenuItem value='l'>M</MenuItem>
-                  <MenuItem value='m'>L</MenuItem>
-                </Select>
-              </FormControl>
-              <p>合計金額：</p>
-              <Button variant="contained">カートに入れる</Button>
-            </Paper>
-          </Grid>
-        </Grid>
       </div>
     </>
   )
