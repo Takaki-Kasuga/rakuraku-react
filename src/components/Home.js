@@ -64,20 +64,21 @@ export const Home = () => {
 
 
   useEffect(() => {
-    dispatch(items(null))
+    // dispatch(items(null))
+    const itemArray = []
     firebase
       .firestore()
       .collection(`items/`)
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
-          dispatch(items(doc.data()))
+          // dispatch(items(doc.data()))
           // setItems(doc.data())
-
           // console.log(items)
-          // console.log(doc.data())
+          itemArray.push(doc.data())
         })
       });
+    dispatch(items(itemArray))
   }, [])
 
   // console.log(items)
