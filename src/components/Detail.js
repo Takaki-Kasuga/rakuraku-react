@@ -16,6 +16,18 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+// カードタブ
+import clsx from 'clsx';
+import CardHeader from '@material-ui/core/CardHeader';
+import Collapse from '@material-ui/core/Collapse';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+import { red } from '@material-ui/core/colors';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import ShareIcon from '@material-ui/icons/Share';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+
 // ラジオボタン
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -70,7 +82,20 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     'flex-wrap': 'wrap',
     'justify-content': 'center',
-  }
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
+  avatar: {
+    backgroundColor: red[500],
+  },
 }));
 
 export const Detail = () => {
@@ -80,10 +105,14 @@ export const Detail = () => {
   const toppingState = useSelector((state) => state.toppingState)
   const [selectedItem, setSelectedItem] = useState('')
   const [toppingList, setToppingList] = useState('')
-
+  const [expanded, setExpanded] = React.useState(false);
   // パラメーター受け取り
   const { id } = useParams()
   console.log(id)
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
 
   // パラメーターで受け取ったidと合致するオブジェクトを返す
@@ -207,9 +236,31 @@ export const Detail = () => {
                   </Select>
                 </FormControl>
                 <h3>トッピング</h3>
+                <Card className={classes.card}>
+                  <div onClick={handleExpandClick} style={{ cursor: "pointer" }}>
+                    <span>トッピング詳細</span>
+                    <IconButton
+                      className={clsx(classes.expand, {
+                        [classes.expandOpen]: expanded,
+                      })}
+                      aria-expanded={expanded}
+                      aria-label="show more"
+                    >
+                      <ExpandMoreIcon />
+                    </IconButton>
+                  </div>
+
+                  <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <CardContent>
+                      <CardActions disableSpacing>
+
+                      </CardActions>
+                      <ToppingItems></ToppingItems>
+                    </CardContent>
+                  </Collapse>
+                </Card>
 
 
-                <ToppingItems></ToppingItems>
 
                 <p>合計金額：{(Number(value) * Number(itemCount)).toLocaleString()}円</p>
                 <Button variant="contained">カートに入れる</Button>
