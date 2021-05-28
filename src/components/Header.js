@@ -1,7 +1,11 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 
 //ロゴ画像
 import logo from '../img/header_logo.png'
+
+import { logout } from "../actions/index.js";
+import { useDispatch } from "react-redux";
 
 //マテリアルUIヘッダー
 import { makeStyles } from '@material-ui/core/styles';
@@ -25,11 +29,14 @@ const useStyles = makeStyles((theme) => ({
   }));
   
 const Header =()=>{
+    const history = useHistory();
+    const dispatch = useDispatch();
     const classes = useStyles();
     const style = {
-        width :"20%",
-        height: "20%"
+        width :"157.2px",
+        height:"25.2px",
     }
+
     return (
         <React.Fragment>
             <div className={classes.root}>
@@ -41,20 +48,13 @@ const Header =()=>{
                     <Typography variant="h6" className={classes.title}>
                     <a href="/"><img src={logo} style={style}/></a>
                     </Typography>
-                    <Button color="secondary">Login</Button>
-                    <Button color="secondary">Login</Button>
-                    <Button color="secondary">Login</Button>
-                    <Button color="secondary">Login</Button>
+                        <Button color="secondary" onClick={()=>history.push('/useraccount')}>アカウント</Button>
+                        <Button color="secondary" onClick={()=>history.push('/login')}>ログイン</Button>
+                        <Button color="secondary" onClick={() => { dispatch(logout()) }}>ログアウト</Button>
+                        <Button color="secondary"onClick={()=>history.push('/cartlist')}>ショッピングカート</Button>
+                        <Button color="secondary"onClick={()=>history.push('/orderhistory')}>注文履歴</Button>
                     </Toolbar>
                 </AppBar>
-            </div>
-            <div>
-                <ul>
-                    <li><a href="/useraccount">アカウント</a></li>
-                    <li><a href="/login">ログイン</a></li>
-                    <li><a href="cartlist">ショッピングカート</a></li>
-                    <li><a href="orderhistory">注文履歴</a></li>
-                </ul>
             </div>
         </React.Fragment>
     )
