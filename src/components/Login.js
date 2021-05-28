@@ -37,11 +37,6 @@ export const Login = () => {
         <Button variant="contained" color="primary">Googleでログイン</Button>
       </div>
 
-      <div>
-        <h3>Googleで新規登録はこちら</h3>
-        <Button variant="contained" color="primary">Googleで新規登録</Button>
-      </div>
-
     </React.Fragment>
   )
 }
