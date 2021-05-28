@@ -32,6 +32,9 @@ import Select from '@material-ui/core/Select';
 // ローディング
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+// コンポーネント
+import { ToppingItems } from '../Organisms/ToppingItems'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -204,26 +207,9 @@ export const Detail = () => {
                   </Select>
                 </FormControl>
                 <h3>トッピング</h3>
-                <div className={classes.flex}>
-                  {toppingState.map((topping) => {
-                    return (
-                      <FormControl key={topping.id} className={classes.formControl}>
-                        <span>{topping.name}</span>
-                        <InputLabel id="demo-simple-select-label">{topping.id}</InputLabel>
-                        <Select
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={topping}
-                          onChange={selectTopping}
-                        >
-                          <MenuItem value='0'>なし</MenuItem>
-                          <MenuItem value={topping.Msize}>M：{topping.Msize}円  </MenuItem>
-                          <MenuItem value={topping.Lsize}>L：{topping.Lsize}円 </MenuItem>
-                        </Select>
-                      </FormControl>
-                    )
-                  })}
-                </div>
+
+
+                <ToppingItems></ToppingItems>
 
                 <p>合計金額：{(Number(value) * Number(itemCount)).toLocaleString()}円</p>
                 <Button variant="contained">カートに入れる</Button>
