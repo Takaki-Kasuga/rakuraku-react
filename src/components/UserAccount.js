@@ -27,7 +27,6 @@ const useStyles = makeStyles(() => ({
       },
   }));
 
-
 const UserAccount =()=>{
     const history = useHistory();
     const classes = useStyles();
@@ -68,9 +67,4 @@ const UserAccount =()=>{
         </React.Fragment>
     )
 }
-// const mapStateToProps = state =>({
-//     userName: state.userIdState.name
-// })
-
-// export default connect (mapStateToProps)(UserAccount);
 export default UserAccount;
