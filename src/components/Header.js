@@ -51,7 +51,8 @@ const Header = () => {
                             <a href="/"><img src={logo} style={style} /></a>
                         </Typography>
                         <Button color="secondary" onClick={() => history.push('/useraccount')}>アカウント</Button>
-                        {login_user ? <Button color="secondary" onClick={() => { dispatch(logout()) }}>ログアウト</Button> : <Button color="secondary" onClick={() => history.push('/login')}>ログイン</Button>}
+                        <Button color="secondary" onClick={() => history.push('/login')}>ログイン</Button>
+                        <Button color="secondary" onClick={() => { dispatch(logout()) }}>ログアウト</Button>
                         <Button color="secondary" onClick={() => history.push('/cartlist')}>ショッピングカート</Button>
                         <Button color="secondary" onClick={() => history.push('/orderhistory')}>注文履歴</Button>
                     </Toolbar>
