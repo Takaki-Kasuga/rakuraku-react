@@ -26,43 +26,51 @@ const OrderConfirm =()=>{
             <div>
                 <h2>お届け先情報</h2>
                 <div>
-                    <p>お名前</p>
+                    <p>お名前 destinationName</p>
                     <input type="text"></input>
                 </div>
                 <div>
-                    <p>メールアドレス</p>
+                    <p>メールアドレス destinationZipcode</p>
                     <input type="email"></input>
                 </div>
                 <div>
-                    <p>郵便番号</p>
+                    <p>郵便番号 destinationZipcode</p>
                     <input type="text"></input>
                 </div>
                 <div>
-                    <p>住所</p>
+                    <p>住所 destinationAddress</p>
                     <input type="text"></input>
                 </div>
                 <div>
-                    <p>電話番号</p>
+                    <p>電話番号 destinationTel</p>
                     <input type="text"></input>
                 </div>
                 <div>
-                    <p>配達希望日</p>
+                    <p>配達希望日 destinationPreDate</p>
                     <input type="date"></input>
                 </div>
                 <div>
-                    <p>配達希望時間</p>
-                    {/* <label>
-                        <input type="radio" name="desitinationPreTime" value="10" checked>10時</input>
-                        <input type="radio" name="desitinationPreTime" value="11">11時</input>
+                    <p>配達希望時間 destinationPreTime</p>
+                    <p>ラジオボタン入れる</p>
+                    {/* <label> */}
+                        {/* <input type="radio" name="desitinationPreTime" value="10" checked>10時</input> */}
+                        {/* <input type="radio" name="desitinationPreTime" value="11">11時</input>
                         <input type="radio" name="desitinationPreTime" value="12">12時</input>
                         <input type="radio" name="desitinationPreTime" value="13">13時</input>
                         <input type="radio" name="desitinationPreTime" value="14">14時</input>
                         <input type="radio" name="desitinationPreTime" value="15">15時</input>
                         <input type="radio" name="desitinationPreTime" value="16">16時</input>
                         <input type="radio" name="desitinationPreTime" value="17">17時</input>
-                        <input type="radio" name="desitinationPreTime" value="18">18時</input>
-                    </label> */}
+                        <input type="radio" name="desitinationPreTime" value="18">18時</input> */}
+                    {/* </label> */}
                 </div>
+                <div>
+                    <p>支払い方法 destination</p>
+                    <p>ラジオボタン</p>
+                    <p>クレジットカート番号 creditcardNo</p>
+                    <input type="text"></input>
+                </div>
+                <button>この内容で注文する</button>
             </div>
         </React.Fragment>
     )
