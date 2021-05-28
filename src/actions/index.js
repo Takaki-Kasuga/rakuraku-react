@@ -1,6 +1,7 @@
 import firebase, { providerGoogle } from '../firebase/firebase';
 
 export const SET_ITEMS = 'SET_ITEMS'
+export const SET_TOPPINGS = 'SET_TOPPINGS'
 
 export const items = (items) => {
   console.log(items)
@@ -10,6 +11,16 @@ export const items = (items) => {
     itemList: items
   })
 }
+
+export const toppings = (toppings) => {
+  console.log(toppings)
+  console.log('toppingsactionsが発火')
+  return ({
+    type: SET_TOPPINGS,
+    toppingList: toppings
+  })
+}
+
 
 export const loginWithGoogle = () =>
   async () => {
