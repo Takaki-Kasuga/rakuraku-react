@@ -6,11 +6,11 @@ export default (state = [], action) => {
   switch (action.type) {
     case SET_ITEMS:
       state = []
-      const array = [...state, action.itemList]
-      console.log(array)
-      const [itemArray] = array
+      const itemArray = [...state, action.itemList]
       console.log(itemArray)
-      return itemArray;
+      // const [itemArray] = array
+      // console.log(itemArray)
+      return itemArray[0];
     default:
       return state
   }
