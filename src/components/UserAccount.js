@@ -1,22 +1,88 @@
 import React from 'react';
+import {useHistory, useHittory} from 'react-router-dom';
+
+//マテリアルUIテーブル
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+
+//マテリアルUIボタン
+import Button from '@material-ui/core/Button';
+import { Grid } from '@material-ui/core';
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
+
+function createData(username, useremail) {
+  return { username,useremail};
+}
+
+const rows = [
+  createData('ユーザーの名前','ユーザーのメールアドレス')
+];
+
+const useStyles = makeStyles(() => ({
+    root:{
+        width: '100%',
+        overflowX:'auto',
+    },
+    table: {
+        minWidth: 650,
+      },
+  }));
 
 const UserAccount =()=>{
+    const history = useHistory();
+    const classes = useStyles();
     return (
         <React.Fragment>
-            <div>
-                <h1>アカウント</h1>
-                <table border="1">
-                    <tr>
-                        <th>UserName</th>
-                        <th>UserEmail</th>
-                    </tr>
-                    <tr>
-                        <td>ログインユーザの名前が入ります</td>
-                        <td>ログインユーザーのメールアドレスが入ります</td>
-                    </tr>
-                </table>
-                <a href="/"><button>トップ画面を表示する</button></a>
-            </div>
+            <Grid alignItems="center" justify="center">
+            <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                    <TableRow>
+                        <TableCell align="static">UserName</TableCell>
+                        <TableCell align="static">UserEmail</TableCell>
+                    </TableRow>
+                    </TableHead>
+                    <TableBody>
+                    {rows.map((row) => (
+                        <TableRow key={row.username}>
+                            <StyledTableCell component="th" scope="row">
+                                {row.username}
+                            </StyledTableCell>
+                            <StyledTableCell align="static">{row.useremail}</StyledTableCell>
+                        </TableRow>
+                    ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            </Grid>
+            <Grid container alignItems="center" justify="center">
+                <Grid> 
+                    <Button variant="outlined" color="default" onClick={()=>history.push('/')}>トップ画面を表示する</Button>
+                </Grid> 
+            </Grid>
         </React.Fragment>
     )
 }
