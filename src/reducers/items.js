@@ -1,16 +1,17 @@
 import { SET_ITEMS } from '../actions/index'
 
-export default (state = [], action) => {
+export default (state = { items: [] }, action) => {
   console.log(state)
   console.log(action)
   switch (action.type) {
     case SET_ITEMS:
       state = []
-      const itemArray = [...state, action.itemList]
+      const itemArray = action.itemList
       console.log(itemArray)
+      console.log(itemArray.length)
       // const [itemArray] = array
       // console.log(itemArray)
-      return itemArray[0];
+      return itemArray;
     default:
       return state
   }
