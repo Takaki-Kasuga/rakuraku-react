@@ -4,6 +4,7 @@ export const SET_ITEMS = 'SET_ITEMS'
 export const SET_TOPPINGS = 'SET_TOPPINGS'
 export const SET_USER_INFO = 'SET_USER_INFO';
 export const DELETE_USER_INFO = 'DELETE_USER_INFO';
+export const SELECTED_TOPPINGS = 'SELECTED_TOPPINGS';
 
 export const items = (items) => {
   console.log(items)
@@ -20,6 +21,15 @@ export const toppings = (toppings) => {
   return ({
     type: SET_TOPPINGS,
     toppingList: toppings
+  })
+}
+
+export const selectedToppings = (selectedToppings) => {
+  console.log(selectedToppings)
+  console.log('SELECTED_TOPPINGSが発火')
+  return ({
+    type: SELECTED_TOPPINGS,
+    selectedToppingsList: selectedToppings
   })
 }
 
