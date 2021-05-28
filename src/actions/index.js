@@ -17,3 +17,10 @@ export const loginWithGoogle = () =>
       firebase.auth().getRedirectResult()
     }
   }
+
+export const logout = () =>
+  async () => {
+    {
+      await firebase.auth().signOut()
+    }
+  }
