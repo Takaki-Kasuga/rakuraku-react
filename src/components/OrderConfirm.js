@@ -1,6 +1,11 @@
 import React from 'react';
-import image from '../img/1.jpg'
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
+import image from '../img/1.jpg'
 const OrderConfirm =()=>{
     return (
         <React.Fragment>
@@ -50,23 +55,33 @@ const OrderConfirm =()=>{
                     <input type="date"></input>
                 </div>
                 <div>
-                    <p>配達希望時間 destinationPreTime</p>
-                    <p>ラジオボタン入れる</p>
-                    {/* <label> */}
-                        {/* <input type="radio" name="desitinationPreTime" value="10" checked>10時</input> */}
-                        {/* <input type="radio" name="desitinationPreTime" value="11">11時</input>
-                        <input type="radio" name="desitinationPreTime" value="12">12時</input>
-                        <input type="radio" name="desitinationPreTime" value="13">13時</input>
-                        <input type="radio" name="desitinationPreTime" value="14">14時</input>
-                        <input type="radio" name="desitinationPreTime" value="15">15時</input>
-                        <input type="radio" name="desitinationPreTime" value="16">16時</input>
-                        <input type="radio" name="desitinationPreTime" value="17">17時</input>
-                        <input type="radio" name="desitinationPreTime" value="18">18時</input> */}
-                    {/* </label> */}
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">配達希望時間 destinationPreTime</FormLabel>
+                        <RadioGroup row aria-label="destinationPreTime" name="" defaultValue="18">
+                            <FormControlLabel value="10" control={<Radio />} label="10時" labelPlacement="end"/>
+                            <FormControlLabel value="11" control={<Radio />} label="11時" labelPlacement="end"/>
+                            <FormControlLabel value="12" control={<Radio />} label="12時" labelPlacement="end"/>
+                            <FormControlLabel value="13" control={<Radio />} label="13時" labelPlacement="end"/>
+                            <FormControlLabel value="14" control={<Radio />} label="14時" labelPlacement="end"/>
+                            <FormControlLabel value="15" control={<Radio />} label="15時" labelPlacement="end"/>
+                            <FormControlLabel value="16" control={<Radio />} label="16時" labelPlacement="end"/>
+                            <FormControlLabel value="17" control={<Radio />} label="17時" labelPlacement="end"/>
+                            <FormControlLabel value="18" control={<Radio />} label="18時" labelPlacement="end"/>
+                        </RadioGroup>
+                    </FormControl>
                 </div>
                 <div>
-                    <p>支払い方法 destination</p>
-                    <p>ラジオボタン</p>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">お支払い方法 paymentMethod</FormLabel>
+                        <RadioGroup
+                            aria-label="paymentMethod"
+                            // defaultValue="credit"
+                            name="radio-buttons-group"
+                        >
+                            <FormControlLabel value="daibiki" control={<Radio />} label="代金引換" />
+                            <FormControlLabel value="credit" control={<Radio />} label="クレジットカード" />
+                        </RadioGroup>
+                    </FormControl>
                     <p>クレジットカート番号 creditcardNo</p>
                     <input type="text"></input>
                 </div>

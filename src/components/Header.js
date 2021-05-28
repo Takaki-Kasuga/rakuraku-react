@@ -1,4 +1,3 @@
-import { MicNone } from '@material-ui/icons';
 import React from 'react';
 import logo from '../img/header_logo.png'
 

@@ -80,9 +80,11 @@ export const TermOfUse = () => {
           本サービスに関して紛争が生じた場合には，当社の本店所在地を管轄する裁判所を専属的合意管轄とします。
           <p>以上</p>
         </div>
-        <Button variant="contained" color="primary">
-          登録画面へ戻る
-        </Button>
+        <a href="./registeremail">
+          <Button variant="contained" color="primary">
+            登録画面へ戻る
+          </Button>
+        </a>
       </React.Fragment>
     );
 }
