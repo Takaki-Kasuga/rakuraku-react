@@ -122,12 +122,10 @@ export const Home = () => {
       .get()
       .then((snapshot) => {
         snapshot.forEach((doc) => {
-          // dispatch(items(doc.data()))
-          // setItems(doc.data())
-          // console.log(items)
           itemArray.push(doc.data())
         })
       });
+    console.log(itemArray)
     dispatch(items(itemArray))
   }, [])
 
