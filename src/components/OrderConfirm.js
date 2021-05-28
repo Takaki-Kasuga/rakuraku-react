@@ -55,48 +55,18 @@ const OrderConfirm =()=>{
                     <input type="date"></input>
                 </div>
                 <div>
-                    <p>配達希望時間 destinationPreTime</p>
-                    <p>ラジオボタン入れる</p>
-                    {/* <FormControl component="fieldset">
-                        <FormLabel component="legend">配達希望時間</FormLabel>
-                        <RadioGroup
-                            aria-label="destinationPreTime"
-                            defaultValue="18"
-                            name="radio-buttons-group"
-                        >
-                            <FormControlLabel value="10" control={<Radio />} label="10時" />
-                            <FormControlLabel value="11" control={<Radio />} label="11時" />
-                            <FormControlLabel value="12" control={<Radio />} label="12時" />
-                            <FormControlLabel value="13" control={<Radio />} label="13時" />
-                            <FormControlLabel value="14" control={<Radio />} label="14時" />
-                            <FormControlLabel value="15" control={<Radio />} label="15時" />
-                            <FormControlLabel value="16" control={<Radio />} label="16時" />
-                            <FormControlLabel value="17" control={<Radio />} label="17時" />
-                            <FormControlLabel value="18" control={<Radio />} label="18時" />
-                        </RadioGroup>
-                    </FormControl> */}
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">labelPlacement</FormLabel>
-                        <RadioGroup row aria-label="position" name="position" defaultValue="top">
-                            <FormControlLabel
-                            value="top"
-                            control={<Radio />}
-                            label="Top"
-                            labelPlacement="top"
-                            />
-                            <FormControlLabel
-                            value="start"
-                            control={<Radio />}
-                            label="Start"
-                            labelPlacement="start"
-                            />
-                            <FormControlLabel
-                            value="bottom"
-                            control={<Radio />}
-                            label="Bottom"
-                            labelPlacement="bottom"
-                            />
-                            <FormControlLabel value="end" control={<Radio />} label="End" />
+                        <FormLabel component="legend">配達希望時間 destinationPreTime</FormLabel>
+                        <RadioGroup row aria-label="destinationPreTime" name="" defaultValue="18">
+                            <FormControlLabel value="10" control={<Radio />} label="10時" labelPlacement="end"/>
+                            <FormControlLabel value="11" control={<Radio />} label="11時" labelPlacement="end"/>
+                            <FormControlLabel value="12" control={<Radio />} label="12時" labelPlacement="end"/>
+                            <FormControlLabel value="13" control={<Radio />} label="13時" labelPlacement="end"/>
+                            <FormControlLabel value="14" control={<Radio />} label="14時" labelPlacement="end"/>
+                            <FormControlLabel value="15" control={<Radio />} label="15時" labelPlacement="end"/>
+                            <FormControlLabel value="16" control={<Radio />} label="16時" labelPlacement="end"/>
+                            <FormControlLabel value="17" control={<Radio />} label="17時" labelPlacement="end"/>
+                            <FormControlLabel value="18" control={<Radio />} label="18時" labelPlacement="end"/>
                         </RadioGroup>
                     </FormControl>
                 </div>
