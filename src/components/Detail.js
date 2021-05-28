@@ -103,12 +103,23 @@ export const Detail = () => {
   const dispatch = useDispatch()
   const itemState = useSelector((state) => state.itemState)
   const toppingState = useSelector((state) => state.toppingState)
+  const selectedToppingState = useSelector((state) => state.selectedToppingState)
   const [selectedItem, setSelectedItem] = useState('')
   const [toppingList, setToppingList] = useState('')
   const [expanded, setExpanded] = React.useState(false);
   // パラメーター受け取り
   const { id } = useParams()
   console.log(id)
+
+  // トッピングリストの合計金額
+  let totleToppingPrice = 0
+  selectedToppingState.forEach((price) => {
+    if (price.toppingPrice) {
+      totleToppingPrice += price.toppingPrice
+    }
+  })
+
+  console.log(totleToppingPrice)
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -202,8 +213,8 @@ export const Detail = () => {
             </Grid>
             <Grid item xs={6}>
               <Paper className={classes.paper}>
-                <h2> {selectedItem.name}</h2>
-                <p>{selectedItem.description}</p>
+                {/* <h2> {selectedItem.name}</h2>
+                <p>{selectedItem.description}</p> */}
 
                 <FormControl component="fieldset" className={classes.formControl}>
                   <FormLabel component="legend">Size</FormLabel>
@@ -262,8 +273,8 @@ export const Detail = () => {
 
 
 
-                <p>合計金額：{(Number(value) * Number(itemCount)).toLocaleString()}円</p>
-                <Button variant="contained">カートに入れる</Button>
+                <p>合計金額：{(Number(value) * Number(itemCount) + Number(totleToppingPrice)).toLocaleString()}円</p>
+                <Button variant="contained" onClick={() => { }}>カートに入れる</Button>
               </Paper>
             </Grid>
           </Grid>

@@ -21,13 +21,16 @@ const initialState = [
   { id: 18, toppingPrice: 0, }
 ]
 
-export default (state = [], action) => {
+export default (state = initialState, action) => {
+  console.log('selectedToppingが発火')
   console.log(state)
   console.log(action)
   switch (action.type) {
     case SELECTED_TOPPINGS:
-      console.log(action)
-      return state;
+      const selectedToppingArray = [...state]
+      selectedToppingArray.splice((Number(action.selectedToppingsList.id) - 1), 1, action.selectedToppingsList)
+      console.log(selectedToppingArray)
+      return selectedToppingArray;
     default:
       return state
   }
