@@ -1,6 +1,7 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector } from "react-redux";
+
 
 //マテリアルUIテーブル
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -16,14 +17,6 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
 
-function createData(username, useremail) {
-  return { username,useremail};
-}
-
-const rows = [
-  createData('ユーザーの名前','ユーザーのメールアドレス')
-];
-
 const useStyles = makeStyles(() => ({
     root:{
         width: '100%',
@@ -38,10 +31,14 @@ const useStyles = makeStyles(() => ({
 const UserAccount =()=>{
     const history = useHistory();
     const classes = useStyles();
-    // const props = this.props
+    const getState = (state) => state;
+    const stateContent = useSelector(getState);
+
+    console.log('stateContentです')
+    console.log(stateContent.userIdState)
     return (
         <React.Fragment>
-            <Grid alignItems="center" justify="center">
+            <Grid container alignItems="center" justify="center">
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
@@ -51,14 +48,13 @@ const UserAccount =()=>{
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.username}>
+                        <TableRow>
                             <TableCell component="th" scope="row">
-                                {row.username}
+                                {stateContent.userIdState.name}
                             </TableCell>
-                            <TableCell align="static">{row.useremail}</TableCell>
+                            <TableCell align="static">{stateContent.userIdState.email}</TableCell>
                         </TableRow>
-                    ))}
+ 
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -68,12 +64,13 @@ const UserAccount =()=>{
                     <Button variant="outlined" color="default" onClick={()=>history.push('/')}>トップ画面を表示する</Button>
                 </Grid> 
             </Grid>
-            {/* <p>{props.userName}</p> */}
+
         </React.Fragment>
-    )}
-// }
+    )
+}
 // const mapStateToProps = state =>({
 //     userName: state.userIdState.name
 // })
 
+// export default connect (mapStateToProps)(UserAccount);
 export default UserAccount;
