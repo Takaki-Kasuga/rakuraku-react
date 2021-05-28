@@ -29,7 +29,8 @@ export const setUserInfo = (uid, name, email) => {
       type: SET_USER_INFO,
       uid: uid,
       name: name,
-      email: email
+      email: email,
+      login_user: true
     }
   )
 }
