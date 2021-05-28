@@ -1,6 +1,6 @@
 import { SET_ITEMS } from '../actions/index'
 
-export default (state = { items: [] }, action) => {
+export default (state = [], action) => {
   console.log(state)
   console.log(action)
   switch (action.type) {
