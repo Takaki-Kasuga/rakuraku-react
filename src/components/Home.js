@@ -3,7 +3,7 @@ import firebase from '../firebase/firebase'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { items } from '../actions/index'
+import { items, toppings } from '../actions/index'
 // マテリアルUI
 // コンテイナー
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -98,6 +98,7 @@ const useStyles = makeStyles((theme) => ({
 export const Home = () => {
   const dispatch = useDispatch()
   const itemState = useSelector((state) => state.itemState)
+  const toppingState = useSelector((state) => state.toppingState)
 
   // グリッドスタイル
   const [spacing, setSpacing] = React.useState(2);
@@ -118,9 +119,8 @@ export const Home = () => {
   const history = useHistory()
   const changeToDetail = path => history.push(path)
 
-
+  // アイテムリスト取得
   useEffect(() => {
-
     firebase
       .firestore()
       .collection(`items/`)
@@ -134,8 +134,26 @@ export const Home = () => {
       });
   }, [])
 
+  // トッピングリスト取得
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection(`topping/`)
+      .get()
+      .then((snapshot) => {
+        const toppingArray = []
+        snapshot.forEach((doc) => {
+          toppingArray.push(doc.data())
+        })
+        console.log(toppingArray[0].array)
+        console.log(toppingArray[0].array.length)
+        dispatch(toppings(toppingArray[0].array))
+      });
+  }, [])
+
   console.log(itemState)
   console.log(itemState.length)
+
 
   return (
     <>
@@ -165,7 +183,6 @@ export const Home = () => {
                 {!itemState.length ? <h1>Loding..</h1> :
                   <Grid item className={classes.flex}>
                     {itemState.map((item) => {
-                      console.log(item)
                       return (
                         <Card onClick={() => { changeToDetail(`/detail/${item.id}`) }} key={item.id} className={classes.root} >
                           <CardHeader
