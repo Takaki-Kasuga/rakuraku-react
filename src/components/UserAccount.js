@@ -42,8 +42,12 @@ const rows = [
 ];
 
 const useStyles = makeStyles(() => ({
+    root:{
+        width: '100%',
+        overflowX:'auto',
+    },
     table: {
-        minWidth: 700,
+        minWidth: 650,
       },
   }));
 
@@ -54,31 +58,31 @@ const UserAccount =()=>{
         <React.Fragment>
             <Grid alignItems="center" justify="center">
             <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="customized table">
+                <Table className={classes.table} aria-label="simple table">
                     <TableHead>
                     <TableRow>
-                        <StyledTableCell>UserName</StyledTableCell>
-                        <StyledTableCell align="static">UserEmail</StyledTableCell>
+                        <TableCell align="static">UserName</TableCell>
+                        <TableCell align="static">UserEmail</TableCell>
                     </TableRow>
                     </TableHead>
                     <TableBody>
                     {rows.map((row) => (
-                        <StyledTableRow key={row.username}>
+                        <TableRow key={row.username}>
                             <StyledTableCell component="th" scope="row">
                                 {row.username}
                             </StyledTableCell>
                             <StyledTableCell align="static">{row.useremail}</StyledTableCell>
-                        </StyledTableRow>
+                        </TableRow>
                     ))}
                     </TableBody>
                 </Table>
             </TableContainer>
             </Grid>
-                <Grid container alignItems="center" justify="center">
-                    <Grid> 
-                        <Button variant="outlined" color="default" onClick={()=>history.push('/')}>トップ画面を表示する</Button>
-                    </Grid> 
-                </Grid>
+            <Grid container alignItems="center" justify="center">
+                <Grid> 
+                    <Button variant="outlined" color="default" onClick={()=>history.push('/')}>トップ画面を表示する</Button>
+                </Grid> 
+            </Grid>
         </React.Fragment>
     )
 }
