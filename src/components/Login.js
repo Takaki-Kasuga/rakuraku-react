@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import firebase from '../firebase/firebase';
 import { useDispatch, useSelector } from "react-redux";
-import { loginWithGoogle, setUserInfo } from "../actions/index.js";
+import { loginWithGoogle, setUserInfo, deleteUserInfo } from "../actions/index.js";
 
 
 export const Login = () => {
@@ -32,6 +32,7 @@ export const Login = () => {
         console.log('userはログインしていません');
         setUserName('');
         setUserEmail('');
+        dispatch(deleteUserInfo());
       }
     })
   }, []);

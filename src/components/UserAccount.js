@@ -1,5 +1,7 @@
 import React from 'react';
-import {useHistory, useHittory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
+import { useSelector } from "react-redux";
+
 
 //マテリアルUIテーブル
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -15,32 +17,6 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}))(TableRow);
-
-function createData(username, useremail) {
-  return { username,useremail};
-}
-
-const rows = [
-  createData('ユーザーの名前','ユーザーのメールアドレス')
-];
-
 const useStyles = makeStyles(() => ({
     root:{
         width: '100%',
@@ -54,9 +30,14 @@ const useStyles = makeStyles(() => ({
 const UserAccount =()=>{
     const history = useHistory();
     const classes = useStyles();
+    const getState = (state) => state;
+    const stateContent = useSelector(getState);
+
+    console.log('stateContentです')
+    console.log(stateContent.userIdState)
     return (
         <React.Fragment>
-            <Grid alignItems="center" justify="center">
+            <Grid container alignItems="center" justify="center">
             <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead>
@@ -66,14 +47,13 @@ const UserAccount =()=>{
                     </TableRow>
                     </TableHead>
                     <TableBody>
-                    {rows.map((row) => (
-                        <TableRow key={row.username}>
-                            <StyledTableCell component="th" scope="row">
-                                {row.username}
-                            </StyledTableCell>
-                            <StyledTableCell align="static">{row.useremail}</StyledTableCell>
+                        <TableRow>
+                            <TableCell component="th" scope="row">
+                                {stateContent.userIdState.name}
+                            </TableCell>
+                            <TableCell align="static">{stateContent.userIdState.email}</TableCell>
                         </TableRow>
-                    ))}
+ 
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -83,8 +63,8 @@ const UserAccount =()=>{
                     <Button variant="outlined" color="default" onClick={()=>history.push('/')}>トップ画面を表示する</Button>
                 </Grid> 
             </Grid>
+
         </React.Fragment>
     )
 }
-
 export default UserAccount;
