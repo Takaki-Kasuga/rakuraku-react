@@ -15,23 +15,23 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
+// const StyledTableCell = withStyles((theme) => ({
+//   head: {
+//     backgroundColor: theme.palette.common.black,
+//     color: theme.palette.common.white,
+//   },
+//   body: {
+//     fontSize: 14,
+//   },
+// }))(TableCell);
 
-const StyledTableRow = withStyles((theme) => ({
-  root: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}))(TableRow);
+// const StyledTableRow = withStyles((theme) => ({
+//   root: {
+//     '&:nth-of-type(odd)': {
+//       backgroundColor: theme.palette.action.hover,
+//     },
+//   },
+// }))(TableRow);
 
 function createData(username, useremail) {
   return { username,useremail};
@@ -68,10 +68,10 @@ const UserAccount =()=>{
                     <TableBody>
                     {rows.map((row) => (
                         <TableRow key={row.username}>
-                            <StyledTableCell component="th" scope="row">
+                            <TableCell component="th" scope="row">
                                 {row.username}
-                            </StyledTableCell>
-                            <StyledTableCell align="static">{row.useremail}</StyledTableCell>
+                            </TableCell>
+                            <TableCell align="static">{row.useremail}</TableCell>
                         </TableRow>
                     ))}
                     </TableBody>
