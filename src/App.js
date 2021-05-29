@@ -27,6 +27,8 @@ import { orderInfomation, setUserInfo, deleteUserInfo } from './actions/index'
 function App() {
   const userIdState = useSelector((state) => state.userIdState)
   const dispatch = useDispatch()
+  console.log('bokudesu');
+  console.dir(dispatch);
 
   // 画面描画時にオーダーの情報値を取ってる
   useEffect(() => {
@@ -46,7 +48,10 @@ function App() {
             snapshot.forEach((doc) => {
               console.log(doc.id)
               console.log(doc.data())
-              dispatch(orderInfomation(doc.data()))
+              const fetchData = doc.data()
+              fetchData.uniqueId = doc.id
+              console.log(fetchData)
+              dispatch(orderInfomation(fetchData))
             }
             );
           });
