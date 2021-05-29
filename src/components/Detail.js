@@ -215,37 +215,29 @@ export const Detail = () => {
       })
     }
 
-    // firebase
-    //   .firestore()
-    //   .collection(`orders/`)
-    //   .add(orderInfo)
-    //   .then((doc) => {
-    //     console.log(doc.id)
-    //     setOrderInfo(orderInfo.uniqueId = doc.id)
-    //     console.log(orderInfo)
-    //     dispatch(orderInfomation(orderInfo))
-    //   })
-    //   .catch((error) => {
-    //     console.log(error)
-    //   })
-
-    firebase
-      .firestore()
-      .collection(`users/${userIdState.uid}/orders`)
-      .add(orderInfo)
-      .then((doc) => {
-        console.log(doc.id)
-        setOrderInfo(orderInfo.uniqueId = doc.id)
-        console.log(orderInfo)
-        dispatch(orderInfomation(orderInfo))
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    console.log(userIdState.uid)
-    // 画面遷移
-    handleLink('/cartlist')
+    if (userIdState.uid) {
+      firebase
+        .firestore()
+        .collection(`users/${userIdState.uid}/orders`)
+        .add(orderInfo)
+        .then((doc) => {
+          console.log(doc.id)
+          setOrderInfo(orderInfo.uniqueId = doc.id)
+          console.log(orderInfo)
+          dispatch(orderInfomation(orderInfo))
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      console.log(userIdState.uid)
+      // 画面遷移
+      handleLink('/cartlist')
+    } else {
+      dispatch(orderInfomation(orderInfo))
+      handleLink('/cartlist')
+    }
   }
+
 
   return (
     <>
