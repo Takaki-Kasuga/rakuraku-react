@@ -51,6 +51,8 @@ import { AddShoppingCart } from '@material-ui/icons';
 // firebase
 import firebase from '../firebase/firebase'
 
+import { orderInfomation } from '../actions/index'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -220,7 +222,7 @@ export const Detail = () => {
         console.log(doc.id)
         setOrderInfo(orderInfo.uniqueId = doc.id)
         console.log(orderInfo)
-
+        dispatch(orderInfomation(orderInfo))
       })
       .catch((error) => {
         console.log(error)
