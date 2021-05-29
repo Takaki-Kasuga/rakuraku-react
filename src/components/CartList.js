@@ -17,10 +17,14 @@ import CardContent from '@material-ui/core/CardContent';
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import firebase from '../firebase/firebase'
+import { deleteOrderInfomation } from '../actions/index'
+
 
 
 export const CartList = () => {
   console.log('CartListが発火')
+  const dispatch = useDispatch()
   const orderState = useSelector((state) => state.orderState)
   const toppingState = useSelector((state) => state.toppingState)
   console.log(orderState)
@@ -44,8 +48,8 @@ export const CartList = () => {
     },
   });
 
-  function createData(itemInfo, itemPriceAndCount, toppingItem, carbs, protein) {
-    return { itemInfo, itemPriceAndCount, toppingItem, carbs, protein };
+  function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, protein) {
+    return { itemInfo, itemPriceAndCount, toppingItem, uniqueId, protein };
   }
 
   // トッピングアイテムを入れる配列
@@ -59,13 +63,30 @@ export const CartList = () => {
       { itemPath: order.imagePath, itemName: order.itemName },
       { itemPrice: order.itemPrice, itemCount: order.itemCount },
       order.toppingInfo,
-      3,
+      order.uniqueId,
       4,
     )
     // selectedToppingId.push(order.toppingInfo)
     rows.push(fetchData)
   })
 
+
+  // カートリスト削除機能
+  const userIdState = useSelector((state) => state.userIdState)
+  const deleteItem = (uniqueId) => {
+    console.log(uniqueId)
+    if (window.confirm('本当に削除しますか？')) {
+      firebase
+        .firestore()
+        .collection(`users/${userIdState.uid}/orders`)
+        .doc(uniqueId)
+        .delete()
+        .then(() => {
+          console.log('firebae上では削除が完了しました。')
+        });
+      dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
+    }
+  }
 
 
   console.log(rows)
@@ -81,7 +102,7 @@ export const CartList = () => {
 
   return (
     <>
-      {!rows.length ? <h1>Loading..</h1> :
+      {!rows.length ? <h2>カートに商品がありません</h2> :
         <Paper className={classes.root}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
@@ -134,8 +155,10 @@ export const CartList = () => {
                     <p>消費税：円</p>
                     <p>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount)) * 1.1).toLocaleString()}（税込）</p>
                   </TableCell>
-                  <TableCell align="right"><Button variant="outlined" color="secondary">
-                    削除
+                  <TableCell onClick={() => {
+                    deleteItem(row.uniqueId)
+                  }} align="right"><Button variant="outlined" color="secondary">
+                      削除
                 </Button>
                   </TableCell>
                 </TableRow>
