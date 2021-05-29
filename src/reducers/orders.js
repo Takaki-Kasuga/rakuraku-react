@@ -19,8 +19,9 @@ export default (state = [], action) => {
     case DELETE_ORDER_INFO_NOLOGIN:
       console.log('DELETE_ORDER_INFO_NOLOGINが発火')
       const deleteIdArray = [...state]
+      console.log(deleteIdArray)
       const deleteIdIndex = deleteIdArray.findIndex((everyobj) => {
-        return everyobj.itemId === action.itemId
+        return everyobj.itemId === action.deleteOrderInfomationIdNum.itemId
       })
       deleteIdArray.splice(deleteIdIndex, 1)
       return deleteIdArray
