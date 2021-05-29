@@ -27,6 +27,8 @@ import { orderInfomation, setUserInfo, deleteUserInfo } from './actions/index'
 function App() {
   const userIdState = useSelector((state) => state.userIdState)
   const dispatch = useDispatch()
+  console.log('bokudesu');
+  console.dir(dispatch);
 
   // 画面描画時にオーダーの情報値を取ってる
   useEffect(() => {
