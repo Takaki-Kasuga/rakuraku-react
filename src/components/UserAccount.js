@@ -27,17 +27,11 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-// const getUserName = (state) => state.userIdState.name;
-// const getUserEmail = (state) => state.userIdState.email;
-
 const UserAccount = () => {
     const history = useHistory();
     const classes = useStyles();
     const getState = (state) => state;
     const stateContent = useSelector(getState);
-
-    // const userNameContent = useSelector(getUserName);
-    // const userEmailContent = useSelector(getUserEmail);
 
     console.log('stateContentです')
     console.log(stateContent)
@@ -56,12 +50,8 @@ const UserAccount = () => {
                             <TableRow>
                                 <TableCell component="th" scope="row">
                                     {stateContent.userIdState.name}
-                                    {/* {userNameContent} */}
                                 </TableCell>
-                                <TableCell align="static">
-                                    {stateContent.userIdState.email}
-                                    {/* {userEmailContent} */}
-                                </TableCell>
+                                <TableCell align="static">{stateContent.userIdState.email}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
