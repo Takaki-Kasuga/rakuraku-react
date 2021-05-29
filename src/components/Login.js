@@ -15,6 +15,10 @@ export const Login = () => {
   console.log('stateの中身です');
   console.log(stateContent);
 
+  const googleLogin = () => {
+    dispatch(loginWithGoogle());
+  }
+
   return (
     <React.Fragment>
       <h2>メールアドレスでログインする</h2>
@@ -44,7 +48,7 @@ export const Login = () => {
 
       <div>
         <h3>Googleでログインする</h3>
-        <Button variant="contained" color="primary" onClick={() => { dispatch(loginWithGoogle()) }}>Googleでログイン</Button>
+        <Button variant="contained" color="primary" onClick={googleLogin}>Googleでログイン</Button>
       </div>
 
     </React.Fragment >

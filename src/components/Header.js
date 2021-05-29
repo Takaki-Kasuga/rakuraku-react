@@ -15,7 +15,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import firebase from '../firebase/firebase';
-// import { setUserInfo, deleteUserInfo } from "../actions/index.js";
 
 const useStyles = makeStyles((theme) => ({
     root: {

@@ -124,7 +124,6 @@ export const signUp = (username, email, password, confirmPassword) => {
           console.log(username);
           const user_id = result.user.uid;
           const user_email = result.user.email;
-          console.log(dispatch);
           dispatch(setUserInfo(user_id, username, user_email));
         }
       }).catch((error) => {
