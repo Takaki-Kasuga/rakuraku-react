@@ -130,7 +130,13 @@ const OrderConfirm =()=>{
     createData(0,'ハワイアン・パラダイス',image,350,5,0,'トッピング１',200,200,2200),
     createData(
         order.itemId,order.itemName,order.itemPath,order.itemPrice,order.itemCount,order.toppingId,order.toppingName,order.toppingPrice,order.smallTotalCount,order.smallTotalTax
-        )
+        ),
+    createData(
+        order.itemId,order.itemName,order.itemPath,order.itemPrice,order.itemCount,order.toppingId,order.toppingName,order.toppingPrice,order.smallTotalCount,order.smallTotalTax
+        ),
+    createData(
+        order.itemId,order.itemName,order.itemPath,order.itemPrice,order.itemCount,order.toppingId,order.toppingName,order.toppingPrice,order.smallTotalCount,order.smallTotalTax
+        ),
   ];
 
   const classes = useStyles();
@@ -180,10 +186,6 @@ const OrderConfirm =()=>{
                                 <p>消費税：{smallTotalTax}円</p>
                                 <p>金額：{smallTotal}円<br/>（税込）</p>
                             </TableCell>
-                                {/* <TableCell align="right"><Button variant="outlined" color="secondary">
-                                削除
-                                </Button>
-                                </TableCell> */}
                         </TableRow>
                         ))}
                     </TableBody>

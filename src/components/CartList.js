@@ -32,8 +32,6 @@ import Fab from '@material-ui/core/Fab';
 import NavigationIcon from '@material-ui/icons/Navigation';
 
 
-
-
 export const CartList = () => {
   console.log('CartListが発火')
   const dispatch = useDispatch()
