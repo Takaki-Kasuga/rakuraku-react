@@ -137,12 +137,6 @@ export const Detail = () => {
     console.log(toppingState)
   }, [])
 
-
-
-
-
-
-
   // ラジオボタン
   const [value, setValue] = useState(0);
 
@@ -170,20 +164,7 @@ export const Detail = () => {
   };
   return (
     <>
-      <FormControl component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Gender</FormLabel>
-        <RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleChange}>
-          <FormControlLabel value="female" control={<Radio />} label="Female" />
-          <FormControlLabel value="male" control={<Radio />} label="Male" />
-          <FormControlLabel value="other" control={<Radio />} label="Other" />
-          <FormControlLabel
-            value="disabled"
-            disabled
-            control={<Radio />}
-            label="(Disabled option)"
-          />
-        </RadioGroup>
-      </FormControl>
+
       <h1>商品詳細</h1>
       {console.log(toppingState)}
       <div className={classes.root}>
@@ -219,8 +200,8 @@ export const Detail = () => {
                 <FormControl component="fieldset" className={classes.formControl}>
                   <FormLabel component="legend">Size</FormLabel>
                   <RadioGroup aria-label="size" name="size1" value={value} onChange={handleChange}>
-                    <FormControlLabel value={selectedItem.price.Msize} control={<Radio color="primary" />} label={`Mサイズ：${Number(selectedItem.price.Msize).toLocaleString()}円`} />
-                    <FormControlLabel value={selectedItem.price.Lsize} control={<Radio color="primary" />} label={`Lサイズ：${Number(selectedItem.price.Lsize).toLocaleString()}円`}
+                    <FormControlLabel value={String(selectedItem.price.Msize)} control={<Radio color="primary" />} label={`Mサイズ：${Number(selectedItem.price.Msize).toLocaleString()}円`} />
+                    <FormControlLabel value={String(selectedItem.price.Lsize)} control={<Radio color="primary" />} label={`Lサイズ：${Number(selectedItem.price.Lsize).toLocaleString()}円`}
                     />
                   </RadioGroup>
                 </FormControl>
@@ -234,7 +215,7 @@ export const Detail = () => {
                     value={itemCount}
                     onChange={selectItemCount}
                   >
-                    <MenuItem value="1"></MenuItem>
+                    <MenuItem value="1">1</MenuItem>
                     <MenuItem value="2">2</MenuItem>
                     <MenuItem value="3">3</MenuItem>
                     <MenuItem value="4">4</MenuItem>
