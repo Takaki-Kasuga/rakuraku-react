@@ -1,4 +1,5 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
+import { useHistory } from 'react-router-dom';
 
 //テーブル
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +10,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
+//カード
+import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+
 //ラジオボタン
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -16,46 +23,114 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
+//郵便番号から住所をサジェスト・カレンダー
+import { TextField } from '@material-ui/core';
+
 //ボタン
+import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
-//カード
-import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
+
 
 //イメージ
 import image from '../img/2.jpg'
 
 const OrderConfirm =()=>{
-    // データリスト（テーブル）
-    const useStyles = makeStyles({
-        root: {
-        width: '100%',
-        overflowX: 'auto',
-        },
-        table: {
-        minWidth: 650,
-        },
-        // カード
-        card: {
-        maxWidth: '200px',
-        },
-        media: {
-        height: 200,
-        backgroundSize: 'contain'
-        },
-    });
+    const [name, setName] = useState(''); 
+    const [email, setEmail] = useState(''); 
+    const [zipCode, setZipCode] = useState('');
+    const [address, setAddress] = useState('');
+    const [tel, setTel] = useState('');
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [credit, setCreditCard] = useState('');
 
-    function createData(id,itemName,image, itemCount, itemPrice, toppingName,toppingPrice,smallTax, smallCount) {
-        return { id,itemName,image, itemCount, itemPrice, toppingName,toppingPrice, smallTax,smallCount };
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
+
+    const history = useHistory();
+
+    useEffect(() => {
+        if (zipCode) {
+          fetch(`https://api.zipaddress.net/?zipcode=${zipCode}`, {
+            mode: 'cors',
+          })
+            .then((result) => {
+              return result.json();
+            })
+            .then((result) => {
+              setAddress(result.data?.fullAddress || '');
+            });
+        }
+      }, [zipCode]);
+
+
+    // データリスト（テーブル）
+    const useStyles = makeStyles((theme)=>(
+        {
+            root: {
+            width: '100%',
+            overflowX: 'auto',
+            },
+            table: {
+            minWidth: 650,
+            },
+            // カード
+            card: {
+            maxWidth: '200px',
+            },
+            media: {
+            height: 200,
+            backgroundSize: 'contain'
+            },
+            container: {
+                display: 'flex',
+                flexWrap: 'wrap',
+            },
+            textField: {
+                marginLeft: theme.spacing(1),
+                marginRight: theme.spacing(1),
+                marginTop: theme.spacing(2),
+                marginBottom: theme.spacing(3),
+                width: 200,
+            },
+        })
+    );
+
+    function createData(itemId,itemName,itemPath,itemPrice,itemCount,toppingId,toppingName,toppingPrice,smallTotalCount, smallTotalTax) {
+        return { itemId,itemName,itemPath,itemPrice,itemCount,toppingId,toppingName,toppingPrice,smallTotalCount, smallTotalTax };
     }
+  const order = {
+      itemId:0,
+      itemName:'ハワイアン・パラダイス',
+      itemPath:image,
+      itemPrice:1500,
+      itemCount:3,
+      toppingId:0,
+      toppingName:'コーラ',
+      toppingPrice:200,
+      smallTotalCount:2000,
+      //this.itemPrice*this.itemCount+this.toppingPrice,
+      smallTotalTax:200
+      //this.smallTotalCount*0.1
+  }
+    let smallTotal = order.itemPrice*order.itemCount+order.toppingPrice;
+    let smallTotalTax = smallTotal*0.1;
+    let totalPrice = smallTotal;//実際にはsmallTotalをmapする
+    let totalTax = totalPrice*0.1
+
+//     const calculateSmallTotal=(itemPrice,itemCount,toppingPrice)=>{
+//         return (itemPrice * itemCount + toppingPrice)
+//     }
+//     const calculateSmallTax=(itemPrice,itemCount,toppingPrice)=>{
+//         return ((itemPrice * itemCount + toppingPrice)* 0.1)
+//   }
 
   const rows = [
-    createData(0,'ハワイアン・パラダイス',image,5,'M:350円','トッピング１',200,200,2200),
-    createData(1,'https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 159, 6.0, 24, 4.0),
-    createData(2,'https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 237, 9.0, 37, 4.3),
+    createData(0,'ハワイアン・パラダイス',image,350,5,0,'トッピング１',200,200,2200),
+    createData(
+        order.itemId,order.itemName,order.itemPath,order.itemPrice,order.itemCount,order.toppingId,order.toppingName,order.toppingPrice,order.smallTotalCount,order.smallTotalTax
+        )
   ];
 
   const classes = useStyles();
@@ -89,7 +164,7 @@ const OrderConfirm =()=>{
                                 </CardContent>
                                 <CardMedia
                                 className={classes.media}
-                                image={row.image}
+                                image={row.itemPath}
                                 title="Contemplative Reptile"
                                 />
                             </Card>
@@ -97,15 +172,15 @@ const OrderConfirm =()=>{
                         </TableCell>
                         <TableCell align="right">
                             <p>M:{row.itemPrice}円</p>
-                            <p>個数{row.itemCount}個</p>
+                            <p>個数：{row.itemCount}個</p>
                         </TableCell>
                         <TableCell align="right">
                             <p>{row.toppingName}：{row.toppingPrice}円</p>
                             <p>{row.toppingName}：{row.toppingPrice}円</p>
                         </TableCell>
                         <TableCell align="right">
-                            <p>消費税：{row.smallTax}円</p>
-                            <p>金額：{row.smallCount}円（税込）</p>
+                            <p>消費税：{smallTotalTax}円</p>
+                            <p>金額：{smallTotal}円<br/>（税込）</p>
                         </TableCell>
                             {/* <TableCell align="right"><Button variant="outlined" color="secondary">
                             削除
@@ -116,60 +191,89 @@ const OrderConfirm =()=>{
                 </TableBody>
                 </Table>
 
-                <h4>合計金額</h4>
-                <p>消費税合計：</p>
-                <p>合計金額：（税込）</p>
+                <h4>ご注文合計金額</h4>
+                <p>消費税（10%）：{totalPrice}円</p>
+                <p>合計金額：{totalTax}円（税込）</p>
             </Paper>
-            </div>
-
-            <div>
-                <h1>注文内容確認</h1>
-                <ul>
-                    <li>
-                        <p>商品名item.name</p>
-                        <img src={image}></img>
-                        <p>商品サイズ：価格 item.price</p>
-                        <p>商品個数 item.count</p>
-                        <p>トッピング1名前 topping.name</p>
-                        <p>トッピング1のサイズ：価格 topping.price 円</p>
-                        <p>トッピング2の名前 topping.name</p>
-                        <p>トッピング2のサイズ：価格 topping.price 円</p>
-                        <p>消費税：smallTotalTax 円</p>
-                        <p>小計：smallTotalPrice（税込み）</p>
-                    </li>
-                </ul>
-                <p>消費税：totalTax</p>
-                <p>ご注文合計金額：totalPice</p>
             </div>
             <div>
                 <h2>お届け先情報</h2>
-                <div>
-                    <p>お名前 destinationName</p>
-                    <input type="text"></input>
+                <div style={{ padding: 10 }}>
+                    <TextField
+                    id="name"
+                    label="お名前"
+                    variant="outlined"
+                    placeholder="楽々　楽子"
+                    value={name}
+                    onChange={(e) => {
+                        setName(e.target.value);
+                    }}
+                    />
+                </div>
+                <div style={{ padding: 10 }}>
+                    <TextField
+                    id="email"
+                    label="メールアドレス"
+                    variant="outlined"
+                    placeholder="XXX@XXXX"
+                    value={email}
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                    }}
+                    />
+                </div>
+                <div style={{ padding: 10 }}>
+                    <TextField
+                    id="zipcode"
+                    label="郵便番号"
+                    variant="outlined"
+                    placeholder="XXX-XXXX"
+                    value={zipCode}
+                    onChange={(e) => {
+                        setZipCode(e.target.value);
+                    }}
+                    />
+                </div>
+                <div style={{ padding: 10 }}>
+                    <TextField
+                    id="address"
+                    label="住所"
+                    variant="outlined"
+                    value={address}
+                    onChange={(e) => {
+                        setAddress(e.target.value);
+                    }}
+                    />
+                </div>
+                <div style={{ padding: 10 }}>
+                    <TextField
+                    id="tel"
+                    label="電話番号"
+                    variant="outlined"
+                    placeholder="XXX-XXXX-XXXX"
+                    value={tel}
+                    onChange={(e) => {
+                        setTel(e.target.value);
+                    }}
+                    />
                 </div>
                 <div>
-                    <p>メールアドレス destinationZipcode</p>
-                    <input type="email"></input>
+                    <form className={classes.container} noValidate>
+                        <TextField
+                            id="date"
+                            label="配達希望日"
+                            type="date"
+                            defaultValue={new Date()}
+                            className={classes.textField}
+                            InputLabelProps={{
+                            shrink: true,
+                            }}
+                        />
+                     </form>
                 </div>
-                <div>
-                    <p>郵便番号 destinationZipcode</p>
-                    <input type="text"></input>
-                </div>
-                <div>
-                    <p>住所 destinationAddress</p>
-                    <input type="text"></input>
-                </div>
-                <div>
-                    <p>電話番号 destinationTel</p>
-                    <input type="text"></input>
-                </div>
-                <div>
-                    <p>配達希望日 destinationPreDate</p>
-                    <input type="date"></input>
-                </div>
-                <div>
+                <div style={{padding: 10}}>
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">配達希望時間 destinationPreTime</FormLabel>
+                        <FormLabel component="legend">配達希望時間</FormLabel>
                         <RadioGroup row aria-label="destinationPreTime" name="" defaultValue="18">
                             <FormControlLabel value="10" control={<Radio />} label="10時" labelPlacement="end"/>
                             <FormControlLabel value="11" control={<Radio />} label="11時" labelPlacement="end"/>
@@ -182,10 +286,10 @@ const OrderConfirm =()=>{
                             <FormControlLabel value="18" control={<Radio />} label="18時" labelPlacement="end"/>
                         </RadioGroup>
                     </FormControl>
-                </div>
-                <div>
+                </div>    
+                <div style={{padding: 10}}>
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">お支払い方法 paymentMethod</FormLabel>
+                        <FormLabel component="legend">お支払い方法</FormLabel>
                         <RadioGroup
                             aria-label="paymentMethod"
                             // defaultValue="credit"
@@ -195,11 +299,28 @@ const OrderConfirm =()=>{
                             <FormControlLabel value="credit" control={<Radio />} label="クレジットカード" />
                         </RadioGroup>
                     </FormControl>
-                    <p>クレジットカート番号 creditcardNo</p>
-                    <input type="text"></input>
                 </div>
-                <button>この内容で注文する</button>
+                <div style={{ padding: 10 }}>
+                    <TextField
+                    id="credit"
+                    label="クレジットカード番号"
+                    variant="outlined"
+                    placeholder="XXXX-XXXX-XXXX"
+                    value={credit}
+                    onChange={(e) => {
+                        setCreditCard(e.target.value);
+                    }}
+                    />
+                </div>
+                <div> 
+                    <Grid container alignItems="center" justify="center">
+                        <Grid>
+                            <Button variant="outlined" color="primary" onClick={() => history.push('/ordercomplete')}>この内容で注文する</Button>
+                        </Grid>
+                    </Grid>
+                </div>
             </div>
+
         </React.Fragment>
     )
 }
