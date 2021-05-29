@@ -10,10 +10,12 @@ import { loginWithGoogle } from "../actions/index.js";
 export const Login = () => {
   const dispatch = useDispatch();
 
-  const getState = (state) => state;
-  const stateContent = useSelector(getState);
-  console.log('stateの中身です');
-  console.log(stateContent);
+  const [email, setEmail] = useState(''),
+    [password, setPassword] = useState('');
+
+  const login = () => {
+    console.log(email, password);
+  }
 
   const googleLogin = () => {
     dispatch(loginWithGoogle());
@@ -27,15 +29,15 @@ export const Login = () => {
           <label>
             メールアドレス:
           </label>
-          <TextField />
+          <TextField value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
           <label>
             パスワード:
           </label>
-          <TextField />
+          <TextField value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-        <Button variant="contained" color="primary">ログイン</Button>
+        <Button variant="contained" color="primary" onClick={login}>ログイン</Button>
       </form>
 
       <div>
