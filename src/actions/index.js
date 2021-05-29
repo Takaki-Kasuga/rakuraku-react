@@ -8,6 +8,7 @@ export const DELETE_USER_INFO = 'DELETE_USER_INFO';
 export const SELECTED_TOPPINGS = 'SELECTED_TOPPINGS';
 export const SET_ORDERS = 'SET_ORDERS';
 export const DELETE_ORDER_INFO = 'DELETE_ORDER_INFO'
+export const DELETE_ORDER_INFO_NOLOGIN = 'DELETE_ORDER_INFO_NOLOGIN'
 
 export const items = (items) => {
   console.log(items)
@@ -46,11 +47,20 @@ export const orderInfomation = (orderInfomation) => {
 }
 
 export const deleteOrderInfomation = (deleteOrderInfomation) => {
-  console.log(deleteOrderInfomation)
   console.log('DELETE_ORDER_INFOが発火')
+  console.log(deleteOrderInfomation)
   return ({
     type: DELETE_ORDER_INFO,
     deleteOrderInfomationId: deleteOrderInfomation
+  })
+}
+
+export const deleteOrderInfomationIdNum = (deleteOrderInfomationIdNum) => {
+  console.log(deleteOrderInfomationIdNum)
+  console.log('DELETE_ORDER_INFO_NOLOGINが発火')
+  return ({
+    type: DELETE_ORDER_INFO_NOLOGIN,
+    deleteOrderInfomationIdNum: deleteOrderInfomationIdNum
   })
 }
 
@@ -114,6 +124,7 @@ export const signUp = (username, email, password, confirmPassword) => {
           console.log(username);
           const user_id = result.user.uid;
           const user_email = result.user.email;
+          console.log(dispatch);
           dispatch(setUserInfo(user_id, username, user_email));
         }
       }).catch((error) => {

@@ -16,9 +16,21 @@ import CardContent from '@material-ui/core/CardContent';
 
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+
 
 import firebase from '../firebase/firebase'
-import { deleteOrderInfomation } from '../actions/index'
+import { deleteOrderInfomation, deleteOrderInfomationIdNum } from '../actions/index'
+
+// デリートアイコン
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Icon from '@material-ui/core/Icon';
+
+// 注文に進むアイコン
+import Fab from '@material-ui/core/Fab';
+import NavigationIcon from '@material-ui/icons/Navigation';
+
 
 
 
@@ -27,10 +39,10 @@ export const CartList = () => {
   const dispatch = useDispatch()
   const orderState = useSelector((state) => state.orderState)
   const toppingState = useSelector((state) => state.toppingState)
-  console.log(orderState)
-
+  const history = useHistory()
+  const handleLink = path => history.push(path)
   // データリスト（テーブル）
-  const useStyles = makeStyles({
+  const useStyles = makeStyles((theme) => ({
     root: {
       width: '100%',
       overflowX: 'auto',
@@ -46,17 +58,29 @@ export const CartList = () => {
       height: 200,
       backgroundSize: 'contain'
     },
-  });
+    delete: {
+      cursor: 'pointer',
+      display: 'inline-block'
+    },
+    button: {
+      margin: theme.spacing(1),
+    },
+    fab: {
+      margin: theme.spacing(1),
+    },
+    extendedIcon: {
+      marginRight: theme.spacing(1),
+    },
+  }));
 
-  function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, protein) {
-    return { itemInfo, itemPriceAndCount, toppingItem, uniqueId, protein };
+  function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId) {
+    return { itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId };
   }
 
   // トッピングアイテムを入れる配列
   const rows = [];
   console.log('fetchDataにおけるuseEffectが発火')
 
-  // const selectedToppingId = []
 
   orderState.forEach((order) => {
     const fetchData = createData(
@@ -64,7 +88,7 @@ export const CartList = () => {
       { itemPrice: order.itemPrice, itemCount: order.itemCount },
       order.toppingInfo,
       order.uniqueId,
-      4,
+      order.itemId,
     )
     // selectedToppingId.push(order.toppingInfo)
     rows.push(fetchData)
@@ -73,18 +97,23 @@ export const CartList = () => {
 
   // カートリスト削除機能
   const userIdState = useSelector((state) => state.userIdState)
-  const deleteItem = (uniqueId) => {
-    console.log(uniqueId)
+  const deleteItem = (uniqueId, itemId) => {
     if (window.confirm('本当に削除しますか？')) {
-      firebase
-        .firestore()
-        .collection(`users/${userIdState.uid}/orders`)
-        .doc(uniqueId)
-        .delete()
-        .then(() => {
-          console.log('firebae上では削除が完了しました。')
-        });
-      dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
+      if (userIdState.login_user) {
+        firebase
+          .firestore()
+          .collection(`users/${userIdState.uid}/orders`)
+          .doc(uniqueId)
+          .delete()
+          .then(() => {
+            console.log('firebae上では削除が完了しました。')
+            dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
+          });
+      } else {
+        console.log('ログインしていない時の処理')
+        console.log(itemId)
+        dispatch(deleteOrderInfomationIdNum({ itemId: itemId }))
+      }
     }
   }
 
@@ -92,13 +121,19 @@ export const CartList = () => {
   console.log(rows)
   console.log(rows.length)
   console.log('rowsの発火')
-  console.log(createData('https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 159, 6.0, 24, 4.0))
 
   const classes = useStyles();
 
   let totalToppingPrice = 0
   console.log(totalToppingPrice)
 
+  // const prePurchase = () => {
+  //   if (userIdState.uid) {
+  //     handleLink('/orderconfirm')
+  //   } else {
+  //     handleLink('/login')
+  //   }
+  // }
 
   return (
     <>
@@ -155,20 +190,35 @@ export const CartList = () => {
                     <p>消費税：円</p>
                     <p>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount)) * 1.1).toLocaleString()}（税込）</p>
                   </TableCell>
-                  <TableCell onClick={() => {
-                    deleteItem(row.uniqueId)
-                  }} align="right"><Button variant="outlined" color="secondary">
-                      削除
-                </Button>
+                  <TableCell align="right">
+                    <div className={classes.delete} onClick={() => {
+                      deleteItem(row.uniqueId, row.itemId)
+                    }}>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        className={classes.button}
+                        startIcon={<DeleteIcon />}
+                      >
+                        Delete
+                        </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
 
-          <h4>合計金額</h4>
-          <p>消費税合計：</p>
-          <p>合計金額：税込）</p>
+          <div>
+            <h4>合計金額</h4>
+            <p>消費税合計：</p>
+            <p>合計金額：税込）</p>
+          </div>
+          <Fab variant="extended" aria-label="like" className={classes.fab} >
+            <NavigationIcon className={classes.extendedIcon} />
+        注文に進む
+      </Fab>
+
         </Paper>
       }
 
