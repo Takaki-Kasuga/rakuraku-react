@@ -134,67 +134,65 @@ const OrderConfirm =()=>{
   ];
 
   const classes = useStyles();
-
-
     return (
         <React.Fragment>
             <div>
-                <h1>注文確認</h1>
-            <Paper className={classes.root}>
-                <Table className={classes.table} aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        {/* <tableCell>id</tableCell> */}
-                        <TableCell align="center">商品名</TableCell>
-                        <TableCell align="right">商品個数と値段（税抜き）</TableCell>
-                        <TableCell align="right">トッピングの値段（税抜き）</TableCell>
-                        <TableCell align="right">金額</TableCell>
-                        <TableCell align="right"></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map(row => (
-                    <TableRow key={row.id}>
-                        <TableCell component="th" scope="row">
-                            <Card className={classes.card}>
-                                <CardContent>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                    {row.itemName}
-                                    </Typography>
-                                </CardContent>
-                                <CardMedia
-                                className={classes.media}
-                                image={row.itemPath}
-                                title="Contemplative Reptile"
-                                />
-                            </Card>
-                        {/* <img src={row.name}></img> */}
-                        </TableCell>
-                        <TableCell align="right">
-                            <p>M:{row.itemPrice}円</p>
-                            <p>個数：{row.itemCount}個</p>
-                        </TableCell>
-                        <TableCell align="right">
-                            <p>{row.toppingName}：{row.toppingPrice}円</p>
-                            <p>{row.toppingName}：{row.toppingPrice}円</p>
-                        </TableCell>
-                        <TableCell align="right">
-                            <p>消費税：{smallTotalTax}円</p>
-                            <p>金額：{smallTotal}円<br/>（税込）</p>
-                        </TableCell>
-                            {/* <TableCell align="right"><Button variant="outlined" color="secondary">
-                            削除
-                            </Button>
-                            </TableCell> */}
-                    </TableRow>
-                    ))}
-                </TableBody>
-                </Table>
+                <h2>注文確認</h2>
+                <Paper className={classes.root}>
+                    <Table className={classes.table} aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            {/* <tableCell>id</tableCell> */}
+                            <TableCell align="center">商品名</TableCell>
+                            <TableCell align="right">商品個数と値段（税抜き）</TableCell>
+                            <TableCell align="right">トッピングの値段（税抜き）</TableCell>
+                            <TableCell align="right">金額</TableCell>
+                            <TableCell align="right"></TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.map(row => (
+                        <TableRow key={row.id}>
+                            <TableCell component="th" scope="row">
+                                <Card className={classes.card}>
+                                    <CardContent>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                        {row.itemName}
+                                        </Typography>
+                                    </CardContent>
+                                    <CardMedia
+                                    className={classes.media}
+                                    image={row.itemPath}
+                                    title="Contemplative Reptile"
+                                    />
+                                </Card>
+                            {/* <img src={row.name}></img> */}
+                            </TableCell>
+                            <TableCell align="right">
+                                <p>M:{row.itemPrice}円</p>
+                                <p>個数：{row.itemCount}個</p>
+                            </TableCell>
+                            <TableCell align="right">
+                                <p>{row.toppingName}：{row.toppingPrice}円</p>
+                                <p>{row.toppingName}：{row.toppingPrice}円</p>
+                            </TableCell>
+                            <TableCell align="right">
+                                <p>消費税：{smallTotalTax}円</p>
+                                <p>金額：{smallTotal}円<br/>（税込）</p>
+                            </TableCell>
+                                {/* <TableCell align="right"><Button variant="outlined" color="secondary">
+                                削除
+                                </Button>
+                                </TableCell> */}
+                        </TableRow>
+                        ))}
+                    </TableBody>
+                    </Table>
 
-                <h4>ご注文合計金額</h4>
-                <p>消費税（10%）：{totalPrice}円</p>
-                <p>合計金額：{totalTax}円（税込）</p>
-            </Paper>
+                    <h4>ご注文合計金額</h4>
+                    <p>消費税（10%）：{totalPrice}円</p>
+                    <p>合計金額：{totalTax}円（税込）</p>
+                </Paper>
             </div>
             <div>
                 <h2>お届け先情報</h2>
