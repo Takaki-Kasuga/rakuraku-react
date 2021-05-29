@@ -5,6 +5,7 @@ export const SET_TOPPINGS = 'SET_TOPPINGS'
 export const SET_USER_INFO = 'SET_USER_INFO';
 export const DELETE_USER_INFO = 'DELETE_USER_INFO';
 export const SELECTED_TOPPINGS = 'SELECTED_TOPPINGS';
+export const SET_ORDERS = 'SET_ORDERS';
 
 export const items = (items) => {
   console.log(items)
@@ -30,6 +31,15 @@ export const selectedToppings = (selectedToppings) => {
   return ({
     type: SELECTED_TOPPINGS,
     selectedToppingsList: selectedToppings
+  })
+}
+
+export const orderInfomation = (orderInfomation) => {
+  console.log(orderInfomation)
+  console.log('SET_ORDERSが発火')
+  return ({
+    type: SET_ORDERS,
+    orderInfomationList: orderInfomation
   })
 }
 

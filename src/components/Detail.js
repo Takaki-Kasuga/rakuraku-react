@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -46,6 +46,10 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 // コンポーネント
 import { ToppingItems } from '../Organisms/ToppingItems'
+import { AddShoppingCart } from '@material-ui/icons';
+
+// firebase
+import firebase from '../firebase/firebase'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,10 +110,12 @@ export const Detail = () => {
   const selectedToppingState = useSelector((state) => state.selectedToppingState)
   const [selectedItem, setSelectedItem] = useState('')
   const [toppingList, setToppingList] = useState('')
-  const [expanded, setExpanded] = React.useState(false);
   // パラメーター受け取り
   const { id } = useParams()
   console.log(id)
+
+  const history = useHistory()
+  const handleLink = (path) => history.push(path)
 
   // トッピングリストの合計金額
   let totleToppingPrice = 0
@@ -121,6 +127,8 @@ export const Detail = () => {
 
   console.log(totleToppingPrice)
 
+  // トッピングリストの開閉
+  const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -138,17 +146,15 @@ export const Detail = () => {
   }, [])
 
   // ラジオボタン
-  const [value, setValue] = useState(0);
-
-  const handleChange = (event) => {
+  const [itemValue, setItemValue] = useState(0);
+  const setItemValueMethod = (event) => {
     event.preventDefault();
-    setValue(event.target.value);
+    setItemValue(event.target.value);
   };
 
   // セレクトボックス
   const [itemCount, setItemCount] = useState(1);
   console.log(itemCount)
-
   const selectItemCount = (event) => {
     event.preventDefault();
     console.log(event)
@@ -157,14 +163,76 @@ export const Detail = () => {
 
   // セレクトボックス（トッピング）
   const [topping, setTopping] = useState(0);
-
   const selectTopping = (event) => {
     event.preventDefault();
     setTopping(event.target.value);
   };
+
+  // Firebaseのorderにカート情報に追加する
+  // Firebaseのorderにカート情報を追加する
+  const [orderInfo, setOrderInfo] = useState({
+    // userId
+    itemId: 0,
+    status: 0,
+    imagePath: null,
+    itemName: null,
+    itemPrice: 0,
+    // toppingId:
+    // toppingName:
+    // toppingPrice:
+    itemCount: 0,
+    toppingInfo: null
+  })
+
+  const addCart = () => {
+    console.log('addCartが発火しました。')
+    console.log(toppingState)
+
+    const selectedToppingArray = selectedToppingState.filter((value) => {
+      return value.toppingPrice !== 0
+    })
+
+    // トッピングの有無により値が変わる
+    if (selectedToppingArray.length === 0) {
+      setOrderInfo((orderInfo) => {
+        orderInfo.itemId = id
+        orderInfo.imagePath = selectedItem.imagePath
+        orderInfo.itemName = selectedItem.name
+        orderInfo.itemPrice = itemValue
+        orderInfo.itemCount = itemCount
+      })
+    } else {
+      setOrderInfo((orderInfo) => {
+        orderInfo.itemId = id
+        orderInfo.imagePath = selectedItem.imagePath
+        orderInfo.itemName = selectedItem.name
+        orderInfo.itemPrice = itemValue
+        orderInfo.itemCount = itemCount
+        orderInfo.toppingInfo = selectedToppingArray
+      })
+    }
+
+    firebase
+      .firestore()
+      .collection(`orders/`)
+      .add(orderInfo)
+      .then((doc) => {
+        console.log(doc.id)
+        setOrderInfo(orderInfo.uniqueId = doc.id)
+        console.log(orderInfo)
+
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+
+    // 画面遷移
+    handleLink('/cartlist')
+  }
+
   return (
     <>
-
       <h1>商品詳細</h1>
       {console.log(toppingState)}
       <div className={classes.root}>
@@ -199,7 +267,7 @@ export const Detail = () => {
 
                 <FormControl component="fieldset" className={classes.formControl}>
                   <FormLabel component="legend">Size</FormLabel>
-                  <RadioGroup aria-label="size" name="size1" value={value} onChange={handleChange}>
+                  <RadioGroup aria-label="size" name="size1" value={itemValue} onChange={setItemValueMethod}>
                     <FormControlLabel value={String(selectedItem.price.Msize)} control={<Radio color="primary" />} label={`Mサイズ：${Number(selectedItem.price.Msize).toLocaleString()}円`} />
                     <FormControlLabel value={String(selectedItem.price.Lsize)} control={<Radio color="primary" />} label={`Lサイズ：${Number(selectedItem.price.Lsize).toLocaleString()}円`}
                     />
@@ -254,8 +322,8 @@ export const Detail = () => {
 
 
 
-                <p>合計金額：{(Number(value) * Number(itemCount) + Number(totleToppingPrice)).toLocaleString()}円</p>
-                <Button variant="contained" onClick={() => { }}>カートに入れる</Button>
+                <p>合計金額：{(Number(itemValue) * Number(itemCount) + Number(totleToppingPrice)).toLocaleString()}円</p>
+                <Button variant="contained" onClick={() => { addCart() }}>カートに入れる</Button>
               </Paper>
             </Grid>
           </Grid>
