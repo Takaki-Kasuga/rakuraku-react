@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import firebase from '../firebase/firebase';
-import { setUserInfo, deleteUserInfo } from "../actions/index.js";
+// import { setUserInfo, deleteUserInfo } from "../actions/index.js";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const getState = (state) => state;
+const getState = (state) => state.userIdState.login_user;
 
 const Header = () => {
     const history = useHistory();
@@ -45,17 +45,10 @@ const Header = () => {
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-                const user_name = firebase.auth().currentUser.displayName;
-                const user_email = firebase.auth().currentUser.email;
-                const user_id = firebase.auth().currentUser.uid;
-                dispatch(setUserInfo(user_id, user_name, user_email));
-            } else {
-                dispatch(deleteUserInfo());
-            }
-            setLoginUser(stateContent.userIdState.login_user);
+            console.log(stateContent);
+            setLoginUser(stateContent);
         })
-    }, []);
+    }, [stateContent]);
 
 
     const LoginOrLogout = (props) => {
