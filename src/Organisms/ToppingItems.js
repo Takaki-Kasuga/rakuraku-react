@@ -10,11 +10,14 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 
+// アクションズをインポート
+import { selectedToppings } from '../actions/index'
+
 const useStyles = makeStyles((theme) => ({
   // セレクトボックス
   formControl: {
     margin: theme.spacing(1),
-    width: '300px',
+    width: '200px',
   },
   flex: {
     display: 'flex',
@@ -28,14 +31,26 @@ export const ToppingItems = () => {
   const classes = useStyles();
   const dispatch = useDispatch()
   const toppingState = useSelector((state) => state.toppingState)
+  const selectedToppingState = useSelector((state) => state.selectedToppingState)
   console.log(toppingState)
+
 
   const [hawaiianSolt, setHawaiianSolt] = useState(0)
   const setHawaiianSoltMethod = (event) => {
     event.preventDefault();
     setHawaiianSolt(event.target.value);
   };
-  console.log(hawaiianSolt)
+
+  useEffect(() => {
+    const hawaiianSoltObject = {
+      id: 1,
+      toppingPrice: hawaiianSolt
+    }
+    dispatch(selectedToppings(hawaiianSoltObject))
+    console.log(selectedToppingState)
+  }, [hawaiianSolt])
+
+
 
   // ハワイアンマヨネーズ
   const [hawaiianMayonnaise, setHawaiianMayonnaise] = useState(0)
@@ -43,7 +58,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setHawaiianMayonnaise(event.target.value);
   };
-  console.log(hawaiianMayonnaise)
+
+  useEffect(() => {
+    const hawaiianMayonnaiseObject = {
+      id: 2,
+      toppingPrice: hawaiianMayonnaise
+    }
+    dispatch(selectedToppings(hawaiianMayonnaiseObject))
+    console.log(hawaiianMayonnaise)
+  }, [hawaiianMayonnaise])
 
   // ハワイアントマト
   const [hawaiianTomato, setHawaiianTomato] = useState(0)
@@ -51,7 +74,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setHawaiianTomato(event.target.value);
   };
-  console.log(hawaiianTomato)
+
+  useEffect(() => {
+    const hawaiianTomatoObject = {
+      id: 3,
+      toppingPrice: hawaiianTomato
+    }
+    dispatch(selectedToppings(hawaiianTomatoObject))
+    console.log(hawaiianTomato)
+  }, [hawaiianTomato])
 
   // ブルーチーズ
   const [blueCheese, setBlueCheese] = useState(0)
@@ -59,7 +90,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setBlueCheese(event.target.value);
   };
-  console.log(blueCheese)
+
+  useEffect(() => {
+    const blueCheeseObject = {
+      id: 4,
+      toppingPrice: blueCheese
+    }
+    dispatch(selectedToppings(blueCheeseObject))
+    console.log(blueCheese)
+  }, [blueCheese])
 
   // ハワイアンチョコレート
   const [hawaiianChocolate, setHawaiianChocolate] = useState(0)
@@ -67,7 +106,16 @@ export const ToppingItems = () => {
     event.preventDefault();
     setHawaiianChocolate(event.target.value);
   };
-  console.log(hawaiianChocolate)
+
+  useEffect(() => {
+    const hawaiianChocolateObject = {
+      id: 5,
+      toppingPrice: hawaiianChocolate
+    }
+    dispatch(selectedToppings(hawaiianChocolateObject))
+    console.log(hawaiianChocolate)
+  }, [hawaiianChocolate])
+
 
   // アンチョビ
   const [anchovy, setAnchovy] = useState(0)
@@ -75,7 +123,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setAnchovy(event.target.value);
   };
-  console.log(anchovy)
+
+  useEffect(() => {
+    const anchovyObject = {
+      id: 6,
+      toppingPrice: anchovy
+    }
+    dispatch(selectedToppings(anchovyObject))
+    console.log(anchovy)
+  }, [anchovy])
 
   // えび
   const [shrimp, setShrimp] = useState(0)
@@ -83,7 +139,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setShrimp(event.target.value);
   };
-  console.log(shrimp)
+
+  useEffect(() => {
+    const shrimpObject = {
+      id: 7,
+      toppingPrice: shrimp
+    }
+    dispatch(selectedToppings(shrimpObject))
+    console.log(shrimp)
+  }, [shrimp])
 
   // ガーリックライス
   const [garlicRice, setGarlicRice] = useState(0)
@@ -91,7 +155,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setGarlicRice(event.target.value);
   };
-  console.log(hawaiianChocolate)
+
+  useEffect(() => {
+    const garlicRiceObject = {
+      id: 8,
+      toppingPrice: garlicRice
+    }
+    dispatch(selectedToppings(garlicRiceObject))
+    console.log(garlicRice)
+  }, [garlicRice])
 
   // トロピカルフルーツ
   const [tropicalFruits, setTropicalFruits] = useState(0)
@@ -99,7 +171,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setTropicalFruits(event.target.value);
   };
-  console.log(tropicalFruits)
+
+  useEffect(() => {
+    const tropicalFruitsObject = {
+      id: 9,
+      toppingPrice: tropicalFruits
+    }
+    dispatch(selectedToppings(tropicalFruitsObject))
+    console.log(tropicalFruits)
+  }, [tropicalFruits])
 
   // ハワイ産蜂蜜
   const [hawaiianHoney, setHawaiianHoney] = useState(0)
@@ -107,7 +187,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setHawaiianHoney(event.target.value);
   };
-  console.log(tropicalFruits)
+
+  useEffect(() => {
+    const hawaiianHoneyObject = {
+      id: 10,
+      toppingPrice: hawaiianHoney
+    }
+    dispatch(selectedToppings(hawaiianHoneyObject))
+    console.log(hawaiianHoney)
+  }, [hawaiianHoney])
 
   // ココナッツ
   const [coconut, setCoconut] = useState(0)
@@ -115,7 +203,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setCoconut(event.target.value);
   };
-  console.log(coconut)
+
+  useEffect(() => {
+    const coconutObject = {
+      id: 11,
+      toppingPrice: coconut
+    }
+    dispatch(selectedToppings(coconutObject))
+    console.log(coconut)
+  }, [coconut])
 
   // マンゴー
   const [mango, setMango] = useState(0)
@@ -123,7 +219,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setMango(event.target.value);
   };
-  console.log(mango)
+
+  useEffect(() => {
+    const mangoObject = {
+      id: 12,
+      toppingPrice: mango
+    }
+    dispatch(selectedToppings(mangoObject))
+    console.log(mango)
+  }, [mango])
 
   // パイナップル
   const [pineapple, setPineapple] = useState(0)
@@ -131,7 +235,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setPineapple(event.target.value);
   };
-  console.log(pineapple)
+
+  useEffect(() => {
+    const pineappleObject = {
+      id: 13,
+      toppingPrice: pineapple
+    }
+    dispatch(selectedToppings(pineappleObject))
+    console.log(pineapple)
+  }, [pineapple])
 
   // もち
   const [mochi, setMochi] = useState(0)
@@ -139,7 +251,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setMochi(event.target.value);
   };
-  console.log(mochi)
+
+  useEffect(() => {
+    const mochiObject = {
+      id: 14,
+      toppingPrice: mochi
+    }
+    dispatch(selectedToppings(mochiObject))
+    console.log(mochi)
+  }, [mochi])
 
   // コーヒー
   const [coffee, setCoffee] = useState(0)
@@ -147,7 +267,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setCoffee(event.target.value);
   };
-  console.log(coffee)
+
+  useEffect(() => {
+    const coffeeObject = {
+      id: 15,
+      toppingPrice: coffee
+    }
+    dispatch(selectedToppings(coffeeObject))
+    console.log(coffee)
+  }, [coffee])
 
   // スプライト
   const [sprite, setSprite] = useState(0)
@@ -155,7 +283,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setSprite(event.target.value);
   };
-  console.log(sprite)
+
+  useEffect(() => {
+    const spriteObject = {
+      id: 16,
+      toppingPrice: sprite
+    }
+    dispatch(selectedToppings(spriteObject))
+    console.log(sprite)
+  }, [sprite])
 
   // ジンジャーエール
   const [gingerAle, setGingerAle] = useState(0)
@@ -163,7 +299,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setGingerAle(event.target.value);
   };
-  console.log(gingerAle)
+
+  useEffect(() => {
+    const gingerAleObject = {
+      id: 17,
+      toppingPrice: gingerAle
+    }
+    dispatch(selectedToppings(gingerAleObject))
+    console.log(gingerAle)
+  }, [gingerAle])
 
   // コーラ
   const [cola, setCola] = useState(0)
@@ -171,7 +315,15 @@ export const ToppingItems = () => {
     event.preventDefault();
     setCola(event.target.value);
   };
-  console.log(gingerAle)
+
+  useEffect(() => {
+    const colaObject = {
+      id: 18,
+      toppingPrice: cola
+    }
+    dispatch(selectedToppings(colaObject))
+    console.log(cola)
+  }, [cola])
 
 
 
@@ -267,7 +419,7 @@ export const ToppingItems = () => {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={anchovy}
-            onChange={setAnchovy}
+            onChange={setAnchovyMethod}
           >
             <MenuItem value='0'></MenuItem>
             <MenuItem value={toppingState[5].Msize}>M：{toppingState[5].Msize}円  </MenuItem>
@@ -379,7 +531,7 @@ export const ToppingItems = () => {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={pineapple}
-            onChange={setPineapple}
+            onChange={setPineappleMethod}
           >
             <MenuItem value='0'></MenuItem>
             <MenuItem value={toppingState[12].Msize}>M：{toppingState[12].Msize}円  </MenuItem>
@@ -411,7 +563,7 @@ export const ToppingItems = () => {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={coffee}
-            onChange={setCoffee}
+            onChange={setCoffeeMethod}
           >
             <MenuItem value='0'></MenuItem>
             <MenuItem value={toppingState[14].Msize}>M：{toppingState[14].Msize}円  </MenuItem>

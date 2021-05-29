@@ -6,7 +6,9 @@ import {
   Link
 } from 'react-router-dom';
 
-
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import firebase from './firebase/firebase'
 import Header from './components/Header.js';
 import { Home } from './components/Home';
 import { CartList } from './components/CartList';
@@ -19,9 +21,42 @@ import { OrderHistory } from './components/OrderHistory.js';
 import { RegisterEmail } from './components/RegisterEmail.js';
 import { TermOfUse } from './components/TermOfUse.js';
 import UserAccount from './components/UserAccount.js';
+import { orderInfomation, setUserInfo, deleteUserInfo } from './actions/index'
 
 
 function App() {
+  const userIdState = useSelector((state) => state.userIdState)
+  const dispatch = useDispatch()
+
+  // 画面描画時にオーダーの情報値を取ってる
+  useEffect(() => {
+    console.log('App.jsのonAuthStateChangedが発火')
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        const user_name = firebase.auth().currentUser.displayName;
+        const user_email = firebase.auth().currentUser.email;
+        const user_id = firebase.auth().currentUser.uid;
+        dispatch(setUserInfo(user_id, user_name, user_email));
+
+        firebase
+          .firestore()
+          .collection(`users/${userIdState.uid}/orders`)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              console.log(doc.id)
+              console.log(doc.data())
+              dispatch(orderInfomation(doc.data()))
+            }
+            );
+          });
+      } else {
+        console.log('ログイン情報を保持していません')
+        dispatch(deleteUserInfo());
+      }
+    })
+  }, [])
+
   return (
     <Router>
       <div>
