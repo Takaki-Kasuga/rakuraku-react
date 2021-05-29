@@ -152,6 +152,18 @@ export const Home = () => {
       });
   }, [])
 
+  // 文字検索（該当の商品を取得）
+  const [searchValue, setSearchValue] = useState(null);
+  const setSearchValueMethod = (event) => {
+    console.log(searchValue)
+    console.log(event)
+    setSearchValue(event.target.value)
+  }
+  const filteringItems = (searchValue) => {
+    console.log(searchValue)
+    alert(searchValue)
+  }
+
   console.log(itemState)
   console.log(itemState.length)
 
@@ -159,6 +171,7 @@ export const Home = () => {
   return (
     <>
       <div className={classes.searchbox}>
+        {searchValue}
         <TextField
           className={classes.textField}
           id="filled-full-width"
@@ -170,8 +183,12 @@ export const Home = () => {
             shrink: true,
           }}
           variant="filled"
+          value={searchValue}
+          onChange={setSearchValueMethod}
         />
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={() => {
+          filteringItems(searchValue)
+        }}>
           検索
         </Button>
       </div>
