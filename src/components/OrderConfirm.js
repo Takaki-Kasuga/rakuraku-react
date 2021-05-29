@@ -48,16 +48,16 @@ const OrderConfirm =()=>{
         },
     });
 
-    function createData(name, calories, fat, carbs, protein) {
-        return { name, calories, fat, carbs, protein };
+    function createData(id,itemName,image, itemCount, itemPrice, toppingPrice, smallCount) {
+        return { id,itemName,image, itemCount, itemPrice, toppingPrice, smallCount };
     }
 
   const rows = [
-    createData('https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 159, 6.0, 24, 4.0),
-    createData('https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 237, 9.0, 37, 4.3),
-    createData('https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 262, 16.0, 24, 6.0),
-    createData('https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 305, 3.7, 67, 4.3),
-    createData('https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 356, 16.0, 49, 3.9),
+    createData(1,'https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 159, 6.0, 24, 4.0),
+    createData(2,'https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 237, 9.0, 37, 4.3),
+    // createData('https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 262, 16.0, 24, 6.0),
+    // createData('https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 305, 3.7, 67, 4.3),
+    // createData('https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 356, 16.0, 49, 3.9),
   ];
 
   const classes = useStyles();
@@ -65,7 +65,8 @@ const OrderConfirm =()=>{
 
     return (
         <React.Fragment>
-            <>
+            <div>
+                <h1>注文確認</h1>
             <Paper className={classes.root}>
                 <Table className={classes.table} aria-label="simple table">
                 <TableHead>
@@ -79,23 +80,23 @@ const OrderConfirm =()=>{
                 </TableHead>
                 <TableBody>
                     {rows.map(row => (
-                    <TableRow key={row.calories}>
+                    <TableRow key={row.id}>
 
                         <TableCell component="th" scope="row">
 
                         <Card className={classes.card}>
                             <CardContent>
-                            <Typography variant="body2" color="textSecondary" component="p">
+                                <Typography variant="body2" color="textSecondary" component="p">
                                 ハワイアンパラダイス
                                 </Typography>
                             </CardContent>
                             <CardMedia
                             className={classes.media}
-                            image={row.name}
+                            image={row.image}
                             title="Contemplative Reptile"
                             />
-
                         </Card>
+
                         {/* <img src={row.name}></img> */}
                         </TableCell>
                         <TableCell align="right">
@@ -123,7 +124,8 @@ const OrderConfirm =()=>{
                 <p>消費税合計：</p>
                 <p>合計金額：（税込）</p>
             </Paper>
-            </>
+            </div>
+
             <div>
                 <h1>注文内容確認</h1>
                 <ul>

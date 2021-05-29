@@ -53,7 +53,6 @@ const UserAccount = () => {
                                 </TableCell>
                                 <TableCell align="static">{stateContent.userIdState.email}</TableCell>
                             </TableRow>
-
                         </TableBody>
                     </Table>
                 </TableContainer>
