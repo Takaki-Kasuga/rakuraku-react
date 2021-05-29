@@ -76,19 +76,6 @@ export const CartList = () => {
   const classes = useStyles();
 
   let totalToppingPrice = 0
-
-  if (rows.length) {
-    console.log(rows)
-    rows.forEach((topping) => {
-      if (topping.toppingItem) {
-        topping.toppingItem.forEach((totalNum) => {
-          totalToppingPrice += totalNum.toppingPrice
-        })
-      }
-      console.log(topping)
-    })
-  }
-
   console.log(totalToppingPrice)
 
 
@@ -125,7 +112,6 @@ export const CartList = () => {
                       />
 
                     </Card>
-                    {/* <img src={row.name}></img> */}
                   </TableCell>
                   <TableCell align="right">
                     <p>金額:{Number(row.itemPriceAndCount.itemPrice).toLocaleString()}円</p>
@@ -143,11 +129,9 @@ export const CartList = () => {
                         )
                       })
                     }
-                    {/* <p>ハワイアンソルトM：200円</p>
-                    <p>ハワイアンソルトL：300円</p> */}
                   </TableCell>
                   <TableCell align="right">
-                    <p>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount + totalToppingPrice)) * 0.1).toLocaleString()}円</p>
+                    <p>消費税：円</p>
                     <p>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount)) * 1.1).toLocaleString()}（税込）</p>
                   </TableCell>
                   <TableCell align="right"><Button variant="outlined" color="secondary">
