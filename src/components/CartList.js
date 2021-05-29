@@ -65,12 +65,31 @@ export const CartList = () => {
     // selectedToppingId.push(order.toppingInfo)
     rows.push(fetchData)
   })
+
+
+
   console.log(rows)
   console.log(rows.length)
   console.log('rowsの発火')
   console.log(createData('https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037', 159, 6.0, 24, 4.0))
 
   const classes = useStyles();
+
+  let totalToppingPrice = 0
+
+  if (rows.length) {
+    console.log(rows)
+    rows.forEach((topping) => {
+      if (topping.toppingItem) {
+        topping.toppingItem.forEach((totalNum) => {
+          totalToppingPrice += totalNum.toppingPrice
+        })
+      }
+      console.log(topping)
+    })
+  }
+
+  console.log(totalToppingPrice)
 
 
   return (
@@ -128,8 +147,8 @@ export const CartList = () => {
                     <p>ハワイアンソルトL：300円</p> */}
                   </TableCell>
                   <TableCell align="right">
-                    <p>消費税：{ }</p>
-                    <p>金額：〜（税込）</p>
+                    <p>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount + totalToppingPrice)) * 0.1).toLocaleString()}円</p>
+                    <p>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount)) * 1.1).toLocaleString()}（税込）</p>
                   </TableCell>
                   <TableCell align="right"><Button variant="outlined" color="secondary">
                     削除
@@ -142,7 +161,7 @@ export const CartList = () => {
 
           <h4>合計金額</h4>
           <p>消費税合計：</p>
-          <p>合計金額：（税込）</p>
+          <p>合計金額：税込）</p>
         </Paper>
       }
 
