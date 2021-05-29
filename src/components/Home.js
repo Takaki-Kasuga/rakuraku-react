@@ -42,11 +42,13 @@ import Button from '@material-ui/core/Button';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    cursor: 'pointer'
+    cursor: 'pointer',
+    width: '300px',
+    'margin': '30px',
   },
   searchbox: {
     display: 'flex',
-    flexWrap: 'wrap',
+    'flex-wrap': 'wrap',
     'text-align': 'center',
     'justify-content': 'center',
     width: '80%',
@@ -68,9 +70,8 @@ const useStyles = makeStyles((theme) => ({
   },
   flex: {
     display: 'flex',
-    'justify-content': 'center',
     'flex-wrap': 'wrap',
-    'justify-content': 'space-around'
+    'justify-content': 'center',
   },
   control: {
     padding: theme.spacing(2),
@@ -176,65 +177,65 @@ export const Home = () => {
       </div>
       <CssBaseline />
       <Container maxWidth="lg">
-        <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} >
+        {/* <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} >
           <Grid container className={classes.root} spacing={2}>
-            <Grid item xs={12}>
-              <Grid container justify="center" spacing={spacing}>
-                {!itemState.length ? <h1>Loding..</h1> :
-                  <Grid item className={classes.flex}>
-                    {itemState.map((item) => {
-                      return (
-                        <Card onClick={() => { changeToDetail(`/detail/${item.id}`) }} key={item.id} className={classes.root} >
-                          <CardHeader
-                            avatar={
-                              <Avatar aria-label="recipe" className={classes.avatar}>
-                                Me
+            <Grid item xs={12}> */}
+        <Grid container justify="center" spacing={spacing}>
+          {!itemState.length ? <h1>Loding..</h1> :
+            <Grid item className={classes.flex}>
+              {itemState.map((item) => {
+                return (
+                  <Card onClick={() => { changeToDetail(`/detail/${item.id}`) }} key={item.id} className={classes.root} >
+                    <CardHeader
+                      avatar={
+                        <Avatar aria-label="recipe" className={classes.avatar}>
+                          Me
                           </Avatar>
-                            }
-                            action={
-                              <IconButton aria-label="settings">
-                                <MoreVertIcon />
-                              </IconButton>
-                            }
-                            title="Shrimp and Chorizo Paella"
-                            subheader="September 14, 2016"
-                          />
-                          <CardMedia
-                            className={classes.media}
-                            image={item.imagePath}
-                            title="Paella dish"
-                          />
-                          <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                              {item.name}
+                      }
+                      action={
+                        <IconButton aria-label="settings">
+                          <MoreVertIcon />
+                        </IconButton>
+                      }
+                      title="Shrimp and Chorizo Paella"
+                      subheader="September 14, 2016"
+                    />
+                    <CardMedia
+                      className={classes.media}
+                      image={item.imagePath}
+                      title="Paella dish"
+                    />
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {item.name}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        {item.description}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        Lサイズ：{(item.price.Lsize).toLocaleString()}円（税抜き）
                             </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                              {item.description}
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        Mサイズ：{(item.price.Msize).toLocaleString()}円（税抜き）
                             </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                              Lサイズ：{(item.price.Lsize).toLocaleString()}円（税抜き）
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                              Mサイズ：{(item.price.Msize).toLocaleString()}円（税抜き）
-                            </Typography>
-                          </CardContent>
-                          <CardActions disableSpacing>
-                            <IconButton aria-label="add to favorites">
-                              <FavoriteIcon />
-                            </IconButton>
-                            <IconButton aria-label="share">
-                              <ShareIcon />
-                            </IconButton>
-                          </CardActions>
-                        </Card>
-                      )
-                    })}
-                  </Grid>
-                }
-              </Grid>
+                    </CardContent>
+                    <CardActions disableSpacing>
+                      <IconButton aria-label="add to favorites">
+                        <FavoriteIcon />
+                      </IconButton>
+                      <IconButton aria-label="share">
+                        <ShareIcon />
+                      </IconButton>
+                    </CardActions>
+                  </Card>
+                )
+              })}
             </Grid>
+          }
+        </Grid>
+        {/* </Grid>
           </Grid>
-        </Typography>
+        </Typography> */}
       </Container>
     </>
   )
