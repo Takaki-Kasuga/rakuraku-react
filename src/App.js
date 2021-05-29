@@ -3,10 +3,11 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from 'react-router-dom';
 
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import firebase from './firebase/firebase'
 import Header from './components/Header.js';
@@ -23,12 +24,11 @@ import { TermOfUse } from './components/TermOfUse.js';
 import UserAccount from './components/UserAccount.js';
 import { orderInfomation, setUserInfo, deleteUserInfo } from './actions/index'
 
+const getState = (state) => state.userIdState.login_user;
 
 function App() {
   const userIdState = useSelector((state) => state.userIdState)
   const dispatch = useDispatch()
-  console.log('bokudesu');
-  console.dir(dispatch);
 
   // 画面描画時にオーダーの情報値を取ってる
   useEffect(() => {
@@ -62,6 +62,13 @@ function App() {
     })
   }, [])
 
+  const stateContent = useSelector(getState);
+  const [loginUser, setLoginUser] = useState(false);
+
+  useEffect(() => {
+    setLoginUser(stateContent);
+  }, [stateContent])
+
   return (
     <Router>
       <div>
@@ -80,10 +87,18 @@ function App() {
 
         <Switch>
           <Route path='/termofuse' exact component={TermOfUse} />
-          <Route path='/resettingemail' exact component={ResettingEmail} />
-          <Route path='/registeremail' exact component={RegisterEmail} />
-          <Route path='/login' exact component={Login} />
-          <Route path='/useraccount' exact component={UserAccount} />
+          <Route path='/resettingemail' exact>
+            {loginUser ? <ResettingEmail /> : <Redirect to="/" />}
+          </Route>
+          <Route path='/registeremail' exact>
+            {loginUser ? <Redirect to="/" /> : <RegisterEmail />}
+          </Route>
+          <Route path='/login' exact>
+            {loginUser ? <Redirect to="/" /> : <Login />}
+          </Route>
+          <Route path='/useraccount' exact>
+            {loginUser ? <UserAccount /> : <Redirect to="/" />}
+          </Route>
           <Route path='/ordercomplete' exact component={OrderComplete} />
           <Route path='/orderhistory' exact component={OrderHistory} />
           <Route path='/orderconfirm' exact component={OrderConfirm} />
