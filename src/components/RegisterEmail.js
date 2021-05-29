@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
+import { useDispatch } from "react-redux";
+import { signUp } from "../actions/index.js";
 
 export const RegisterEmail = () => {
   const [username, setUsername] = useState(''),
@@ -7,11 +9,10 @@ export const RegisterEmail = () => {
     [password, setPassword] = useState(''),
     [confirmPassword, setConfirmPassword] = useState('');
 
+  const dispatch = useDispatch();
+
   const register = () => {
-    console.log(username);
-    console.log(email);
-    console.log(password);
-    console.log(confirmPassword);
+    dispatch(signUp(username, email, password, confirmPassword));
   }
 
   const clear = () => {

@@ -82,3 +82,30 @@ export const logout = () =>
       await firebase.auth().signOut()
     }
   }
+
+export const signUp = (username, email, password, confirmPassword) => {
+  console.log('僕だよ');
+  return async (dispatch) => {
+    console.log('私が来た！');
+    //以下バリデーション
+    if (username === "" || email === "" || password === "" || confirmPassword === "") {
+      alert('空欄です');
+      return false;
+    }
+    await firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(result => {
+        console.log('私だよ')
+        const user = result.user;
+        if (user) {
+          const uid = user.uid;
+          console.log('登録に成功しました！')
+          console.log(result);
+          console.log(result.user.uid);
+          console.log(result.email);
+          console.log(username);
+        }
+      }).catch((error) => {
+        alert('ユーザー登録に失敗しました。お手数ですがもう1度お試しください')
+      })
+  }
+}
