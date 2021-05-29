@@ -44,7 +44,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const hawaiianSoltObject = {
       id: 1,
-      toppingPrice: hawaiianSolt
+      toppingPrice: hawaiianSolt,
+      toppigName: "ハワイアンソルト"
     }
     dispatch(selectedToppings(hawaiianSoltObject))
     console.log(selectedToppingState)
@@ -62,7 +63,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const hawaiianMayonnaiseObject = {
       id: 2,
-      toppingPrice: hawaiianMayonnaise
+      toppingPrice: hawaiianMayonnaise,
+      toppigName: "ハワイアンマヨネーズ"
     }
     dispatch(selectedToppings(hawaiianMayonnaiseObject))
     console.log(hawaiianMayonnaise)
@@ -78,7 +80,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const hawaiianTomatoObject = {
       id: 3,
-      toppingPrice: hawaiianTomato
+      toppingPrice: hawaiianTomato,
+      toppigName: "ハワイアントマト"
     }
     dispatch(selectedToppings(hawaiianTomatoObject))
     console.log(hawaiianTomato)
@@ -94,7 +97,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const blueCheeseObject = {
       id: 4,
-      toppingPrice: blueCheese
+      toppingPrice: blueCheese,
+      toppigName: "ブルーチーズ"
     }
     dispatch(selectedToppings(blueCheeseObject))
     console.log(blueCheese)
@@ -110,7 +114,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const hawaiianChocolateObject = {
       id: 5,
-      toppingPrice: hawaiianChocolate
+      toppingPrice: hawaiianChocolate,
+      toppigName: "ハワイアンチョコレート"
     }
     dispatch(selectedToppings(hawaiianChocolateObject))
     console.log(hawaiianChocolate)
@@ -127,7 +132,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const anchovyObject = {
       id: 6,
-      toppingPrice: anchovy
+      toppingPrice: anchovy,
+      toppigName: "アンチョビ"
     }
     dispatch(selectedToppings(anchovyObject))
     console.log(anchovy)
@@ -143,7 +149,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const shrimpObject = {
       id: 7,
-      toppingPrice: shrimp
+      toppingPrice: shrimp,
+      toppigName: "エビ"
     }
     dispatch(selectedToppings(shrimpObject))
     console.log(shrimp)
@@ -159,7 +166,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const garlicRiceObject = {
       id: 8,
-      toppingPrice: garlicRice
+      toppingPrice: garlicRice,
+      toppigName: "ガーリックスライス"
     }
     dispatch(selectedToppings(garlicRiceObject))
     console.log(garlicRice)
@@ -175,7 +183,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const tropicalFruitsObject = {
       id: 9,
-      toppingPrice: tropicalFruits
+      toppingPrice: tropicalFruits,
+      toppigName: "トロピカルフルーツ"
     }
     dispatch(selectedToppings(tropicalFruitsObject))
     console.log(tropicalFruits)
@@ -191,7 +200,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const hawaiianHoneyObject = {
       id: 10,
-      toppingPrice: hawaiianHoney
+      toppingPrice: hawaiianHoney,
+      toppigName: "ハワイ産はちみつ"
     }
     dispatch(selectedToppings(hawaiianHoneyObject))
     console.log(hawaiianHoney)
@@ -207,7 +217,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const coconutObject = {
       id: 11,
-      toppingPrice: coconut
+      toppingPrice: coconut,
+      toppigName: "ココナッツ"
     }
     dispatch(selectedToppings(coconutObject))
     console.log(coconut)
@@ -223,7 +234,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const mangoObject = {
       id: 12,
-      toppingPrice: mango
+      toppingPrice: mango,
+      toppigName: "マンゴー"
     }
     dispatch(selectedToppings(mangoObject))
     console.log(mango)
@@ -239,7 +251,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const pineappleObject = {
       id: 13,
-      toppingPrice: pineapple
+      toppingPrice: pineapple,
+      toppigName: "パイナップル"
     }
     dispatch(selectedToppings(pineappleObject))
     console.log(pineapple)
@@ -255,7 +268,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const mochiObject = {
       id: 14,
-      toppingPrice: mochi
+      toppingPrice: mochi,
+      toppigName: "もち"
     }
     dispatch(selectedToppings(mochiObject))
     console.log(mochi)
@@ -271,7 +285,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const coffeeObject = {
       id: 15,
-      toppingPrice: coffee
+      toppingPrice: coffee,
+      toppigName: "コーヒー"
     }
     dispatch(selectedToppings(coffeeObject))
     console.log(coffee)
@@ -287,7 +302,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const spriteObject = {
       id: 16,
-      toppingPrice: sprite
+      toppingPrice: sprite,
+      toppigName: "スプライト"
     }
     dispatch(selectedToppings(spriteObject))
     console.log(sprite)
@@ -303,7 +319,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const gingerAleObject = {
       id: 17,
-      toppingPrice: gingerAle
+      toppingPrice: gingerAle,
+      toppigName: "ジンジャエール"
     }
     dispatch(selectedToppings(gingerAleObject))
     console.log(gingerAle)
@@ -319,7 +336,8 @@ export const ToppingItems = () => {
   useEffect(() => {
     const colaObject = {
       id: 18,
-      toppingPrice: cola
+      toppingPrice: cola,
+      toppigName: "コーラ"
     }
     dispatch(selectedToppings(colaObject))
     console.log(cola)
