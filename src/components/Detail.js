@@ -109,6 +109,7 @@ export const Detail = () => {
   const dispatch = useDispatch()
   const itemState = useSelector((state) => state.itemState)
   const toppingState = useSelector((state) => state.toppingState)
+  const userIdState = useSelector((state) => state.userIdState)
   const selectedToppingState = useSelector((state) => state.selectedToppingState)
   const [selectedItem, setSelectedItem] = useState('')
   const [toppingList, setToppingList] = useState('')
@@ -214,9 +215,23 @@ export const Detail = () => {
       })
     }
 
+    // firebase
+    //   .firestore()
+    //   .collection(`orders/`)
+    //   .add(orderInfo)
+    //   .then((doc) => {
+    //     console.log(doc.id)
+    //     setOrderInfo(orderInfo.uniqueId = doc.id)
+    //     console.log(orderInfo)
+    //     dispatch(orderInfomation(orderInfo))
+    //   })
+    //   .catch((error) => {
+    //     console.log(error)
+    //   })
+
     firebase
       .firestore()
-      .collection(`orders/`)
+      .collection(`users/${userIdState.uid}/orders`)
       .add(orderInfo)
       .then((doc) => {
         console.log(doc.id)
@@ -227,8 +242,7 @@ export const Detail = () => {
       .catch((error) => {
         console.log(error)
       })
-
-
+    console.log(userIdState.uid)
     // 画面遷移
     handleLink('/cartlist')
   }
