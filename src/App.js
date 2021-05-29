@@ -21,7 +21,7 @@ import { OrderHistory } from './components/OrderHistory.js';
 import { RegisterEmail } from './components/RegisterEmail.js';
 import { TermOfUse } from './components/TermOfUse.js';
 import UserAccount from './components/UserAccount.js';
-import { orderInfomation } from './actions/index'
+import { orderInfomation, setUserInfo, deleteUserInfo } from './actions/index'
 
 
 function App() {
@@ -33,6 +33,11 @@ function App() {
     console.log('App.jsのonAuthStateChangedが発火')
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        const user_name = firebase.auth().currentUser.displayName;
+        const user_email = firebase.auth().currentUser.email;
+        const user_id = firebase.auth().currentUser.uid;
+        dispatch(setUserInfo(user_id, user_name, user_email));
+
         firebase
           .firestore()
           .collection(`users/${userIdState.uid}/orders`)
@@ -47,6 +52,7 @@ function App() {
           });
       } else {
         console.log('ログイン情報を保持していません')
+        dispatch(deleteUserInfo());
       }
     })
   }, [])
