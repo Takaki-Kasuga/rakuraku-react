@@ -1,5 +1,5 @@
 import React from 'react';
-import {useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useSelector } from "react-redux";
 
 
@@ -18,50 +18,50 @@ import Button from '@material-ui/core/Button';
 import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
-    root:{
+    root: {
         width: '100%',
-        overflowX:'auto',
+        overflowX: 'auto',
     },
     table: {
         minWidth: 650,
-      },
-  }));
+    },
+}));
 
-const UserAccount =()=>{
+const UserAccount = () => {
     const history = useHistory();
     const classes = useStyles();
     const getState = (state) => state;
     const stateContent = useSelector(getState);
 
     console.log('stateContentです')
-    console.log(stateContent.userIdState)
+    console.log(stateContent)
     return (
         <React.Fragment>
             <Grid container alignItems="center" justify="center">
-            <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                    <TableRow>
-                        <TableCell align="static">UserName</TableCell>
-                        <TableCell align="static">UserEmail</TableCell>
-                    </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        <TableRow>
-                            <TableCell component="th" scope="row">
-                                {stateContent.userIdState.name}
-                            </TableCell>
-                            <TableCell align="static">{stateContent.userIdState.email}</TableCell>
-                        </TableRow>
- 
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                <TableContainer component={Paper}>
+                    <Table className={classes.table} aria-label="simple table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell align="static">UserName</TableCell>
+                                <TableCell align="static">UserEmail</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell component="th" scope="row">
+                                    {stateContent.userIdState.name}
+                                </TableCell>
+                                <TableCell align="static">{stateContent.userIdState.email}</TableCell>
+                            </TableRow>
+
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </Grid>
             <Grid container alignItems="center" justify="center">
-                <Grid> 
-                    <Button variant="outlined" color="default" onClick={()=>history.push('/')}>トップ画面を表示する</Button>
-                </Grid> 
+                <Grid>
+                    <Button variant="outlined" color="default" onClick={() => history.push('/')}>トップ画面を表示する</Button>
+                </Grid>
             </Grid>
 
         </React.Fragment>
