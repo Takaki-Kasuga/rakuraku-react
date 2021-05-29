@@ -115,6 +115,16 @@ export const CartList = () => {
     }
   }
 
+  const confirmOrder = () => {
+    if (userIdState.login_user) {
+      console.log('orderconfirmへ')
+      handleLink('/orderconfirm')
+    } else {
+      console.log('loginへ')
+      handleLink('/login')
+    }
+  }
+
 
   console.log(rows)
   console.log(rows.length)
@@ -124,14 +134,6 @@ export const CartList = () => {
 
   let totalToppingPrice = 0
   console.log(totalToppingPrice)
-
-  // const prePurchase = () => {
-  //   if (userIdState.uid) {
-  //     handleLink('/orderconfirm')
-  //   } else {
-  //     handleLink('/login')
-  //   }
-  // }
 
   return (
     <>
@@ -212,11 +214,11 @@ export const CartList = () => {
             <p>消費税合計：</p>
             <p>合計金額：税込）</p>
           </div>
-          <Fab variant="extended" aria-label="like" className={classes.fab} >
-            <NavigationIcon className={classes.extendedIcon} />
-        注文に進む
-      </Fab>
-
+          <Fab variant="extended" aria-label="like" className={classes.fab} onClick={() => { confirmOrder() }}>
+            <NavigationIcon className={classes.extendedIcon}
+            />
+              注文に進む
+              </Fab>
         </Paper>
       }
 
