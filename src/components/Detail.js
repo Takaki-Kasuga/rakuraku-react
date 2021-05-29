@@ -170,7 +170,7 @@ export const Detail = () => {
 
   // Firebaseのorderにカート情報に追加する
   // Firebaseのorderにカート情報を追加する
-  const [cartInfo, setCartInfo] = useState({
+  const [orderInfo, setOrderInfo] = useState({
     // userId
     itemId: 0,
     status: 0,
@@ -194,32 +194,33 @@ export const Detail = () => {
 
     // トッピングの有無により値が変わる
     if (selectedToppingArray.length === 0) {
-      setCartInfo((cartInfo) => {
-        cartInfo.itemId = id
-        cartInfo.imagePath = selectedItem.imagePath
-        cartInfo.itemName = selectedItem.name
-        cartInfo.itemPrice = itemValue
-        cartInfo.itemCount = itemCount
+      setOrderInfo((orderInfo) => {
+        orderInfo.itemId = id
+        orderInfo.imagePath = selectedItem.imagePath
+        orderInfo.itemName = selectedItem.name
+        orderInfo.itemPrice = itemValue
+        orderInfo.itemCount = itemCount
       })
     } else {
-      setCartInfo((cartInfo) => {
-        cartInfo.itemId = id
-        cartInfo.imagePath = selectedItem.imagePath
-        cartInfo.itemName = selectedItem.name
-        cartInfo.itemPrice = itemValue
-        cartInfo.itemCount = itemCount
-        cartInfo.toppingInfo = selectedToppingArray
+      setOrderInfo((orderInfo) => {
+        orderInfo.itemId = id
+        orderInfo.imagePath = selectedItem.imagePath
+        orderInfo.itemName = selectedItem.name
+        orderInfo.itemPrice = itemValue
+        orderInfo.itemCount = itemCount
+        orderInfo.toppingInfo = selectedToppingArray
       })
     }
 
     firebase
       .firestore()
       .collection(`orders/`)
-      .add(cartInfo)
+      .add(orderInfo)
       .then((doc) => {
         console.log(doc.id)
-        setCartInfo(cartInfo.uniqueId = doc.id)
-        console.log(cartInfo)
+        setOrderInfo(orderInfo.uniqueId = doc.id)
+        console.log(orderInfo)
+
       })
       .catch((error) => {
         console.log(error)
