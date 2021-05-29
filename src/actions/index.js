@@ -2,6 +2,7 @@
 import firebase, { providerGoogle } from '../firebase/firebase';
 
 export const SET_ITEMS = 'SET_ITEMS'
+export const SEARCH_ITEMS = 'SEARCH_ITEMS'
 export const SET_TOPPINGS = 'SET_TOPPINGS'
 export const SET_USER_INFO = 'SET_USER_INFO';
 export const DELETE_USER_INFO = 'DELETE_USER_INFO';
@@ -16,6 +17,14 @@ export const items = (items) => {
   return ({
     type: SET_ITEMS,
     itemList: items
+  })
+}
+
+export const seachItems = (seachItems) => {
+  console.log(seachItems)
+  return ({
+    type: SEARCH_ITEMS,
+    seachItemList: seachItems
   })
 }
 

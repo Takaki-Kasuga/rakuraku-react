@@ -3,7 +3,7 @@ import firebase from '../firebase/firebase'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { items, toppings } from '../actions/index'
+import { items, toppings, seachItems } from '../actions/index'
 // マテリアルUI
 // コンテイナー
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -161,7 +161,23 @@ export const Home = () => {
   }
   const filteringItems = (searchValue) => {
     console.log(searchValue)
-    alert(searchValue)
+    // alert(searchValue)
+    if (searchValue) {
+      dispatch(seachItems(searchValue))
+    } else {
+      firebase
+        .firestore()
+        .collection(`items/`)
+        .get()
+        .then((snapshot) => {
+          const itemArray = []
+          snapshot.forEach((doc) => {
+            itemArray.push(doc.data())
+          })
+          dispatch(items(itemArray))
+        });
+    }
+
   }
 
   console.log(itemState)
