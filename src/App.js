@@ -48,7 +48,10 @@ function App() {
             snapshot.forEach((doc) => {
               console.log(doc.id)
               console.log(doc.data())
-              dispatch(orderInfomation(doc.data()))
+              const fetchData = doc.data()
+              fetchData.uniqueId = doc.id
+              console.log(fetchData)
+              dispatch(orderInfomation(fetchData))
             }
             );
           });
