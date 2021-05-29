@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -114,6 +114,9 @@ export const Detail = () => {
   const { id } = useParams()
   console.log(id)
 
+  const history = useHistory()
+  const handleLink = (path) => history.push(path)
+
   // トッピングリストの合計金額
   let totleToppingPrice = 0
   selectedToppingState.forEach((price) => {
@@ -209,19 +212,22 @@ export const Detail = () => {
       })
     }
 
-
-    console.log(cartInfo)
-
     firebase
       .firestore()
       .collection(`orders/`)
       .add(cartInfo)
       .then((doc) => {
-        console.log(doc)
+        console.log(doc.id)
+        setCartInfo(cartInfo.uniqueId = doc.id)
+        console.log(cartInfo)
       })
       .catch((error) => {
         console.log(error)
       })
+
+
+    // 画面遷移
+    handleLink('/cartlist')
   }
 
   return (
