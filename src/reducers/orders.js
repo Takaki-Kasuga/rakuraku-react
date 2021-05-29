@@ -1,4 +1,4 @@
-import { SET_ORDERS, DELETE_ORDER_INFO } from '../actions/index'
+import { SET_ORDERS, DELETE_ORDER_INFO, DELETE_ORDER_INFO_NOLOGIN } from '../actions/index'
 
 export default (state = [], action) => {
   console.log('SET_ORDERSリデューサー発火')
@@ -16,6 +16,14 @@ export default (state = [], action) => {
       })
       deleteArray.splice(deleteIndex, 1)
       return deleteArray
+    case DELETE_ORDER_INFO_NOLOGIN:
+      console.log('DELETE_ORDER_INFO_NOLOGINが発火')
+      const deleteIdArray = [...state]
+      const deleteIdIndex = deleteIdArray.findIndex((everyobj) => {
+        return everyobj.itemId === action.itemId
+      })
+      deleteIdArray.splice(deleteIdIndex, 1)
+      return deleteIdArray
     default:
       return state
   }

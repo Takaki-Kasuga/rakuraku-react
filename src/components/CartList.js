@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom'
 
 
 import firebase from '../firebase/firebase'
-import { deleteOrderInfomation } from '../actions/index'
+import { deleteOrderInfomation, deleteOrderInfomationIdNum } from '../actions/index'
 
 // デリートアイコン
 import IconButton from '@material-ui/core/IconButton';
@@ -73,8 +73,8 @@ export const CartList = () => {
     },
   }));
 
-  function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, protein) {
-    return { itemInfo, itemPriceAndCount, toppingItem, uniqueId, protein };
+  function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId) {
+    return { itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId };
   }
 
   // トッピングアイテムを入れる配列
@@ -88,7 +88,7 @@ export const CartList = () => {
       { itemPrice: order.itemPrice, itemCount: order.itemCount },
       order.toppingInfo,
       order.uniqueId,
-      4,
+      order.itemId,
     )
     // selectedToppingId.push(order.toppingInfo)
     rows.push(fetchData)
@@ -97,18 +97,23 @@ export const CartList = () => {
 
   // カートリスト削除機能
   const userIdState = useSelector((state) => state.userIdState)
-  const deleteItem = (uniqueId) => {
-    console.log(uniqueId)
+  const deleteItem = (uniqueId, itemId) => {
     if (window.confirm('本当に削除しますか？')) {
-      firebase
-        .firestore()
-        .collection(`users/${userIdState.uid}/orders`)
-        .doc(uniqueId)
-        .delete()
-        .then(() => {
-          console.log('firebae上では削除が完了しました。')
-        });
-      dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
+      if (userIdState.login_user) {
+        firebase
+          .firestore()
+          .collection(`users/${userIdState.uid}/orders`)
+          .doc(uniqueId)
+          .delete()
+          .then(() => {
+            console.log('firebae上では削除が完了しました。')
+            dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
+          });
+      } else {
+        console.log('ログインしていない時の処理')
+        console.log(itemId)
+        dispatch(deleteOrderInfomationIdNum({ itemId: itemId }))
+      }
     }
   }
 
@@ -187,7 +192,7 @@ export const CartList = () => {
                   </TableCell>
                   <TableCell align="right">
                     <div className={classes.delete} onClick={() => {
-                      deleteItem(row.uniqueId)
+                      deleteItem(row.uniqueId, row.itemId)
                     }}>
                       <Button
                         variant="contained"
