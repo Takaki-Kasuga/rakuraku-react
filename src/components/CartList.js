@@ -75,7 +75,7 @@ export const CartList = () => {
     },
     priceItemCenter: {
       display: 'block',
-      'width': '30%',
+      'width': '50%',
       'margin': '0 auto',
       'margin-bottom': '30px',
     },
@@ -83,14 +83,14 @@ export const CartList = () => {
       textAlign: 'left'
     },
     cardMediaStyle: {
-      width: '250px',
+      width: '220px',
     },
     toppingStyle: {
-      width: '200px',
+      // width: '180px',
       textAlign: 'left'
     },
     itemPriceStyle: {
-      width: '100px',
+      // width: '100px',
       textAlign: 'left'
     },
   }));
@@ -234,7 +234,7 @@ export const CartList = () => {
                       <p style={{ color: 'red' }} className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円<br />（税込）</p>
                     </div>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="right" style={{ width: '120px' }}>
                     <div className={classes.delete} onClick={() => {
                       deleteItem(row.uniqueId, row.itemId)
                     }}>
@@ -256,7 +256,7 @@ export const CartList = () => {
           <div className={classes.priceItemCenter}>
             <p className={classes.setLeftText}>合計金額：{(totalItemPrice + totalToppingPrice).toLocaleString()}円（税抜き）</p>
             <p className={classes.setLeftText}>消費税合計：{((totalItemPrice + totalToppingPrice) * 0.1).toLocaleString()}円</p>
-            <h3 style={{ color: 'red' }} className={classes.setLeftText}>合計金額：{Number(Number((totalItemPrice + totalToppingPrice)) + Number(((totalItemPrice + totalToppingPrice) * 0.1))).toLocaleString()}円（税込）</h3>
+            <h3 style={{ color: 'red', textAlign: 'center' }} className={classes.setLeftText}>合計金額：{Number(Number((totalItemPrice + totalToppingPrice)) + Number(((totalItemPrice + totalToppingPrice) * 0.1))).toLocaleString()}円（税込）</h3>
           </div>
           <Fab variant="extended" aria-label="like" className={classes.fab} onClick={() => { confirmOrder() }} className={classes.priceItemCenter}>
             <NavigationIcon className={classes.extendedIcon}
