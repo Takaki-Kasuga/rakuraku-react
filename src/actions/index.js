@@ -175,10 +175,3 @@ export const signIn = (email, password) => {
       })
   }
 }
-
-export const judgeScreenStatus = (judgeScreenStatus) => {
-  return ({
-    type: JUDGE_SCREEN_STATUS,
-    judgeScreenStatusInfo: judgeScreenStatus
-  })
-}

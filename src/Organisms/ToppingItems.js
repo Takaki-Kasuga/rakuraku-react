@@ -346,6 +346,9 @@ export const ToppingItems = () => {
     console.log(cola)
   }, [cola])
 
+  console.log(toppingState)
+  console.log(toppingState[1].Lsize)
+  console.log('ああああ')
 
 
   return (
@@ -520,7 +523,7 @@ export const ToppingItems = () => {
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={coconut}
-            onChange={setCoconut}
+            onChange={setCoconutMethod}
           >
             <MenuItem value='0'></MenuItem>
             <MenuItem value={toppingState[10].Msize}>M：{toppingState[10].Msize}円  </MenuItem>

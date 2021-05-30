@@ -176,7 +176,7 @@ export const CartList = () => {
             </TableHead>
             <TableBody>
               {rows.map((row, index) => (
-                <TableRow key={index}>
+                <TableRow key={index} style={{ alignItems: 'flex-start' }}>
 
                   <TableCell className={classes.cardMediaStyle} component="th" scope="row">
 
