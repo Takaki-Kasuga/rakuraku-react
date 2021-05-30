@@ -56,7 +56,6 @@ const OrderConfirm =()=>{
 
     const history = useHistory();
     const getState = (state) => state.userIdState.login_user;
-    console.log(getState)
     const getState2 = (state)=>state;
     const stateContent = useSelector(getState2);
 
@@ -154,13 +153,6 @@ const OrderConfirm =()=>{
     let smallTotalTax = smallTotal*0.1;
     let totalPrice = smallTotal;//実際にはsmallTotalをmapする
     let totalTax = totalPrice*0.1
-
-//     const calculateSmallTotal=(itemPrice,itemCount,toppingPrice)=>{
-//         return (itemPrice * itemCount + toppingPrice)
-//     }
-//     const calculateSmallTax=(itemPrice,itemCount,toppingPrice)=>{
-//         return ((itemPrice * itemCount + toppingPrice)* 0.1)
-//   }
 
   const rows = [
     createData(0,'ハワイアン・パラダイス',image,350,5,0,'トッピング１',200,200,2200),
