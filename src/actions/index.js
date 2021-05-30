@@ -9,6 +9,7 @@ export const SELECTED_TOPPINGS = 'SELECTED_TOPPINGS';
 export const SET_ORDERS = 'SET_ORDERS';
 export const DELETE_ORDER_INFO = 'DELETE_ORDER_INFO'
 export const DELETE_ORDER_INFO_NOLOGIN = 'DELETE_ORDER_INFO_NOLOGIN'
+export const CHANGE_ROUTING_STATUS = 'CHANGE_ROUTING_STATUS';
 
 export const items = (items) => {
   console.log(items)
@@ -93,6 +94,15 @@ export const deleteUserInfo = () => {
       name: '',
       email: '',
       login_user: false
+    }
+  )
+}
+
+export const changeRoutingStatus = () => {
+  return (
+    {
+      type: CHANGE_ROUTING_STATUS,
+      routingJudge: 1
     }
   )
 }
