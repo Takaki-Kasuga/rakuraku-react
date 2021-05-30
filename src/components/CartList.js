@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom'
 
 
 import firebase from '../firebase/firebase'
-import { deleteOrderInfomation, deleteOrderInfomationIdNum } from '../actions/index'
+import { deleteOrderInfomation, deleteOrderInfomationIdNum, changeRoutingStatus } from '../actions/index'
 
 // デリートアイコン
 import IconButton from '@material-ui/core/IconButton';
@@ -123,6 +123,7 @@ export const CartList = () => {
       handleLink('/orderconfirm')
     } else {
       console.log('loginへ')
+      dispatch(changeRoutingStatus())
       handleLink('/login')
     }
   }
