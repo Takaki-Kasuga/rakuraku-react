@@ -32,6 +32,8 @@ function App() {
   const getRoutingJudge = useSelector((state) => state.routingJudge.routingJudge)
   const dispatch = useDispatch()
 
+  const storage = Number(localStorage.getItem('routingJudge'));
+
   // 画面描画時にオーダーの情報値を取ってる
   useEffect(() => {
     console.log('App.jsのonAuthStateChangedが発火')
@@ -72,7 +74,7 @@ function App() {
   }, [stateContent])
 
   const LoginBranch = () => {
-    if (loginUser === true && getRoutingJudge === 1) {
+    if (loginUser === true && storage === 1) {
       // dispatch(deleteAllOrder())
       return (
         <React.Fragment>
@@ -87,7 +89,7 @@ function App() {
           </Route>
         </React.Fragment>
       )
-    } else if (loginUser === true && getRoutingJudge === 0) {
+    } else if (loginUser === true && storage === 0) {
       return (
         <React.Fragment>
           <Route path='/registeremail' exact>
