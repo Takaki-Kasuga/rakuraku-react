@@ -53,7 +53,7 @@ export const CartList = () => {
     },
     media: {
       height: 200,
-      backgroundSize: 'contain'
+      'background-size': 'cover',
     },
     delete: {
       cursor: 'pointer',
@@ -79,7 +79,18 @@ export const CartList = () => {
     },
     setLeftText: {
       textAlign: 'left'
-    }
+    },
+    cardMediaStyle: {
+      width: '250px',
+    },
+    toppingStyle: {
+      width: '200px',
+      textAlign: 'left'
+    },
+    itemPriceStyle: {
+      width: '100px',
+      textAlign: 'left'
+    },
   }));
 
   function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId) {
@@ -90,15 +101,19 @@ export const CartList = () => {
   const rows = [];
 
   orderState.forEach((order) => {
-    const fetchData = createData(
-      { itemPath: order.imagePath, itemName: order.itemName },
-      { itemPrice: order.itemPrice, itemCount: order.itemCount },
-      order.toppingInfo,
-      order.uniqueId,
-      order.itemId,
-    )
-    // selectedToppingId.push(order.toppingInfo)
-    rows.push(fetchData)
+    console.log(order.status)
+    // statusが0（購入前）の商品を取ってくる
+    if (order.status === 0) {
+      const fetchData = createData(
+        { itemPath: order.imagePath, itemName: order.itemName },
+        { itemPrice: order.itemPrice, itemCount: order.itemCount },
+        order.toppingInfo,
+        order.uniqueId,
+        order.itemId,
+      )
+      // selectedToppingId.push(order.toppingInfo)
+      rows.push(fetchData)
+    }
   })
 
 
@@ -152,22 +167,22 @@ export const CartList = () => {
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>商品名</TableCell>
-                <TableCell align="right">商品個数と値段（税抜き）</TableCell>
-                <TableCell align="right">トッピングの値段（税抜き）</TableCell>
-                <TableCell align="right">金額</TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell align="center">商品名</TableCell>
+                <TableCell align="left">商品個数と値段（税抜き）</TableCell>
+                <TableCell align="left">トッピングの値段（税抜き）</TableCell>
+                <TableCell align="left">金額</TableCell>
+                <TableCell align="left"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {rows.map((row, index) => (
                 <TableRow key={index}>
 
-                  <TableCell component="th" scope="row">
+                  <TableCell className={classes.cardMediaStyle} component="th" scope="row">
 
                     <Card className={classes.card}>
                       <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p">
+                        <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'center' }}>
                           {row.itemInfo.itemName}
                         </Typography>
                       </CardContent>
@@ -179,19 +194,19 @@ export const CartList = () => {
 
                     </Card>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell align="right" className={classes.itemPriceStyle}>
                     <p>金額:{Number(row.itemPriceAndCount.itemPrice).toLocaleString()}円</p>
                     <p>個数:{row.itemPriceAndCount.itemCount}個</p>
 
                   </TableCell>
 
-                  <TableCell align="right">
+                  <TableCell align="right" className={classes.toppingStyle}>
                     {/* everyToppingTotalPriceの初期化 */}
                     {!row.toppingItem ? <spna style={{ display: 'none' }}></spna> :
                       row.toppingItem.map((topping, index) => {
                         everyToppingTotalPrice = 0
                         return (
-                          <span style={{ display: 'none' }}></span>
+                          <span key={index} style={{ display: 'none' }}></span>
                         )
                       })
                     }
@@ -203,8 +218,8 @@ export const CartList = () => {
                         return (
                           <div key={index}>
                             <p>
-                              {topping.toppigName}：
-                            {Number(topping.toppingPrice).toLocaleString()}円</p>
+                              {topping.toppigName}<br />：
+                              {Number(topping.toppingPrice).toLocaleString()}円</p>
                           </div>
                         )
                       })
@@ -213,8 +228,8 @@ export const CartList = () => {
                   <TableCell align="right">
                     <div>
                       <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
-                      <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)).toLocaleString()}（税抜き）</p>
-                      <p style={{ color: 'red' }} className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円（税込）</p>
+                      <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)).toLocaleString()}円<br />（税抜き）</p>
+                      <p style={{ color: 'red' }} className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円<br />（税込）</p>
                     </div>
                   </TableCell>
                   <TableCell align="right">
