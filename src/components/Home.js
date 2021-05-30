@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     cursor: 'pointer',
     width: '300px',
-    'margin': '30px',
+    'margin': '20px',
   },
   searchbox: {
     display: 'flex',
