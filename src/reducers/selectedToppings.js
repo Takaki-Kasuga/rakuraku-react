@@ -1,4 +1,4 @@
-import { SELECTED_TOPPINGS } from '../actions/index'
+import { SELECTED_TOPPINGS, DEFAULT_SELECTED_TOPPINGS } from '../actions/index'
 
 const initialState = [
   { id: 1, toppingPrice: 0, toppigName: "" },
@@ -31,6 +31,9 @@ export default (state = initialState, action) => {
       selectedToppingArray.splice((Number(action.selectedToppingsList.id) - 1), 1, action.selectedToppingsList)
       console.log(selectedToppingArray)
       return selectedToppingArray;
+    case DEFAULT_SELECTED_TOPPINGS:
+      const defaultSelectedToppingArray = [...initialState]
+      return defaultSelectedToppingArray;
     default:
       return state
   }

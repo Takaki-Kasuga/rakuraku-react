@@ -51,7 +51,7 @@ import { AddShoppingCart } from '@material-ui/icons';
 // firebase
 import firebase from '../firebase/firebase'
 
-import { orderInfomation } from '../actions/index'
+import { orderInfomation, defaultSelectedToppings } from '../actions/index'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -121,6 +121,15 @@ export const Detail = () => {
   const handleLink = (path) => history.push(path)
 
   // トッピングリストの合計金額
+  useEffect(() => {
+    console.log('トッピングプライスの初期化')
+    dispatch(defaultSelectedToppings())
+    selectedToppingState.forEach((price) => {
+      if (price.toppingPrice) {
+        console.log(price.toppingPrice)
+      }
+    })
+  }, [])
   let totleToppingPrice = 0
   selectedToppingState.forEach((price) => {
     if (price.toppingPrice) {

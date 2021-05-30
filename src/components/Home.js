@@ -179,7 +179,7 @@ export const Home = () => {
     }
   }
 
-  const fetchItem = () => {
+  const allItem = () => {
     firebase
       .firestore()
       .collection(`items/`)
@@ -239,7 +239,7 @@ export const Home = () => {
               {/* <h1>Loading...</h1> */}
               <div>
                 <h1>該当する商品がありません</h1>
-                <Button variant="contained" onClick={fetchItem}>一覧を表示する。</Button>
+                <Button variant="contained" onClick={allItem}>一覧を表示する。</Button>
               </div>
             </div>
             :
