@@ -73,28 +73,48 @@ function App() {
 
   const LoginBranch = () => {
     if (loginUser === true && getRoutingJudge === 1) {
-      console.log('1です')
-      console.log(getRoutingJudge);
+      return (
+        <React.Fragment>
+          <Route path='/registeremail' exact>
+            <Redirect to="/orderconfirm" />
+          </Route>
+          <Route path='/login' exact>
+            <Redirect to="/orderconfirm" />
+          </Route>
+          <Route path='/useraccount' exact>
+            <UserAccount />
+          </Route>
+        </React.Fragment>
+      )
     } else if (loginUser === true && getRoutingJudge === 0) {
-      console.log('0です')
-      console.log(getRoutingJudge);
+      return (
+        <React.Fragment>
+          <Route path='/registeremail' exact>
+            <Redirect to="/" />
+          </Route>
+          <Route path='/login' exact>
+            <Redirect to="/" />
+          </Route>
+          <Route path='/useraccount' exact>
+            <UserAccount />
+          </Route>
+        </React.Fragment>
+      )
     } else if (loginUser === false) {
-      console.log('ログアウトしています');
-      console.log(loginUser);
+      return (
+        <React.Fragment>
+          <Route path='/registeremail' exact>
+            <RegisterEmail />
+          </Route>
+          <Route path='/login' exact>
+            <Login />
+          </Route>
+          <Route path='/useraccount' exact>
+            <Redirect to="/" />
+          </Route>
+        </React.Fragment>
+      )
     }
-    return (
-      <React.Fragment>
-        <Route path='/registeremail' exact>
-          {loginUser ? <Redirect to="/" /> : <RegisterEmail />}
-        </Route>
-        <Route path='/login' exact>
-          {loginUser ? <Redirect to="/" /> : <Login />}
-        </Route>
-        <Route path='/useraccount' exact>
-          {loginUser ? <UserAccount /> : <Redirect to="/" />}
-        </Route>
-      </React.Fragment>
-    )
   }
 
   return (
