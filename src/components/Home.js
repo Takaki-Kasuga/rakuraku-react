@@ -189,6 +189,13 @@ export const Home = () => {
       <div className={classes.searchbox}>
         {searchValue}
         <TextField
+          onKeyPress={e => {
+            if (e.key == 'Enter') {
+              e.preventDefault()
+              filteringItems(searchValue)
+            }
+          }
+          }
           className={classes.textField}
           id="filled-full-width"
           label="Label"
@@ -214,7 +221,7 @@ export const Home = () => {
           <Grid container className={classes.root} spacing={2}>
             <Grid item xs={12}> */}
         <Grid container justify="center" spacing={spacing}>
-          {!itemState.length ? <h1>Loding..</h1> :
+          {!itemState.length ? <h1>該当する商品がありません</h1> :
             <Grid item className={classes.flex}>
               {itemState.map((item) => {
                 return (
