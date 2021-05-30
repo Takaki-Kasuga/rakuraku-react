@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import {
-  Link
+  Link,
+  useHistory
 } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { loginWithGoogle, signIn } from "../actions/index.js";
@@ -9,16 +10,18 @@ import { loginWithGoogle, signIn } from "../actions/index.js";
 
 export const Login = () => {
   const dispatch = useDispatch();
-  const getRoutingJudge = useSelector((state) => state.routingJudge.routingJudge) //routingJudgeの確認用
+  const getRoutingJudge = useSelector((state) => state.routingJudge.routingJudge)
 
   const [email, setEmail] = useState(''),
     [password, setPassword] = useState('');
 
   const login = () => {
+    localStorage.setItem('routingJudge', Number(getRoutingJudge));
     dispatch(signIn(email, password))
   }
 
   const googleLogin = () => {
+    localStorage.setItem('routingJudge', Number(getRoutingJudge));
     dispatch(loginWithGoogle());
   }
 
