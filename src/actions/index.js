@@ -1,7 +1,7 @@
-
 import firebase, { providerGoogle } from '../firebase/firebase';
 
 export const SET_ITEMS = 'SET_ITEMS'
+export const SEARCH_ITEMS = 'SEARCH_ITEMS'
 export const SET_TOPPINGS = 'SET_TOPPINGS'
 export const SET_USER_INFO = 'SET_USER_INFO';
 export const DELETE_USER_INFO = 'DELETE_USER_INFO';
@@ -16,6 +16,14 @@ export const items = (items) => {
   return ({
     type: SET_ITEMS,
     itemList: items
+  })
+}
+
+export const seachItems = (seachItems) => {
+  console.log(seachItems)
+  return ({
+    type: SEARCH_ITEMS,
+    seachItemList: seachItems
   })
 }
 
@@ -106,29 +114,33 @@ export const logout = () =>
 
 export const signUp = (username, email, password, confirmPassword) => {
   return async (dispatch) => {
-    //以下バリデーション
-    if (username === "" || email === "" || password === "" || confirmPassword === "") {
-      alert('空欄です');
-      return false;
-    }
     await firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(result => {
-        console.log('私だ')
         const user = result.user;
         if (user) {
-          const uid = user.uid;
-          console.log('登録に成功しました！')
-          console.log(result);
-          console.log(result.user.uid);
-          console.log(result.user.email);
-          console.log(username);
           const user_id = result.user.uid;
           const user_email = result.user.email;
-          console.log(dispatch);
           dispatch(setUserInfo(user_id, username, user_email));
         }
       }).catch((error) => {
         alert('ユーザー登録に失敗しました。お手数ですがもう1度お試しください')
+      })
+  }
+}
+
+export const signIn = (email, password) => {
+  return async (dispatch) => {
+    await firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(result => {
+        const user = result.user;
+        if (user) {
+          const user_id = result.user.uid;
+          const user_name = result.user.displayName;
+          const user_email = result.user.email;
+          dispatch(setUserInfo(user_id, user_name, user_email));
+        }
+      }).catch((error) => {
+        alert('ログインに失敗しました。お手数ですがもう1度お試しください')
       })
   }
 }
