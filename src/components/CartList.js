@@ -152,7 +152,7 @@ export const CartList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row, index) => (
+              {rows.map((row) => (
                 <TableRow key={row.itemInfo}>
 
                   <TableCell component="th" scope="row">
@@ -176,9 +176,19 @@ export const CartList = () => {
                     <p>個数:{row.itemPriceAndCount.itemCount}個</p>
 
                   </TableCell>
+
                   <TableCell align="right">
+                    {/* everyToppingTotalPriceの初期化s */}
+                    {!row.toppingItem ? <spna style={{ display: 'none' }}></spna> :
+                      row.toppingItem.map((topping, index) => {
+                        everyToppingTotalPrice = 0
+                        return (
+                          <span style={{ display: 'none' }}></span>
+                        )
+                      })
+                    }
                     {!row.toppingItem ? <p>0円</p> :
-                      row.toppingItem.map((topping) => {
+                      row.toppingItem.map((topping, index) => {
                         totalToppingPrice += topping.toppingPrice
                         everyToppingTotalPrice += topping.toppingPrice
                         return (
@@ -212,7 +222,6 @@ export const CartList = () => {
                         </Button>
                     </div>
                   </TableCell>
-                  {everyToppingTotalPrice = 0}
                 </TableRow>
               ))}
             </TableBody>
