@@ -23,11 +23,13 @@ import { RegisterEmail } from './components/RegisterEmail.js';
 import { TermOfUse } from './components/TermOfUse.js';
 import UserAccount from './components/UserAccount.js';
 import { orderInfomation, setUserInfo, deleteUserInfo } from './actions/index'
+import { ReorderRounded } from "@material-ui/icons";
 
 const getState = (state) => state.userIdState.login_user;
 
 function App() {
   const userIdState = useSelector((state) => state.userIdState)
+  const getRoutingJudge = useSelector((state) => state.routingJudge.routingJudge)
   const dispatch = useDispatch()
 
   // 画面描画時にオーダーの情報値を取ってる
@@ -69,6 +71,52 @@ function App() {
     setLoginUser(stateContent);
   }, [stateContent])
 
+  const LoginBranch = () => {
+    if (loginUser === true && getRoutingJudge === 1) {
+      return (
+        <React.Fragment>
+          <Route path='/registeremail' exact>
+            <Redirect to="/orderconfirm" />
+          </Route>
+          <Route path='/login' exact>
+            <Redirect to="/orderconfirm" />
+          </Route>
+          <Route path='/useraccount' exact>
+            <UserAccount />
+          </Route>
+        </React.Fragment>
+      )
+    } else if (loginUser === true && getRoutingJudge === 0) {
+      return (
+        <React.Fragment>
+          <Route path='/registeremail' exact>
+            <Redirect to="/" />
+          </Route>
+          <Route path='/login' exact>
+            <Redirect to="/" />
+          </Route>
+          <Route path='/useraccount' exact>
+            <UserAccount />
+          </Route>
+        </React.Fragment>
+      )
+    } else if (loginUser === false) {
+      return (
+        <React.Fragment>
+          <Route path='/registeremail' exact>
+            <RegisterEmail />
+          </Route>
+          <Route path='/login' exact>
+            <Login />
+          </Route>
+          <Route path='/useraccount' exact>
+            <Redirect to="/" />
+          </Route>
+        </React.Fragment>
+      )
+    }
+  }
+
   return (
     <Router>
       <div>
@@ -86,25 +134,15 @@ function App() {
         <Link to='/'>トップページ</Link><br />
 
         <Switch>
+          <Route path='/resettingemail' exact component={ResettingEmail} />
           <Route path='/termofuse' exact component={TermOfUse} />
-          <Route path='/resettingemail' exact>
-            {loginUser ? <ResettingEmail /> : <Redirect to="/" />}
-          </Route>
-          <Route path='/registeremail' exact>
-            {loginUser ? <Redirect to="/" /> : <RegisterEmail />}
-          </Route>
-          <Route path='/login' exact>
-            {loginUser ? <Redirect to="/" /> : <Login />}
-          </Route>
-          <Route path='/useraccount' exact>
-            {loginUser ? <UserAccount /> : <Redirect to="/" />}
-          </Route>
           <Route path='/ordercomplete' exact component={OrderComplete} />
           <Route path='/orderhistory' exact component={OrderHistory} />
           <Route path='/orderconfirm' exact component={OrderConfirm} />
           <Route path='/cartlist' exact component={CartList} />
           <Route exact path="/detail/:id" component={Detail} />
           <Route exact path="/" component={Home} />
+          <LoginBranch />
         </Switch>
       </div>
     </Router>

@@ -11,6 +11,7 @@ export const SET_ORDERS = 'SET_ORDERS';
 export const DELETE_ORDER_INFO = 'DELETE_ORDER_INFO'
 export const DELETE_ORDER_INFO_NOLOGIN = 'DELETE_ORDER_INFO_NOLOGIN'
 export const DELETE_ALL_ORDER = 'DELETE_ALL_ORDER'
+export const CHANGE_ROUTING_STATUS = 'CHANGE_ROUTING_STATUS';
 
 export const items = (items) => {
   return ({
@@ -96,6 +97,15 @@ export const deleteUserInfo = () => {
       name: '',
       email: '',
       login_user: false
+    }
+  )
+}
+
+export const changeRoutingStatus = () => {
+  return (
+    {
+      type: CHANGE_ROUTING_STATUS,
+      routingJudge: 1
     }
   )
 }

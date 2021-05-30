@@ -9,6 +9,7 @@ import { loginWithGoogle, signIn } from "../actions/index.js";
 
 export const Login = () => {
   const dispatch = useDispatch();
+  const getRoutingJudge = useSelector((state) => state.routingJudge.routingJudge) //routingJudgeの確認用
 
   const [email, setEmail] = useState(''),
     [password, setPassword] = useState('');

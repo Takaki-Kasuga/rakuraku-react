@@ -4,5 +4,6 @@ import toppingState from './toppings'
 import userIdState from './user'
 import selectedToppingState from './selectedToppings'
 import orderState from './orders'
+import routingJudge from './routingJudge'
 
-export default combineReducers({ itemState, toppingState, userIdState, selectedToppingState, orderState })
+export default combineReducers({ itemState, toppingState, userIdState, selectedToppingState, orderState, routingJudge })
