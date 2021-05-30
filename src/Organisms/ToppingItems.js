@@ -17,12 +17,15 @@ const useStyles = makeStyles((theme) => ({
   // セレクトボックス
   formControl: {
     margin: theme.spacing(1),
-    'width': '200px',
+    'width': '150px',
   },
   flex: {
     display: 'flex',
     'flex-wrap': 'wrap',
     'justify-content': 'center',
+  },
+  textPSize: {
+    'font-size': '12px',
   }
 }));
 
@@ -343,6 +346,9 @@ export const ToppingItems = () => {
     console.log(cola)
   }, [cola])
 
+  console.log(toppingState)
+  console.log(toppingState[1].Lsize)
+  console.log('ああああ')
 
 
   return (
@@ -350,7 +356,7 @@ export const ToppingItems = () => {
       <div className={classes.flex}>
         {/* ハワイアンソルト */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[0].name}</span>
+          <span className={classes.textPSize}>{toppingState[0].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -366,7 +372,7 @@ export const ToppingItems = () => {
 
         {/* ハワイヤンマヨネーズ */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[1].name}</span>
+          <span className={classes.textPSize}>{toppingState[1].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -382,7 +388,7 @@ export const ToppingItems = () => {
 
         {/* ハワイアントマト */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[2].name}</span>
+          <span className={classes.textPSize}>{toppingState[2].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -399,7 +405,7 @@ export const ToppingItems = () => {
 
         {/* ブルーチーズ */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[3].name}</span>
+          <span className={classes.textPSize}>{toppingState[3].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -415,7 +421,7 @@ export const ToppingItems = () => {
 
         {/* ハワイアンチョコレート */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[4].name}</span>
+          <span className={classes.textPSize}>{toppingState[4].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -431,7 +437,7 @@ export const ToppingItems = () => {
 
         {/* アンチョビ */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[5].name}</span>
+          <span className={classes.textPSize}>{toppingState[5].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -447,7 +453,7 @@ export const ToppingItems = () => {
 
         {/* えび */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[6].name}</span>
+          <span className={classes.textPSize}>{toppingState[6].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -463,7 +469,7 @@ export const ToppingItems = () => {
 
         {/* ガーリックスライス */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[7].name}</span>
+          <span className={classes.textPSize}>{toppingState[7].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -479,7 +485,7 @@ export const ToppingItems = () => {
 
         {/* トロピカルフルーツ */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[8].name}</span>
+          <span className={classes.textPSize}>{toppingState[8].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -495,7 +501,7 @@ export const ToppingItems = () => {
 
         {/* ハワイ蜂蜜 */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[9].name}</span>
+          <span className={classes.textPSize}>{toppingState[9].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -511,13 +517,13 @@ export const ToppingItems = () => {
 
         {/* ココナッツ */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[10].name}</span>
+          <span className={classes.textPSize}>{toppingState[10].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={coconut}
-            onChange={setCoconut}
+            onChange={setCoconutMethod}
           >
             <MenuItem value='0'></MenuItem>
             <MenuItem value={toppingState[10].Msize}>M：{toppingState[10].Msize}円  </MenuItem>
@@ -527,7 +533,7 @@ export const ToppingItems = () => {
 
         {/* マンゴー */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[11].name}</span>
+          <span className={classes.textPSize}>{toppingState[11].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -543,7 +549,7 @@ export const ToppingItems = () => {
 
         {/* パイナップル */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[12].name}</span>
+          <span className={classes.textPSize}>{toppingState[12].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -559,7 +565,7 @@ export const ToppingItems = () => {
 
         {/* もち */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[13].name}</span>
+          <span className={classes.textPSize}>{toppingState[13].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -575,7 +581,7 @@ export const ToppingItems = () => {
 
         {/* コーヒー */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[14].name}</span>
+          <span className={classes.textPSize}>{toppingState[14].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -591,7 +597,7 @@ export const ToppingItems = () => {
 
         {/* スプライト */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[15].name}</span>
+          <span className={classes.textPSize}>{toppingState[15].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -607,7 +613,7 @@ export const ToppingItems = () => {
 
         {/* ジンジャーエール */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[16].name}</span>
+          <span className={classes.textPSize}>{toppingState[16].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -623,7 +629,7 @@ export const ToppingItems = () => {
 
         {/* コーラ */}
         <FormControl className={classes.formControl}>
-          <span>{toppingState[17].name}</span>
+          <span className={classes.textPSize}>{toppingState[17].name}</span>
           <InputLabel id="demo-simple-select-label"></InputLabel>
           <Select
             labelId="demo-simple-select-label"

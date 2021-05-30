@@ -102,6 +102,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
+  textPSize: {
+    'font-size': '12px',
+  },
 }));
 
 export const Detail = () => {
@@ -189,81 +192,87 @@ export const Detail = () => {
   })
 
   const addCart = () => {
-    const selectedToppingArray = selectedToppingState.filter((value) => {
-      return value.toppingPrice !== 0
-    })
-
-    // トッピングの有無により値が変わる
-    if (selectedToppingArray.length === 0) {
-      setOrderInfo((orderInfo) => {
-        orderInfo.itemId = Number(id)
-        orderInfo.imagePath = selectedItem.imagePath
-        orderInfo.itemName = selectedItem.name
-        orderInfo.itemPrice = Number(itemValue)
-        orderInfo.itemCount = Number(itemCount)
-      })
+    if (itemValue === 0) {
+      alert('商品サイズを選択してください。')
     } else {
-      setOrderInfo((orderInfo) => {
-        orderInfo.itemId = Number(id)
-        orderInfo.imagePath = selectedItem.imagePath
-        orderInfo.itemName = selectedItem.name
-        orderInfo.itemPrice = Number(itemValue)
-        orderInfo.itemCount = Number(itemCount)
-        orderInfo.toppingInfo = selectedToppingArray
+      const selectedToppingArray = selectedToppingState.filter((value) => {
+        return value.toppingPrice !== 0
       })
-    }
 
-    if (userIdState.uid) {
-      firebase
-        .firestore()
-        .collection(`users/${userIdState.uid}/orders`)
-        .add(orderInfo)
-        .then((doc) => {
-          setOrderInfo(orderInfo.uniqueId = doc.id)
-          dispatch(orderInfomation(orderInfo))
+      // トッピングの有無により値が変わる
+      if (selectedToppingArray.length === 0) {
+        setOrderInfo((orderInfo) => {
+          orderInfo.itemId = Number(id)
+          orderInfo.imagePath = selectedItem.imagePath
+          orderInfo.itemName = selectedItem.name
+          orderInfo.itemPrice = Number(itemValue)
+          orderInfo.itemCount = Number(itemCount)
         })
-        .catch((error) => {
-          console.log(error)
+      } else {
+        setOrderInfo((orderInfo) => {
+          orderInfo.itemId = Number(id)
+          orderInfo.imagePath = selectedItem.imagePath
+          orderInfo.itemName = selectedItem.name
+          orderInfo.itemPrice = Number(itemValue)
+          orderInfo.itemCount = Number(itemCount)
+          orderInfo.toppingInfo = selectedToppingArray
         })
-      // 画面遷移
-      handleLink('/cartlist')
-    } else {
-      dispatch(orderInfomation(orderInfo))
-      handleLink('/cartlist')
+      }
+
+      if (userIdState.uid) {
+        firebase
+          .firestore()
+          .collection(`users/${userIdState.uid}/orders`)
+          .add(orderInfo)
+          .then((doc) => {
+            setOrderInfo(orderInfo.uniqueId = doc.id)
+            dispatch(orderInfomation(orderInfo))
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        // 画面遷移
+        handleLink('/cartlist')
+      } else {
+        dispatch(orderInfomation(orderInfo))
+        handleLink('/cartlist')
+      }
     }
   }
 
 
   return (
     <>
-      <h1>商品詳細</h1>
+      <h1 style={{ textAlign: 'center' }}>商品詳細画面</h1>
       <div className={classes.root}>
         {!selectedItem ? <div className={classes.loading}>
           <LinearProgress variant="query" />
           <LinearProgress variant="query" color="secondary" />
         </div> :
           <Grid container spacing={3}>
-            <Grid item xs={6}>
-              <Paper className={classes.paper}>
+            <Paper className={classes.paper} style={{ display: 'flex' }}>
+              <Grid item xs={6} style={{ padding: '20px' }}>
+                {/* <Paper className={classes.paper}> */}
                 <Card className={classes.card}>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {selectedItem.name}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'left' }}>
+                      {selectedItem.description}
+                    </Typography>
+                  </CardContent>
                   <CardMedia
                     className={classes.media}
                     image={selectedItem.imagePath}
                     title="Contemplative Reptile"
                   />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {selectedItem.name}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                      {selectedItem.description}
-                    </Typography>
-                  </CardContent>
+
                 </Card>
-              </Paper>
-            </Grid>
-            <Grid item xs={6}>
-              <Paper className={classes.paper}>
+                {/* </Paper> */}
+              </Grid>
+              <Grid item xs={6}>
+
                 {/* <h2> {selectedItem.name}</h2>
                 <p>{selectedItem.description}</p> */}
 
@@ -324,10 +333,11 @@ export const Detail = () => {
 
 
 
-                <p>合計金額：{(Number(itemValue) * Number(itemCount) + Number(totleToppingPrice)).toLocaleString()}円</p>
+                <p>合計金額：{(Number(itemValue) * Number(itemCount) + Number(totleToppingPrice)).toLocaleString()}円（税抜き）</p>
                 <Button variant="contained" onClick={() => { addCart() }}>カートに入れる</Button>
-              </Paper>
-            </Grid>
+
+              </Grid>
+            </Paper>
           </Grid>
         }
 
