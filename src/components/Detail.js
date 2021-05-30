@@ -115,18 +115,15 @@ export const Detail = () => {
   const [toppingList, setToppingList] = useState('')
   // パラメーター受け取り
   const { id } = useParams()
-  console.log(id)
 
   const history = useHistory()
   const handleLink = (path) => history.push(path)
 
   // トッピングリストの合計金額
   useEffect(() => {
-    console.log('トッピングプライスの初期化')
     dispatch(defaultSelectedToppings())
     selectedToppingState.forEach((price) => {
       if (price.toppingPrice) {
-        console.log(price.toppingPrice)
       }
     })
   }, [])
@@ -137,7 +134,6 @@ export const Detail = () => {
     }
   })
 
-  console.log(totleToppingPrice)
 
   // トッピングリストの開閉
   const [expanded, setExpanded] = React.useState(false);
@@ -149,12 +145,10 @@ export const Detail = () => {
   // パラメーターで受け取ったidと合致するオブジェクトを返す
   useEffect(() => {
     const selectedItem = itemState.filter((item) => {
-      console.log(item)
       // 文字列のNOを受け取っているためNumberで囲む
       return item.id === Number(id)
     })
     setSelectedItem(selectedItem[0])
-    console.log(toppingState)
   }, [])
 
   // ラジオボタン
@@ -166,10 +160,8 @@ export const Detail = () => {
 
   // セレクトボックス
   const [itemCount, setItemCount] = useState(1);
-  console.log(itemCount)
   const selectItemCount = (event) => {
     event.preventDefault();
-    console.log(event)
     setItemCount(event.target.value);
   };
 
@@ -197,9 +189,6 @@ export const Detail = () => {
   })
 
   const addCart = () => {
-    console.log('addCartが発火しました。')
-    console.log(toppingState)
-
     const selectedToppingArray = selectedToppingState.filter((value) => {
       return value.toppingPrice !== 0
     })
@@ -230,15 +219,12 @@ export const Detail = () => {
         .collection(`users/${userIdState.uid}/orders`)
         .add(orderInfo)
         .then((doc) => {
-          console.log(doc.id)
           setOrderInfo(orderInfo.uniqueId = doc.id)
-          console.log(orderInfo)
           dispatch(orderInfomation(orderInfo))
         })
         .catch((error) => {
           console.log(error)
         })
-      console.log(userIdState.uid)
       // 画面遷移
       handleLink('/cartlist')
     } else {
@@ -251,7 +237,6 @@ export const Detail = () => {
   return (
     <>
       <h1>商品詳細</h1>
-      {console.log(toppingState)}
       <div className={classes.root}>
         {!selectedItem ? <div className={classes.loading}>
           <LinearProgress variant="query" />

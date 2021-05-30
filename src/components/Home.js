@@ -146,8 +146,6 @@ export const Home = () => {
         snapshot.forEach((doc) => {
           toppingArray.push(doc.data())
         })
-        console.log(toppingArray[0].array)
-        console.log(toppingArray[0].array.length)
         dispatch(toppings(toppingArray[0].array))
       });
   }, [])
@@ -155,12 +153,9 @@ export const Home = () => {
   // 文字検索（該当の商品を取得）
   const [searchValue, setSearchValue] = useState(null);
   const setSearchValueMethod = (event) => {
-    console.log(searchValue)
-    console.log(event)
     setSearchValue(event.target.value)
   }
   const filteringItems = (searchValue) => {
-    console.log(searchValue)
     // alert(searchValue)
     if (searchValue) {
       dispatch(seachItems(searchValue))
@@ -192,10 +187,6 @@ export const Home = () => {
         dispatch(items(itemArray))
       });
   }
-
-  console.log(itemState)
-  console.log(itemState.length)
-
 
   return (
     <>

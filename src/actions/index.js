@@ -12,8 +12,6 @@ export const DELETE_ORDER_INFO = 'DELETE_ORDER_INFO'
 export const DELETE_ORDER_INFO_NOLOGIN = 'DELETE_ORDER_INFO_NOLOGIN'
 
 export const items = (items) => {
-  console.log(items)
-  console.log(items.length)
   return ({
     type: SET_ITEMS,
     itemList: items
@@ -21,7 +19,6 @@ export const items = (items) => {
 }
 
 export const seachItems = (seachItems) => {
-  console.log(seachItems)
   return ({
     type: SEARCH_ITEMS,
     seachItemList: seachItems
@@ -29,8 +26,6 @@ export const seachItems = (seachItems) => {
 }
 
 export const toppings = (toppings) => {
-  console.log(toppings)
-  console.log('toppingsactionsが発火')
   return ({
     type: SET_TOPPINGS,
     toppingList: toppings
@@ -38,8 +33,6 @@ export const toppings = (toppings) => {
 }
 
 export const selectedToppings = (selectedToppings) => {
-  console.log(selectedToppings)
-  console.log('SELECTED_TOPPINGSが発火')
   return ({
     type: SELECTED_TOPPINGS,
     selectedToppingsList: selectedToppings
@@ -47,8 +40,6 @@ export const selectedToppings = (selectedToppings) => {
 }
 
 export const defaultSelectedToppings = (defaultSelectedToppings) => {
-  console.log(defaultSelectedToppings)
-  console.log('DEFAULT_SELECTED_TOPPINGSが発火')
   return ({
     type: DEFAULT_SELECTED_TOPPINGS,
     defaultSelectedToppingsList: defaultSelectedToppings
@@ -56,8 +47,6 @@ export const defaultSelectedToppings = (defaultSelectedToppings) => {
 }
 
 export const orderInfomation = (orderInfomation) => {
-  console.log(orderInfomation)
-  console.log('SET_ORDERSが発火')
   return ({
     type: SET_ORDERS,
     orderInfomationList: orderInfomation
@@ -65,8 +54,6 @@ export const orderInfomation = (orderInfomation) => {
 }
 
 export const deleteOrderInfomation = (deleteOrderInfomation) => {
-  console.log('DELETE_ORDER_INFOが発火')
-  console.log(deleteOrderInfomation)
   return ({
     type: DELETE_ORDER_INFO,
     deleteOrderInfomationId: deleteOrderInfomation
@@ -74,8 +61,6 @@ export const deleteOrderInfomation = (deleteOrderInfomation) => {
 }
 
 export const deleteOrderInfomationIdNum = (deleteOrderInfomationIdNum) => {
-  console.log(deleteOrderInfomationIdNum)
-  console.log('DELETE_ORDER_INFO_NOLOGINが発火')
   return ({
     type: DELETE_ORDER_INFO_NOLOGIN,
     deleteOrderInfomationIdNum: deleteOrderInfomationIdNum
