@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../actions/index.js";
 
 export const RegisterEmail = () => {
@@ -10,8 +10,10 @@ export const RegisterEmail = () => {
     [confirmPassword, setConfirmPassword] = useState('');
 
   const dispatch = useDispatch();
+  const getRoutingJudge = useSelector((state) => state.routingJudge.routingJudge);
 
   const register = () => {
+    localStorage.setItem('routingJudge', Number(getRoutingJudge));
     dispatch(signUp(username, email, password, confirmPassword));
   }
 

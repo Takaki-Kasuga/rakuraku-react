@@ -37,6 +37,7 @@ const UserAccount = () => {
     console.log(stateContent)
     return (
         <React.Fragment>
+            <h2>アカウント情報</h2>
             <Grid container alignItems="center" justify="center">
                 <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="simple table">
@@ -58,7 +59,7 @@ const UserAccount = () => {
                 </TableContainer>
             </Grid>
             <Grid container alignItems="center" justify="center">
-                <Grid>
+                <Grid style={{margin :20}}>
                     <Button variant="outlined" color="default" onClick={() => history.push('/')}>トップ画面を表示する</Button>
                 </Grid>
             </Grid>

@@ -135,6 +135,7 @@ export const logout = () =>
       await firebase.auth().signOut()
         .then(result => {
           console.log('ログアウト成功です！')
+          localStorage.setItem('routingJudge', Number('0'));
           dispatch(changeZeroRoutingStatus());
         }).catch((error) => {
           alert('ログアウトに失敗しました。お手数ですがもう1度お試しください')
