@@ -177,7 +177,20 @@ export const Home = () => {
           dispatch(items(itemArray))
         });
     }
+  }
 
+  const fetchItem = () => {
+    firebase
+      .firestore()
+      .collection(`items/`)
+      .get()
+      .then((snapshot) => {
+        const itemArray = []
+        snapshot.forEach((doc) => {
+          itemArray.push(doc.data())
+        })
+        dispatch(items(itemArray))
+      });
   }
 
   console.log(itemState)
@@ -221,7 +234,15 @@ export const Home = () => {
           <Grid container className={classes.root} spacing={2}>
             <Grid item xs={12}> */}
         <Grid container justify="center" spacing={spacing}>
-          {!itemState.length ? <h1>該当する商品がありません</h1> :
+          {!itemState.length ?
+            <div>
+              {/* <h1>Loading...</h1> */}
+              <div>
+                <h1>該当する商品がありません</h1>
+                <Button variant="contained" onClick={fetchItem}>一覧を表示する。</Button>
+              </div>
+            </div>
+            :
             <Grid item className={classes.flex}>
               {itemState.map((item) => {
                 return (

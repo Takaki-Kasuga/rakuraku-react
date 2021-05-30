@@ -26,8 +26,7 @@ export default (state = [], action) => {
         }
       })
       if (serchArray.length === 0) {
-        alert('検索条件に一致する商品がございません。')
-        return newState;
+        return serchArray;
       } else {
         return serchArray;
       }
