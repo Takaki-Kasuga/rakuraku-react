@@ -38,7 +38,7 @@ import Button from '@material-ui/core/Button';
 import image from '../img/2.jpg'
 
 const OrderConfirm =()=>{
-    const userIdState = useSelector((state) => state.userIdState)
+    
     console.log('OrderConfirmが発火')
     const dispatch = useDispatch();
 
@@ -56,11 +56,6 @@ const OrderConfirm =()=>{
 
     const history = useHistory();
     const getState = (state) => state.userIdState.login_user;
-    const getState2 = (state)=>state;
-    const stateContent = useSelector(getState2);
-
-    console.log(stateContent.orderState)
-    console.log(stateContent.orderState[0])
 
     useEffect(() => {
         if (zipCode) {
@@ -76,26 +71,31 @@ const OrderConfirm =()=>{
         }
       }, [zipCode]);
       
-    useEffect(()=>{
+      const userIdState = useSelector((state) => state.userIdState)
+      if(userIdState.login_user){
         firebase
-            .firestore()
-            .collection(`users/${userIdState.uid}/orders`)
-            .get()
-            .then((snapshot) => {
-                snapshot.forEach((doc) => {
-                    console.log(doc.id)
-                    //オブジェクトの中身
-                    console.log(doc.data())
-                    const fetchData = doc.data()
-                    //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
-                    //uniqueIdはdeleteのときに必要
-                    fetchData.uniqueId = doc.id
-                    console.log(fetchData)
-                    dispatch(orderInfomation(fetchData))
+        .firestore()
+        .collection(`users/${userIdState.uid}/orders`)
+        .get()
+        .then((snapshot) => {
+            snapshot.forEach((doc) => {
+                console.log(doc.id)
+                //オブジェクトの中身
+                console.log(doc.data())
+                const fetchData = doc.data()
+                //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
+                //uniqueIdはdeleteのときに必要
+                fetchData.uniqueId = doc.id
+                console.log(fetchData)
+                if (fetchData.status === 0){
+                    console.log('フェッチデータ0')
                 }
-            );
-          });
-    },)
+                dispatch(orderInfomation(fetchData))
+            }
+        );
+      });
+      }
+        
 
     // データリスト（テーブル）
     const useStyles = makeStyles((theme)=>(
@@ -129,96 +129,102 @@ const OrderConfirm =()=>{
         })
     );
 
-    function createData(itemId,itemName,itemPath,itemPrice,itemCount,toppingId,toppingName,toppingPrice,smallTotalCount, smallTotalTax) {
-        return { itemId,itemName,itemPath,itemPrice,itemCount,toppingId,toppingName,toppingPrice,smallTotalCount, smallTotalTax };
+    function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId) {
+        return { itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId };
     }
-    //state.orderArrayの中身を以下に入れたい。
-    const orderArray = stateContent.orderState
-    console.log(orderArray)
-  const order = {
-      itemId:stateContent.orderState.itemId,
-      itemName:'あいう',
-      itemPath:image,
-      itemPrice:1500,
-      itemCount:3,
-      toppingId:0,
-      toppingName:'コーラ',
-      toppingPrice:200,
-      smallTotalCount:2000,
-      //this.itemPrice*this.itemCount+this.toppingPrice,
-      smallTotalTax:200
-      //this.smallTotalCount*0.1
-  }
-    let smallTotal = order.itemPrice*order.itemCount+order.toppingPrice;
-    let smallTotalTax = smallTotal*0.1;
-    let totalPrice = smallTotal;//実際にはsmallTotalをmapする
-    let totalTax = totalPrice*0.1
+    //state.orderArrayの中身をorderに入れたい。
+    const orderState = useSelector((state)=>state.orderState)
+    const rows = [];
+    orderState.forEach((order)=>{
+        const fetchData2 = createData(
+            { itemPath: order.imagePath,itemName: order.itemName},
+            { itemPrice: order.itemPrice, itemCount: order.itemCount },
+            order.toppingInfo,
+            order.uniqueId,
+            order.itemId,
+        )
+        rows.push(fetchData2)
+    })
 
-  const rows = [
-    createData(0,'ハワイアン・パラダイス',image,350,5,0,'トッピング１',200,200,2200),
-    createData(
-        order.itemId,order.itemName,order.itemPath,order.itemPrice,order.itemCount,order.toppingId,order.toppingName,order.toppingPrice,order.smallTotalCount,order.smallTotalTax
-        ),
-    createData(
-        order.itemId,order.itemName,order.itemPath,order.itemPrice,order.itemCount,order.toppingId,order.toppingName,order.toppingPrice,order.smallTotalCount,order.smallTotalTax
-        ),
-  ];
 
   const classes = useStyles();
+  // 金額関連処理
+  let everyToppingTotalPrice = 0
+  let totalItemPrice = 0
+
+  // 商品の合計金額の処理
+  let totalToppingPrice = 0
+  if (rows.length !== 0) {
+    rows.forEach((totalItem) => {
+      totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
+    })
+  }
     return (
         <React.Fragment>
             <div>
                 <h2>注文確認</h2>
                 <Paper className={classes.root}>
                     <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            {/* <tableCell>id</tableCell> */}
-                            <TableCell align="center">商品名</TableCell>
-                            <TableCell align="right">商品個数と値段（税抜き）</TableCell>
-                            <TableCell align="right">トッピングの値段（税抜き）</TableCell>
-                            <TableCell align="right">金額</TableCell>
-                            <TableCell align="right"></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows.map(row => (
-                        <TableRow key={row.id}>
-                            <TableCell component="th" scope="row">
-                                <Card className={classes.card}>
-                                    <CardContent>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                        {row.itemName}
-                                        </Typography>
-                                    </CardContent>
-                                    <CardMedia
-                                    className={classes.media}
-                                    image={row.itemPath}
-                                    title="Contemplative Reptile"
-                                    />
-                                </Card>
-                            {/* <img src={row.name}></img> */}
-                            </TableCell>
-                            <TableCell align="right">
-                                <p>M:{row.itemPrice}円</p>
-                                <p>個数：{row.itemCount}個</p>
-                            </TableCell>
-                            <TableCell align="right">
-                                <p>{row.toppingName}：{row.toppingPrice}円</p>
-                                <p>{row.toppingName}：{row.toppingPrice}円</p>
-                            </TableCell>
-                            <TableCell align="right">
-                                <p>消費税：{smallTotalTax}円</p>
-                                <p>金額：{smallTotal}円<br/>（税込）</p>
-                            </TableCell>
-                        </TableRow>
-                        ))}
-                    </TableBody>
+                        <TableHead>
+                            <TableRow>
+                                {/* <tableCell>id</tableCell> */}
+                                <TableCell align="center">商品名</TableCell>
+                                <TableCell align="right">商品個数と値段（税抜き）</TableCell>
+                                <TableCell align="right">トッピングの値段（税抜き）</TableCell>
+                                <TableCell align="right">金額</TableCell>
+                                <TableCell align="right"></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows.map((row,index) => (
+                            <TableRow key={index}>
+                                <TableCell component="th" scope="row">
+
+                                    <Card className={classes.card}>
+                                        <CardContent>
+                                            <Typography variant="body2" color="textSecondary" component="p">
+                                            {row.itemInfo.itemName}
+                                            </Typography>
+                                        </CardContent>
+                                        <CardMedia
+                                        className={classes.media}
+                                        image={row.itemInfo.itemPath}
+                                        title="Contemplative Reptile"
+                                        />
+                                    </Card>
+
+                                </TableCell>
+                                <TableCell align="right">
+                                    <p>M:{Number(row.itemPriceAndCount.itemPrice).toLocaleString()}円</p>
+                                    <p>個数：{row.itemPriceAndCount.itemCount}個</p>
+                                </TableCell>
+                                <TableCell align="right">
+                                    {!row.toppingInfo.toppingItem ? <p>0円</p> :
+                                        row.toppingInfo.toppingItem.map((topping) => {
+                                            totalToppingPrice += topping.toppingPrice
+                                            everyToppingTotalPrice += topping.toppingPrice
+                                            return (
+                                            <div>
+                                                <p>
+                                                {topping.toppigName}：
+                                                {Number(topping.toppingPrice).toLocaleString()}円</p>
+                                            </div>
+                                            )
+                                        })
+                                    }
+                                </TableCell>
+                                <TableCell align="right">
+                                    <p>消費税：円</p>
+                                    <p>金額：円<br/>（税込）</p>
+                                </TableCell>
+                            </TableRow>
+                            ))}
+                        </TableBody>
                     </Table>
 
                     <h4>ご注文合計金額</h4>
-                    <p>消費税（10%）：{totalPrice}円</p>
-                    <p>合計金額：{totalTax}円（税込）</p>
+                    <p>消費税（10%）：円</p>
+                    <p>合計金額：円（税込）</p>
                 </Paper>
             </div>
             <div>
