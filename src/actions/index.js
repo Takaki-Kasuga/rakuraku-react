@@ -12,6 +12,7 @@ export const DELETE_ORDER_INFO = 'DELETE_ORDER_INFO'
 export const DELETE_ORDER_INFO_NOLOGIN = 'DELETE_ORDER_INFO_NOLOGIN'
 export const DELETE_ALL_ORDER = 'DELETE_ALL_ORDER'
 export const CHANGE_ROUTING_STATUS = 'CHANGE_ROUTING_STATUS';
+export const CHANGE_ZERO_ROUTING_STATUS = 'CHANGE_ZERO_ROUTING_STATUS';
 
 export const items = (items) => {
   return ({
@@ -110,6 +111,15 @@ export const changeRoutingStatus = () => {
   )
 }
 
+export const changeZeroRoutingStatus = () => {
+  return (
+    {
+      type: CHANGE_ZERO_ROUTING_STATUS,
+      routingJudge: 0
+    }
+  )
+}
+
 export const loginWithGoogle = () =>
   async () => {
     {
@@ -119,9 +129,15 @@ export const loginWithGoogle = () =>
   }
 
 export const logout = () =>
-  async () => {
+  async (dispatch) => {
     {
       await firebase.auth().signOut()
+        .then(result => {
+          console.log('ログアウト成功です！')
+          dispatch(changeZeroRoutingStatus());
+        }).catch((error) => {
+          alert('ログアウトに失敗しました。お手数ですがもう1度お試しください')
+        })
     }
   }
 
