@@ -1,5 +1,8 @@
 import React,{useState,useEffect} from 'react';
+import {useDispatch,useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import firebase from '../firebase/firebase';
+import { orderInfomation } from '../actions/index'
 
 //テーブル
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,11 +34,14 @@ import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
 
-
 //イメージ
 import image from '../img/2.jpg'
 
 const OrderConfirm =()=>{
+    const userIdState = useSelector((state) => state.userIdState)
+    console.log('OrderConfirmが発火')
+    const dispatch = useDispatch();
+
     const [name, setName] = useState(''); 
     const [email, setEmail] = useState(''); 
     const [zipCode, setZipCode] = useState('');
@@ -49,6 +55,13 @@ const OrderConfirm =()=>{
     };
 
     const history = useHistory();
+    const getState = (state) => state.userIdState.login_user;
+    console.log(getState)
+    const getState2 = (state)=>state;
+    const stateContent = useSelector(getState2);
+
+    console.log(stateContent.orderState)
+    console.log(stateContent.orderState[0])
 
     useEffect(() => {
         if (zipCode) {
@@ -63,7 +76,27 @@ const OrderConfirm =()=>{
             });
         }
       }, [zipCode]);
-
+      
+    useEffect(()=>{
+        firebase
+            .firestore()
+            .collection(`users/${userIdState.uid}/orders`)
+            .get()
+            .then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    console.log(doc.id)
+                    //オブジェクトの中身
+                    console.log(doc.data())
+                    const fetchData = doc.data()
+                    //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
+                    //uniqueIdはdeleteのときに必要
+                    fetchData.uniqueId = doc.id
+                    console.log(fetchData)
+                    dispatch(orderInfomation(fetchData))
+                }
+            );
+          });
+    },)
 
     // データリスト（テーブル）
     const useStyles = makeStyles((theme)=>(
@@ -100,9 +133,12 @@ const OrderConfirm =()=>{
     function createData(itemId,itemName,itemPath,itemPrice,itemCount,toppingId,toppingName,toppingPrice,smallTotalCount, smallTotalTax) {
         return { itemId,itemName,itemPath,itemPrice,itemCount,toppingId,toppingName,toppingPrice,smallTotalCount, smallTotalTax };
     }
+    //state.orderArrayの中身を以下に入れたい。
+    const orderArray = stateContent.orderState
+    console.log(orderArray)
   const order = {
-      itemId:0,
-      itemName:'ハワイアン・パラダイス',
+      itemId:stateContent.orderState.itemId,
+      itemName:'あいう',
       itemPath:image,
       itemPrice:1500,
       itemCount:3,
@@ -128,9 +164,6 @@ const OrderConfirm =()=>{
 
   const rows = [
     createData(0,'ハワイアン・パラダイス',image,350,5,0,'トッピング１',200,200,2200),
-    createData(
-        order.itemId,order.itemName,order.itemPath,order.itemPrice,order.itemCount,order.toppingId,order.toppingName,order.toppingPrice,order.smallTotalCount,order.smallTotalTax
-        ),
     createData(
         order.itemId,order.itemName,order.itemPath,order.itemPrice,order.itemCount,order.toppingId,order.toppingName,order.toppingPrice,order.smallTotalCount,order.smallTotalTax
         ),
