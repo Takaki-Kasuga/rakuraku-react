@@ -58,6 +58,7 @@ const OrderConfirm =()=>{
     const getState = (state) => state.userIdState.login_user;
     const orderState = useSelector((state)=>state.orderState)
 
+
     useEffect(() => {
         if (zipCode) {
           fetch(`https://api.zipaddress.net/?zipcode=${zipCode}`, {
@@ -139,18 +140,21 @@ const OrderConfirm =()=>{
     //state.orderArrayの中身をorderに入れたい。
     const rows = [];
     orderState.forEach((order)=>{
-        const fetchData2 = createData(
-            { itemPath: order.imagePath,itemName: order.itemName},
-            { itemPrice: order.itemPrice, itemCount: order.itemCount },
-            order.toppingInfo,
-            order.uniqueId,
-            order.itemId,
-        )
-        rows.push(fetchData2)
+        if(order.status === 0){
+            const fetchData2 = createData(
+                { itemPath: order.imagePath,itemName: order.itemName},
+                { itemPrice: order.itemPrice, itemCount: order.itemCount },
+                order.toppingInfo,
+                order.uniqueId,
+                order.itemId,
+            )
+            rows.push(fetchData2)
+        }
     })
 
 
   const classes = useStyles();
+  
   // 金額関連処理
   let everyToppingTotalPrice = 0
   let totalItemPrice = 0
