@@ -217,7 +217,8 @@ export const CartList = () => {
                         return (
                           <div key={index}>
                             <p>
-                              {topping.toppigName}<br />：
+                              {topping.toppingPrice === 200 ? topping.toppigName + 'M' : topping.toppigName + 'L'}
+                              <br />：
                               {Number(topping.toppingPrice).toLocaleString()}円</p>
                           </div>
                         )
