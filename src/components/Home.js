@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     cursor: 'pointer',
     width: '300px',
-    'margin': '30px',
+    'margin': '20px',
   },
   searchbox: {
     display: 'flex',
@@ -177,7 +177,20 @@ export const Home = () => {
           dispatch(items(itemArray))
         });
     }
+  }
 
+  const fetchItem = () => {
+    firebase
+      .firestore()
+      .collection(`items/`)
+      .get()
+      .then((snapshot) => {
+        const itemArray = []
+        snapshot.forEach((doc) => {
+          itemArray.push(doc.data())
+        })
+        dispatch(items(itemArray))
+      });
   }
 
   console.log(itemState)
@@ -189,6 +202,13 @@ export const Home = () => {
       <div className={classes.searchbox}>
         {searchValue}
         <TextField
+          onKeyPress={e => {
+            if (e.key == 'Enter') {
+              e.preventDefault()
+              filteringItems(searchValue)
+            }
+          }
+          }
           className={classes.textField}
           id="filled-full-width"
           label="Label"
@@ -214,7 +234,15 @@ export const Home = () => {
           <Grid container className={classes.root} spacing={2}>
             <Grid item xs={12}> */}
         <Grid container justify="center" spacing={spacing}>
-          {!itemState.length ? <h1>Loding..</h1> :
+          {!itemState.length ?
+            <div>
+              {/* <h1>Loading...</h1> */}
+              <div>
+                <h1>該当する商品がありません</h1>
+                <Button variant="contained" onClick={fetchItem}>一覧を表示する。</Button>
+              </div>
+            </div>
+            :
             <Grid item className={classes.flex}>
               {itemState.map((item) => {
                 return (
