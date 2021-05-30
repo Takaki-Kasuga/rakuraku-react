@@ -274,6 +274,7 @@ export const Home = () => {
                       if (e.key == 'Enter') {
                         e.preventDefault()
                         filteringItems(searchValue)
+                        changeToStatus()
                       }
                     }
                     }

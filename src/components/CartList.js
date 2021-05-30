@@ -212,7 +212,6 @@ export const CartList = () => {
                         )
                       })
                     }
-                    { }
                     {!row.toppingItem ? <p>0円</p> :
                       row.toppingItem.map((topping, index) => {
                         totalToppingPrice += topping.toppingPrice
