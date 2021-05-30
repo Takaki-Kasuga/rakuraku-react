@@ -144,6 +144,13 @@ export const CartList = () => {
   let everyToppingTotalPrice = 0
   let totalItemPrice = 0
   let totalToppingPrice = 0
+  if (rows.length !== 0) {
+    rows.forEach((totalItem) => {
+      console.log(totalItem)
+      console.log('計算のための式')
+      totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
+    })
+  }
 
   return (
     <>
@@ -182,15 +189,16 @@ export const CartList = () => {
                   <TableCell align="right">
                     <p>金額:{Number(row.itemPriceAndCount.itemPrice).toLocaleString()}円</p>
                     <p>個数:{row.itemPriceAndCount.itemCount}個</p>
+
                   </TableCell>
                   <TableCell align="right">
                     {!row.toppingItem ? <p>0円</p> :
                       row.toppingItem.map((topping) => {
                         // トッピングプライス合計値の初期化
-                        everyToppingTotalPrice = 0
+                        totalToppingPrice += topping.toppingPrice
+                        everyToppingTotalPrice += topping.toppingPrice
                         console.log('toppingItemのなかみ')
                         console.log(topping)
-
                         return (
                           <div>
                             <p>
@@ -203,13 +211,15 @@ export const CartList = () => {
                   </TableCell>
                   <TableCell align="right">
                     {/* 各商品に対するトッピングプライスの合計金額を計算 */}
-                    {row.toppingItem.forEach((topping) => {
+                    {/* {!rows.length ? <p></p> : row.toppingItem.forEach((topping) => {
                       everyToppingTotalPrice += topping.toppingPrice
-                    })}
+                    })} */}
+                    {console.log('forEachの発火')}
+                    {console.log(row.toppingItem)}
                     <div>
                       <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
                       <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)).toLocaleString()}（税抜き）</p>
-                      <p className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}（税込）</p>
+                      <p className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円（税込）</p>
                     </div>
                   </TableCell>
                   <TableCell align="right">
@@ -226,10 +236,11 @@ export const CartList = () => {
                         </Button>
                     </div>
                   </TableCell>
-                  {totalItemPrice += row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount}
-                  {row.toppingItem.forEach((topping) => {
+
+                  {/* {row.toppingItem.forEach((topping) => {
                     totalToppingPrice += topping.toppingPrice
-                  })}
+                  })} */}
+                  {everyToppingTotalPrice = 0}
                   {console.log('レンダリング終了')}
                 </TableRow>
               ))}
