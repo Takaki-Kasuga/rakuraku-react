@@ -92,15 +92,19 @@ export const CartList = () => {
   const rows = [];
 
   orderState.forEach((order) => {
-    const fetchData = createData(
-      { itemPath: order.imagePath, itemName: order.itemName },
-      { itemPrice: order.itemPrice, itemCount: order.itemCount },
-      order.toppingInfo,
-      order.uniqueId,
-      order.itemId,
-    )
-    // selectedToppingId.push(order.toppingInfo)
-    rows.push(fetchData)
+    console.log(order.status)
+    // statusが0（購入前）の商品を取ってくる
+    if (order.status === 0) {
+      const fetchData = createData(
+        { itemPath: order.imagePath, itemName: order.itemName },
+        { itemPrice: order.itemPrice, itemCount: order.itemCount },
+        order.toppingInfo,
+        order.uniqueId,
+        order.itemId,
+      )
+      // selectedToppingId.push(order.toppingInfo)
+      rows.push(fetchData)
+    }
   })
 
 
