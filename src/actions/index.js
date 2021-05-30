@@ -6,6 +6,7 @@ export const SET_TOPPINGS = 'SET_TOPPINGS'
 export const SET_USER_INFO = 'SET_USER_INFO';
 export const DELETE_USER_INFO = 'DELETE_USER_INFO';
 export const SELECTED_TOPPINGS = 'SELECTED_TOPPINGS';
+export const DEFAULT_SELECTED_TOPPINGS = 'DEFAULT_SELECTED_TOPPINGS';
 export const SET_ORDERS = 'SET_ORDERS';
 export const DELETE_ORDER_INFO = 'DELETE_ORDER_INFO'
 export const DELETE_ORDER_INFO_NOLOGIN = 'DELETE_ORDER_INFO_NOLOGIN'
@@ -43,6 +44,15 @@ export const selectedToppings = (selectedToppings) => {
   return ({
     type: SELECTED_TOPPINGS,
     selectedToppingsList: selectedToppings
+  })
+}
+
+export const defaultSelectedToppings = (defaultSelectedToppings) => {
+  console.log(defaultSelectedToppings)
+  console.log('DEFAULT_SELECTED_TOPPINGSが発火')
+  return ({
+    type: DEFAULT_SELECTED_TOPPINGS,
+    defaultSelectedToppingsList: defaultSelectedToppings
   })
 }
 

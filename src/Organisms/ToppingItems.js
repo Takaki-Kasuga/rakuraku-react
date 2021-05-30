@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   // セレクトボックス
   formControl: {
     margin: theme.spacing(1),
-    width: '200px',
+    'width': '200px',
   },
   flex: {
     display: 'flex',

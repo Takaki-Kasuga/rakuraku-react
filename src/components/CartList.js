@@ -71,6 +71,9 @@ export const CartList = () => {
     extendedIcon: {
       marginRight: theme.spacing(1),
     },
+    textSet: {
+      'text-align': 'left'
+    }
   }));
 
   function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId) {
@@ -135,8 +138,11 @@ export const CartList = () => {
 
   const classes = useStyles();
 
-  let totalToppingPrice = 0
-  console.log(totalToppingPrice)
+  // let totalToppingPrice = 0
+  // console.log(totalToppingPrice)
+
+
+  let everyToppingTotalPrice = 0
 
   return (
     <>
@@ -153,7 +159,7 @@ export const CartList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map(row => (
+              {rows.map((row, index) => (
                 <TableRow key={row.itemInfo}>
 
                   <TableCell component="th" scope="row">
@@ -179,6 +185,11 @@ export const CartList = () => {
                   <TableCell align="right">
                     {!row.toppingItem ? <p>0円</p> :
                       row.toppingItem.map((topping) => {
+                        // トッピングプライス合計値の初期化
+                        everyToppingTotalPrice = 0
+                        console.log('toppingItemのなかみ')
+                        console.log(topping)
+
                         return (
                           <div>
                             <p>
@@ -190,8 +201,16 @@ export const CartList = () => {
                     }
                   </TableCell>
                   <TableCell align="right">
-                    <p>消費税：円</p>
-                    <p>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount)) * 1.1).toLocaleString()}（税込）</p>
+                    {row.toppingItem.forEach((topping) => {
+                      everyToppingTotalPrice += topping.toppingPrice
+                    })}
+
+                    {/* <p>トッピングの合計：{everyToppingTotalPrice}円</p> */}
+                    <div>
+                      <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
+                      <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)).toLocaleString()}（税抜き）</p>
+                      <p className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}（税込）</p>
+                    </div>
                   </TableCell>
                   <TableCell align="right">
                     <div className={classes.delete} onClick={() => {
@@ -207,8 +226,10 @@ export const CartList = () => {
                         </Button>
                     </div>
                   </TableCell>
+                  {console.log('レンダリング終了')}
                 </TableRow>
               ))}
+
             </TableBody>
           </Table>
 
