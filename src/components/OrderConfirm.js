@@ -56,7 +56,8 @@ const OrderConfirm =()=>{
 
     const history = useHistory();
     const getState = (state) => state.userIdState.login_user;
-    const orderState = useSelector((state)=>state.orderState)
+    const orderState = useSelector((state)=>state.orderState);
+    const selectedToppingState = useSelector((state)=>state.selectedToppingState)
 
 
     useEffect(() => {
@@ -137,9 +138,10 @@ const OrderConfirm =()=>{
     function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId) {
         return { itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId };
     }
-    //state.orderArrayの中身をorderに入れたい。
+    //state.orderStateの値（オブジェクト）をrowsに入れる
     const rows = [];
     orderState.forEach((order)=>{
+        //注文確認画面なのでstatusが0の商品のみ取得
         if(order.status === 0){
             const fetchData2 = createData(
                 { itemPath: order.imagePath,itemName: order.itemName},
@@ -154,7 +156,7 @@ const OrderConfirm =()=>{
 
 
   const classes = useStyles();
-  
+
   // 金額関連処理
   let everyToppingTotalPrice = 0
   let totalItemPrice = 0
