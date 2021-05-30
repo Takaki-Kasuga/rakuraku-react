@@ -23,6 +23,7 @@ import { RegisterEmail } from './components/RegisterEmail.js';
 import { TermOfUse } from './components/TermOfUse.js';
 import UserAccount from './components/UserAccount.js';
 import { orderInfomation, setUserInfo, deleteUserInfo } from './actions/index'
+import { ReorderRounded } from "@material-ui/icons";
 
 const getState = (state) => state.userIdState.login_user;
 
@@ -69,6 +70,25 @@ function App() {
     setLoginUser(stateContent);
   }, [stateContent])
 
+  const LoginBranch = () => {
+    return (
+      <React.Fragment>
+        <Route path='/resettingemail' exact>
+          {loginUser ? <ResettingEmail /> : <Redirect to="/" />}
+        </Route>
+        <Route path='/registeremail' exact>
+          {loginUser ? <Redirect to="/" /> : <RegisterEmail />}
+        </Route>
+        <Route path='/login' exact>
+          {loginUser ? <Redirect to="/" /> : <Login />}
+        </Route>
+        <Route path='/useraccount' exact>
+          {loginUser ? <UserAccount /> : <Redirect to="/" />}
+        </Route>
+      </React.Fragment>
+    )
+  }
+
   return (
     <Router>
       <div>
@@ -87,7 +107,7 @@ function App() {
 
         <Switch>
           <Route path='/termofuse' exact component={TermOfUse} />
-          <Route path='/resettingemail' exact>
+          {/* <Route path='/resettingemail' exact>
             {loginUser ? <ResettingEmail /> : <Redirect to="/" />}
           </Route>
           <Route path='/registeremail' exact>
@@ -98,13 +118,14 @@ function App() {
           </Route>
           <Route path='/useraccount' exact>
             {loginUser ? <UserAccount /> : <Redirect to="/" />}
-          </Route>
+          </Route> */}
           <Route path='/ordercomplete' exact component={OrderComplete} />
           <Route path='/orderhistory' exact component={OrderHistory} />
           <Route path='/orderconfirm' exact component={OrderConfirm} />
           <Route path='/cartlist' exact component={CartList} />
           <Route exact path="/detail/:id" component={Detail} />
           <Route exact path="/" component={Home} />
+          <LoginBranch />
         </Switch>
       </div>
     </Router>
