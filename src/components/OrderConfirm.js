@@ -56,6 +56,7 @@ const OrderConfirm =()=>{
 
     const history = useHistory();
     const getState = (state) => state.userIdState.login_user;
+    const orderState = useSelector((state)=>state.orderState)
 
     useEffect(() => {
         if (zipCode) {
@@ -72,29 +73,32 @@ const OrderConfirm =()=>{
       }, [zipCode]);
       
       const userIdState = useSelector((state) => state.userIdState)
-      if(userIdState.login_user){
-        firebase
-        .firestore()
-        .collection(`users/${userIdState.uid}/orders`)
-        .get()
-        .then((snapshot) => {
-            snapshot.forEach((doc) => {
-                console.log(doc.id)
-                //オブジェクトの中身
-                console.log(doc.data())
-                const fetchData = doc.data()
-                //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
-                //uniqueIdはdeleteのときに必要
-                fetchData.uniqueId = doc.id
-                console.log(fetchData)
-                if (fetchData.status === 0){
-                    console.log('フェッチデータ0')
-                }
-                dispatch(orderInfomation(fetchData))
-            }
-        );
-      });
-      }
+      useEffect(()=>{
+        if(userIdState.login_user){
+              firebase
+                .firestore()
+                .collection(`users/${userIdState.uid}/orders`)
+                .get()
+                .then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        console.log(doc.id)
+                        //オブジェクトの中身
+                        console.log(doc.data())
+                        const fetchData = doc.data()
+                        //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
+                        //uniqueIdはdeleteのときに必要
+                        fetchData.uniqueId = doc.id
+                        console.log(fetchData)
+                        if (fetchData.status === 0){
+                            console.log('ステータス0')
+                        }
+                        dispatch(orderInfomation(fetchData))
+                    }
+                );
+          });
+      }},[])
+      
+      
         
 
     // データリスト（テーブル）
@@ -133,7 +137,6 @@ const OrderConfirm =()=>{
         return { itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId };
     }
     //state.orderArrayの中身をorderに入れたい。
-    const orderState = useSelector((state)=>state.orderState)
     const rows = [];
     orderState.forEach((order)=>{
         const fetchData2 = createData(
@@ -161,6 +164,7 @@ const OrderConfirm =()=>{
   }
     return (
         <React.Fragment>
+            {!rows.length ? <h2>カートに商品がありません</h2> :
             <div>
                 <h2>注文確認</h2>
                 <Paper className={classes.root}>
@@ -199,8 +203,8 @@ const OrderConfirm =()=>{
                                     <p>個数：{row.itemPriceAndCount.itemCount}個</p>
                                 </TableCell>
                                 <TableCell align="right">
-                                    {!row.toppingInfo.toppingItem ? <p>0円</p> :
-                                        row.toppingInfo.toppingItem.map((topping) => {
+                                    {!row.toppingItem ? <p>0円</p> :
+                                        row.toppingItem.map((topping) => {
                                             totalToppingPrice += topping.toppingPrice
                                             everyToppingTotalPrice += topping.toppingPrice
                                             return (
@@ -227,6 +231,7 @@ const OrderConfirm =()=>{
                     <p>合計金額：円（税込）</p>
                 </Paper>
             </div>
+            }
             <div>
                 <h2>お届け先情報</h2>
                 <div style={{ padding: 10 }}>
