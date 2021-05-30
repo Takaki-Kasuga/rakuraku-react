@@ -152,8 +152,8 @@ export const CartList = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
-                <TableRow key={row.itemInfo}>
+              {rows.map((row, index) => (
+                <TableRow key={index}>
 
                   <TableCell component="th" scope="row">
 
@@ -178,7 +178,7 @@ export const CartList = () => {
                   </TableCell>
 
                   <TableCell align="right">
-                    {/* everyToppingTotalPriceの初期化s */}
+                    {/* everyToppingTotalPriceの初期化 */}
                     {!row.toppingItem ? <spna style={{ display: 'none' }}></spna> :
                       row.toppingItem.map((topping, index) => {
                         everyToppingTotalPrice = 0
@@ -187,12 +187,13 @@ export const CartList = () => {
                         )
                       })
                     }
+                    { }
                     {!row.toppingItem ? <p>0円</p> :
                       row.toppingItem.map((topping, index) => {
                         totalToppingPrice += topping.toppingPrice
                         everyToppingTotalPrice += topping.toppingPrice
                         return (
-                          <div>
+                          <div key={index}>
                             <p>
                               {topping.toppigName}：
                             {Number(topping.toppingPrice).toLocaleString()}円</p>

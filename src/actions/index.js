@@ -10,6 +10,7 @@ export const DEFAULT_SELECTED_TOPPINGS = 'DEFAULT_SELECTED_TOPPINGS';
 export const SET_ORDERS = 'SET_ORDERS';
 export const DELETE_ORDER_INFO = 'DELETE_ORDER_INFO'
 export const DELETE_ORDER_INFO_NOLOGIN = 'DELETE_ORDER_INFO_NOLOGIN'
+export const DELETE_ALL_ORDER = 'DELETE_ALL_ORDER'
 
 export const items = (items) => {
   return ({
@@ -64,6 +65,13 @@ export const deleteOrderInfomationIdNum = (deleteOrderInfomationIdNum) => {
   return ({
     type: DELETE_ORDER_INFO_NOLOGIN,
     deleteOrderInfomationIdNum: deleteOrderInfomationIdNum
+  })
+}
+
+export const deleteAllOrder = (deleteAllOrder) => {
+  return ({
+    type: DELETE_ALL_ORDER,
+    deleteAllOrderInfo: deleteAllOrder
   })
 }
 
