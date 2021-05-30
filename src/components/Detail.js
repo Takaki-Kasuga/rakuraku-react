@@ -196,19 +196,19 @@ export const Detail = () => {
     // トッピングの有無により値が変わる
     if (selectedToppingArray.length === 0) {
       setOrderInfo((orderInfo) => {
-        orderInfo.itemId = id
+        orderInfo.itemId = Number(id)
         orderInfo.imagePath = selectedItem.imagePath
         orderInfo.itemName = selectedItem.name
-        orderInfo.itemPrice = itemValue
-        orderInfo.itemCount = itemCount
+        orderInfo.itemPrice = Number(itemValue)
+        orderInfo.itemCount = Number(itemCount)
       })
     } else {
       setOrderInfo((orderInfo) => {
-        orderInfo.itemId = id
+        orderInfo.itemId = Number(id)
         orderInfo.imagePath = selectedItem.imagePath
         orderInfo.itemName = selectedItem.name
-        orderInfo.itemPrice = itemValue
-        orderInfo.itemCount = itemCount
+        orderInfo.itemPrice = Number(itemValue)
+        orderInfo.itemCount = Number(itemCount)
         orderInfo.toppingInfo = selectedToppingArray
       })
     }
