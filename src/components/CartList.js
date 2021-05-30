@@ -35,7 +35,6 @@ import NavigationIcon from '@material-ui/icons/Navigation';
 
 
 export const CartList = () => {
-  console.log('CartListが発火')
   const dispatch = useDispatch()
   const orderState = useSelector((state) => state.orderState)
   const toppingState = useSelector((state) => state.toppingState)
@@ -82,8 +81,6 @@ export const CartList = () => {
 
   // トッピングアイテムを入れる配列
   const rows = [];
-  console.log('fetchDataにおけるuseEffectが発火')
-
 
   orderState.forEach((order) => {
     const fetchData = createData(
@@ -109,12 +106,9 @@ export const CartList = () => {
           .doc(uniqueId)
           .delete()
           .then(() => {
-            console.log('firebae上では削除が完了しました。')
             dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
           });
       } else {
-        console.log('ログインしていない時の処理')
-        console.log(itemId)
         dispatch(deleteOrderInfomationIdNum({ itemId: itemId }))
       }
     }
@@ -122,32 +116,23 @@ export const CartList = () => {
 
   const confirmOrder = () => {
     if (userIdState.login_user) {
-      console.log('orderconfirmへ')
       handleLink('/orderconfirm')
     } else {
-      console.log('loginへ')
       handleLink('/login')
     }
   }
 
-
-  console.log(rows)
-  console.log(rows.length)
-  console.log('rowsの発火')
-
   const classes = useStyles();
 
-  // let totalToppingPrice = 0
-  // console.log(totalToppingPrice)
 
-
+  // 金額関連処理
   let everyToppingTotalPrice = 0
   let totalItemPrice = 0
+
+  // 商品の合計金額の処理
   let totalToppingPrice = 0
   if (rows.length !== 0) {
     rows.forEach((totalItem) => {
-      console.log(totalItem)
-      console.log('計算のための式')
       totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
     })
   }
@@ -194,11 +179,8 @@ export const CartList = () => {
                   <TableCell align="right">
                     {!row.toppingItem ? <p>0円</p> :
                       row.toppingItem.map((topping) => {
-                        // トッピングプライス合計値の初期化
                         totalToppingPrice += topping.toppingPrice
                         everyToppingTotalPrice += topping.toppingPrice
-                        console.log('toppingItemのなかみ')
-                        console.log(topping)
                         return (
                           <div>
                             <p>
@@ -210,12 +192,6 @@ export const CartList = () => {
                     }
                   </TableCell>
                   <TableCell align="right">
-                    {/* 各商品に対するトッピングプライスの合計金額を計算 */}
-                    {/* {!rows.length ? <p></p> : row.toppingItem.forEach((topping) => {
-                      everyToppingTotalPrice += topping.toppingPrice
-                    })} */}
-                    {console.log('forEachの発火')}
-                    {console.log(row.toppingItem)}
                     <div>
                       <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
                       <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)).toLocaleString()}（税抜き）</p>
@@ -236,15 +212,9 @@ export const CartList = () => {
                         </Button>
                     </div>
                   </TableCell>
-
-                  {/* {row.toppingItem.forEach((topping) => {
-                    totalToppingPrice += topping.toppingPrice
-                  })} */}
                   {everyToppingTotalPrice = 0}
-                  {console.log('レンダリング終了')}
                 </TableRow>
               ))}
-
             </TableBody>
           </Table>
 
