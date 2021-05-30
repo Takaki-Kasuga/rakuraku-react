@@ -16,6 +16,8 @@ import Button from '@material-ui/core/Button';
 
 import firebase from '../firebase/firebase';
 
+import { deleteAllOrder } from '../actions/index'
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -56,7 +58,7 @@ const Header = () => {
             return (
                 <React.Fragment>
                     <Button color="secondary" onClick={() => history.push('/useraccount')}>アカウント</Button>
-                    <Button color="secondary" onClick={() => { dispatch(logout()) }}>ログアウト</Button>
+                    <Button color="secondary" onClick={() => { dispatch(logout()); dispatch(deleteAllOrder()); }}>ログアウト</Button>
                 </React.Fragment>
             )
         } else {

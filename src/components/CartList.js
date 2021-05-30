@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom'
 
 
 import firebase from '../firebase/firebase'
-import { deleteOrderInfomation, deleteOrderInfomationIdNum } from '../actions/index'
+import { deleteOrderInfomation, deleteOrderInfomationIdNum, changeRoutingStatus } from '../actions/index'
 
 // デリートアイコン
 import IconButton from '@material-ui/core/IconButton';
@@ -70,6 +70,15 @@ export const CartList = () => {
     },
     textSet: {
       'text-align': 'left'
+    },
+    priceItemCenter: {
+      display: 'block',
+      'width': '30%',
+      'margin': '0 auto',
+      'margin-bottom': '30px',
+    },
+    setLeftText: {
+      textAlign: 'left'
     }
   }));
 
@@ -116,6 +125,7 @@ export const CartList = () => {
     if (userIdState.login_user) {
       handleLink('/orderconfirm')
     } else {
+      dispatch(changeRoutingStatus())
       handleLink('/login')
     }
   }
@@ -151,7 +161,7 @@ export const CartList = () => {
             </TableHead>
             <TableBody>
               {rows.map((row, index) => (
-                <TableRow key={row.itemInfo}>
+                <TableRow key={index}>
 
                   <TableCell component="th" scope="row">
 
@@ -174,13 +184,24 @@ export const CartList = () => {
                     <p>個数:{row.itemPriceAndCount.itemCount}個</p>
 
                   </TableCell>
+
                   <TableCell align="right">
+                    {/* everyToppingTotalPriceの初期化 */}
+                    {!row.toppingItem ? <spna style={{ display: 'none' }}></spna> :
+                      row.toppingItem.map((topping, index) => {
+                        everyToppingTotalPrice = 0
+                        return (
+                          <span style={{ display: 'none' }}></span>
+                        )
+                      })
+                    }
+                    { }
                     {!row.toppingItem ? <p>0円</p> :
-                      row.toppingItem.map((topping) => {
+                      row.toppingItem.map((topping, index) => {
                         totalToppingPrice += topping.toppingPrice
                         everyToppingTotalPrice += topping.toppingPrice
                         return (
-                          <div>
+                          <div key={index}>
                             <p>
                               {topping.toppigName}：
                             {Number(topping.toppingPrice).toLocaleString()}円</p>
@@ -193,7 +214,7 @@ export const CartList = () => {
                     <div>
                       <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
                       <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)).toLocaleString()}（税抜き）</p>
-                      <p className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円（税込）</p>
+                      <p style={{ color: 'red' }} className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円（税込）</p>
                     </div>
                   </TableCell>
                   <TableCell align="right">
@@ -210,18 +231,17 @@ export const CartList = () => {
                         </Button>
                     </div>
                   </TableCell>
-                  {everyToppingTotalPrice = 0}
                 </TableRow>
               ))}
             </TableBody>
           </Table>
 
-          <div>
-            <h4>合計金額：{(totalItemPrice + totalToppingPrice).toLocaleString()}円（税抜き）</h4>
-            <p>消費税合計：{((totalItemPrice + totalToppingPrice) * 0.1).toLocaleString()}円</p>
-            <p>合計金額：{Number(Number((totalItemPrice + totalToppingPrice)) + Number(((totalItemPrice + totalToppingPrice) * 0.1))).toLocaleString()}円（税込）</p>
+          <div className={classes.priceItemCenter}>
+            <p className={classes.setLeftText}>合計金額：{(totalItemPrice + totalToppingPrice).toLocaleString()}円（税抜き）</p>
+            <p className={classes.setLeftText}>消費税合計：{((totalItemPrice + totalToppingPrice) * 0.1).toLocaleString()}円</p>
+            <h3 style={{ color: 'red' }} className={classes.setLeftText}>合計金額：{Number(Number((totalItemPrice + totalToppingPrice)) + Number(((totalItemPrice + totalToppingPrice) * 0.1))).toLocaleString()}円（税込）</h3>
           </div>
-          <Fab variant="extended" aria-label="like" className={classes.fab} onClick={() => { confirmOrder() }}>
+          <Fab variant="extended" aria-label="like" className={classes.fab} onClick={() => { confirmOrder() }} className={classes.priceItemCenter}>
             <NavigationIcon className={classes.extendedIcon}
             />
               注文に進む
