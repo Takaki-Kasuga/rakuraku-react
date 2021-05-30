@@ -72,6 +72,15 @@ export const CartList = () => {
     },
     textSet: {
       'text-align': 'left'
+    },
+    priceItemCenter: {
+      display: 'block',
+      'width': '30%',
+      'margin': '0 auto',
+      'margin-bottom': '30px',
+    },
+    setLeftText: {
+      textAlign: 'left'
     }
   }));
 
@@ -206,7 +215,7 @@ export const CartList = () => {
                     <div>
                       <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
                       <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)).toLocaleString()}（税抜き）</p>
-                      <p className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円（税込）</p>
+                      <p style={{ color: 'red' }} className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円（税込）</p>
                     </div>
                   </TableCell>
                   <TableCell align="right">
@@ -228,12 +237,12 @@ export const CartList = () => {
             </TableBody>
           </Table>
 
-          <div>
-            <h4>合計金額：{(totalItemPrice + totalToppingPrice).toLocaleString()}円（税抜き）</h4>
-            <p>消費税合計：{((totalItemPrice + totalToppingPrice) * 0.1).toLocaleString()}円</p>
-            <p>合計金額：{Number(Number((totalItemPrice + totalToppingPrice)) + Number(((totalItemPrice + totalToppingPrice) * 0.1))).toLocaleString()}円（税込）</p>
+          <div className={classes.priceItemCenter}>
+            <p className={classes.setLeftText}>合計金額：{(totalItemPrice + totalToppingPrice).toLocaleString()}円（税抜き）</p>
+            <p className={classes.setLeftText}>消費税合計：{((totalItemPrice + totalToppingPrice) * 0.1).toLocaleString()}円</p>
+            <h3 style={{ color: 'red' }} className={classes.setLeftText}>合計金額：{Number(Number((totalItemPrice + totalToppingPrice)) + Number(((totalItemPrice + totalToppingPrice) * 0.1))).toLocaleString()}円（税込）</h3>
           </div>
-          <Fab variant="extended" aria-label="like" className={classes.fab} onClick={() => { confirmOrder() }}>
+          <Fab variant="extended" aria-label="like" className={classes.fab} onClick={() => { confirmOrder() }} className={classes.priceItemCenter}>
             <NavigationIcon className={classes.extendedIcon}
             />
               注文に進む
