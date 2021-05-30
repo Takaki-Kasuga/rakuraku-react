@@ -142,6 +142,8 @@ export const CartList = () => {
 
 
   let everyToppingTotalPrice = 0
+  let totalItemPrice = 0
+  let totalToppingPrice = 0
 
   return (
     <>
@@ -200,11 +202,10 @@ export const CartList = () => {
                     }
                   </TableCell>
                   <TableCell align="right">
+                    {/* 各商品に対するトッピングプライスの合計金額を計算 */}
                     {row.toppingItem.forEach((topping) => {
                       everyToppingTotalPrice += topping.toppingPrice
                     })}
-
-                    {/* <p>トッピングの合計：{everyToppingTotalPrice}円</p> */}
                     <div>
                       <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
                       <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)).toLocaleString()}（税抜き）</p>
@@ -225,6 +226,10 @@ export const CartList = () => {
                         </Button>
                     </div>
                   </TableCell>
+                  {totalItemPrice += row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount}
+                  {row.toppingItem.forEach((topping) => {
+                    totalToppingPrice += topping.toppingPrice
+                  })}
                   {console.log('レンダリング終了')}
                 </TableRow>
               ))}
@@ -233,9 +238,9 @@ export const CartList = () => {
           </Table>
 
           <div>
-            <h4>合計金額</h4>
-            <p>消費税合計：</p>
-            <p>合計金額：税込）</p>
+            <h4>合計金額：{(totalItemPrice + totalToppingPrice).toLocaleString()}円（税抜き）</h4>
+            <p>消費税合計：{((totalItemPrice + totalToppingPrice) * 0.1).toLocaleString()}円</p>
+            <p>合計金額：{Number(Number((totalItemPrice + totalToppingPrice)) + Number(((totalItemPrice + totalToppingPrice) * 0.1))).toLocaleString()}円（税込）</p>
           </div>
           <Fab variant="extended" aria-label="like" className={classes.fab} onClick={() => { confirmOrder() }}>
             <NavigationIcon className={classes.extendedIcon}
