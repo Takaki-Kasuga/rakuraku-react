@@ -118,11 +118,7 @@ export const CartList = () => {
     if (userIdState.login_user) {
       handleLink('/orderconfirm')
     } else {
-<<<<<<< HEAD
-      console.log('loginへ')
       dispatch(changeRoutingStatus())
-=======
->>>>>>> 4ade7cf6bfb9c69870732d64fe88cf552ac1e348
       handleLink('/login')
     }
   }
