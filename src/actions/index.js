@@ -170,7 +170,7 @@ export const signIn = (email, password) => {
           dispatch(setUserInfo(user_id, user_name, user_email));
         }
       }).catch((error) => {
-        alert('ログインに失敗しました。お手数ですがもう1度お試しください')
+        alert('メールアドレスかパスワードが間違えています')
       })
   }
 }
