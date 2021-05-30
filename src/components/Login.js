@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import {
   Link,
@@ -12,8 +12,48 @@ export const Login = () => {
   const dispatch = useDispatch();
   const getRoutingJudge = useSelector((state) => state.routingJudge.routingJudge)
 
+  const errors = {
+    emailError: " ",
+    passwordError: " ",
+  };
+
   const [email, setEmail] = useState(''),
-    [password, setPassword] = useState('');
+    [password, setPassword] = useState(''),
+    [errorMessage, setErrorMessage] = useState(errors),
+    [isDisabled, setIsDisabled] = useState(true);
+
+  const isDisabledCheck = () => {
+    if (errorMessage.emailError === "" && errorMessage.passwordError === "") {
+      setIsDisabled(false);
+    }
+  }
+
+  const inputEmail = (e) => {
+    const new_value = e.target.value;
+    setEmail(new_value)
+    if (new_value === "") {
+      console.log('空です')
+      errorMessage.emailError = "メールアドレスを入力してください"
+    } else if (new_value.indexOf("@") == -1) {
+      errorMessage.emailError = "メールアドレスの形式が不正です"
+    } else {
+      errorMessage.emailError = "";
+      isDisabledCheck();
+    }
+  };
+
+  const inputPassword = (e) => {
+    const new_value = e.target.value;
+    setPassword(new_value);
+    if (new_value === "") {
+      errorMessage.passwordError = "パスワードを入力してください"
+    } else if (new_value.length < 6) {
+      errorMessage.passwordError = "6文字未満です"
+    } else {
+      errorMessage.passwordError = "";
+      isDisabledCheck();
+    }
+  };
 
   const login = () => {
     localStorage.setItem('routingJudge', Number(getRoutingJudge));
@@ -33,15 +73,17 @@ export const Login = () => {
           <label>
             メールアドレス:
           </label>
-          <TextField value={email} onChange={(e) => setEmail(e.target.value)} />
+          <TextField value={email} type={"email"} onChange={inputEmail} />
+          <span>{errorMessage.emailError}</span>
         </div>
         <div>
           <label>
             パスワード:
           </label>
-          <TextField value={password} onChange={(e) => setPassword(e.target.value)} />
+          <TextField value={password} type={"password"} onChange={inputPassword} />
+          <span>{errorMessage.passwordError}</span>
         </div>
-        <Button variant="contained" color="primary" onClick={login}>ログイン</Button>
+        <Button variant="contained" color="primary" onClick={login} disabled={isDisabled}>ログイン</Button>
       </form>
 
       <div>

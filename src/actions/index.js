@@ -13,6 +13,7 @@ export const DELETE_ORDER_INFO_NOLOGIN = 'DELETE_ORDER_INFO_NOLOGIN'
 export const DELETE_ALL_ORDER = 'DELETE_ALL_ORDER'
 export const CHANGE_ROUTING_STATUS = 'CHANGE_ROUTING_STATUS';
 export const CHANGE_ZERO_ROUTING_STATUS = 'CHANGE_ZERO_ROUTING_STATUS';
+export const JUDGE_SCREEN_STATUS = 'JUDGE_SCREEN_STATUS';
 
 export const items = (items) => {
   return ({
@@ -170,7 +171,7 @@ export const signIn = (email, password) => {
           dispatch(setUserInfo(user_id, user_name, user_email));
         }
       }).catch((error) => {
-        alert('ログインに失敗しました。お手数ですがもう1度お試しください')
+        alert('メールアドレスかパスワードが間違えています')
       })
   }
 }

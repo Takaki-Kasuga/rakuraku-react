@@ -59,7 +59,7 @@ const UserAccount = () => {
                 </TableContainer>
             </Grid>
             <Grid container alignItems="center" justify="center">
-                <Grid style={{margin :20}}>
+                <Grid style={{ margin: 20 }}>
                     <Button variant="outlined" color="default" onClick={() => history.push('/')}>トップ画面を表示する</Button>
                 </Grid>
             </Grid>
