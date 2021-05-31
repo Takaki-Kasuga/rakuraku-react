@@ -51,7 +51,7 @@ import { AddShoppingCart } from '@material-ui/icons';
 // firebase
 import firebase from '../firebase/firebase'
 
-import { orderInfomation, defaultSelectedToppings, updateOrderItems, orderUniqueId } from '../actions/index'
+import { orderInfomation, defaultSelectedToppings, updateOrderItems, orderUniqueId, deleteOrderItems } from '../actions/index'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -204,6 +204,7 @@ export const Detail = () => {
       console.log(selectedToppingArray)
       console.log('updateOrderItemStateが発火')
       console.log(updateOrderItemState)
+
 
       // 商品に紐づくIDを取得
       const ordersRef = firebase

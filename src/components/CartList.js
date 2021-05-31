@@ -15,12 +15,12 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { createDispatchHook, useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 
 
 import firebase from '../firebase/firebase'
-import { deleteOrderInfomation, deleteOrderInfomationIdNum, changeRoutingStatus, setOrderItems } from '../actions/index'
+import { deleteOrderInfomation, deleteOrderInfomationIdNum, changeRoutingStatus, setOrderItems, deleteOrderItems } from '../actions/index'
 
 // デリートアイコン
 import IconButton from '@material-ui/core/IconButton';
@@ -124,8 +124,11 @@ export const CartList = () => {
   // カートリスト削除機能
   const orderUniqueIdState = useSelector((state) => state.orderUniqueIdState)
   const userIdState = useSelector((state) => state.userIdState)
-  const deleteItem = (uniqueId, itemId) => {
+  const deleteItem = (index) => {
+    console.log(index)
+    console.log(orderItemsArray)
     if (window.confirm('本当に削除しますか？')) {
+      dispatch(deleteOrderItems(orderItemsArray[index].uniqueItemId))
 
       // ログインしているユーザーの処理（Firebaseの値の削除）
       if (userIdState.login_user) {
@@ -137,11 +140,43 @@ export const CartList = () => {
           .then((snapshot) => {
             console.log('ログイン状態でかつ現在のカートリストの情報を持ってくる。')
             if (Number(snapshot.data().status) === 0 && snapshot.data().orderItems.length > 0) {
+              dispatch(deleteOrderInfomation(orderItemsArray[index].uniqueItemId))
               console.log(snapshot)
               console.log(snapshot.data())
               console.log(snapshot.id)
               const newDeleteDataArray = []
               const orderItems = snapshot.data().orderItems
+              orderItems.forEach((orderItem) => {
+                if (orderItemsArray[index].uniqueItemId !== orderItem.uniqueItemId) {
+                  newDeleteDataArray.push(orderItem)
+                }
+              })
+              console.log(newDeleteDataArray)
+              if (newDeleteDataArray.length === 0) {
+                firebase
+                  .firestore()
+                  .collection(`users/${userIdState.uid}/orders`)
+                  .doc(orderUniqueIdState)
+                  .delete()
+                  .then(() => {
+                    console.log('消去に成功しました。')
+                  })
+              } else {
+                firebase
+                  .firestore()
+                  .collection(`users/${userIdState.uid}/orders`)
+                  .doc(orderUniqueIdState)
+                  .update({
+                    orderItems: newDeleteDataArray,
+                  })
+                  .then(() => {
+                    console.log('成功しました。')
+                  })
+              }
+
+
+              // console.log(orderItemsArray[index])
+
               // orderItems.forEach((orderItem) => {
               //   if (orderItem.uniqueItemId !== id) {
               //     newDeleteDataArray.push(orderItem)
@@ -331,7 +366,7 @@ export const CartList = () => {
                   </TableCell>
                   <TableCell align="right" style={{ width: '120px' }}>
                     <div className={classes.delete} onClick={() => {
-                      deleteItem(row.uniqueId, row.itemId)
+                      deleteItem(index)
                     }}>
                       <Button
                         variant="contained"
