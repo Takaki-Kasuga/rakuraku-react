@@ -276,10 +276,6 @@ export const Home = () => {
       });
   }
 
-<<<<<<< HEAD
-  
-=======
->>>>>>> 8ff80764a8abfa43891ed9d1577ea156fea0ef3f
   return (
     <>
 
