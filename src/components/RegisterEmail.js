@@ -26,12 +26,6 @@ export const RegisterEmail = () => {
     dispatch(signUp(username, email, password, confirmPassword));
   }
 
-  const clear = () => {
-    setUsername('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
-  }
 
   const isDisabledCheck = () => {
     if (errorMessage.nameError === "" && errorMessage.emailError === "" && errorMessage.passwordError === "" && errorMessage.confirmPasswordError === "") {
@@ -39,6 +33,18 @@ export const RegisterEmail = () => {
     } else {
       setIsDisabled(true);
     }
+  }
+
+  const clear = () => {
+    setUsername('');
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+    errorMessage.nameError = "名前を入力してください"
+    errorMessage.emailError = "メールアドレスを入力してください"
+    errorMessage.passwordError = "パスワードを入力してください"
+    errorMessage.confirmPasswordError = "確認用パスワードを入力してください"
+    isDisabledCheck();
   }
 
   const inputName = (e) => {
@@ -89,7 +95,7 @@ export const RegisterEmail = () => {
     const new_value = e.target.value;
     setConfirmPassword(new_value);
     if (new_value === "") {
-      errorMessage.confirmPasswordError = "パスワードを入力してください"
+      errorMessage.confirmPasswordError = "確認用パスワードを入力してください"
       isDisabledCheck();
     } else if (new_value.length < 6) {
       errorMessage.confirmPasswordError = "6文字未満です"
