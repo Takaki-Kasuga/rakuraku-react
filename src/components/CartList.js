@@ -102,25 +102,6 @@ export const CartList = () => {
   // トッピングアイテムを入れる配列
   const rows = [];
 
-  console.log(orderState)
-  orderItemsArray.forEach((order) => {
-    // statusが0（購入前）の商品を取ってくる
-    const filterObject = orderForCartItemArray.find(element => element.id === order.itemId)
-    console.log(filterObject);
-    const fetchData = createData(
-      { itemPath: filterObject.imagePath, itemName: filterObject.name },
-      { itemPrice: order.itemPrice, itemCount: order.itemCount },
-      order.toppingInfo,
-      order.uniqueId,
-      order.itemId,
-    )
-    // selectedToppingId.push(order.toppingInfo)
-    rows.push(fetchData)
-  })
-  console.log('rowsの中身')
-  console.log(rows)
-
-
   // カートリスト削除機能
   const orderUniqueIdState = useSelector((state) => state.orderUniqueIdState)
   const userIdState = useSelector((state) => state.userIdState)
@@ -128,10 +109,9 @@ export const CartList = () => {
     console.log(index)
     console.log(orderItemsArray)
     if (window.confirm('本当に削除しますか？')) {
-      dispatch(deleteOrderItems(orderItemsArray[index].uniqueItemId))
-
       // ログインしているユーザーの処理（Firebaseの値の削除）
       if (userIdState.login_user) {
+        dispatch(deleteOrderItems(orderItemsArray[index].uniqueItemId))
         firebase
           .firestore()
           .collection(`users/${userIdState.uid}/orders`)
@@ -173,58 +153,11 @@ export const CartList = () => {
                     console.log('成功しました。')
                   })
               }
-
-
-              // console.log(orderItemsArray[index])
-
-              // orderItems.forEach((orderItem) => {
-              //   if (orderItem.uniqueItemId !== id) {
-              //     newDeleteDataArray.push(orderItem)
-              //   }
-              // })
-              // firebase
-              //   .firestore()
-              //   .collection(`users/${userIdState.uid}/orders`)
-              //   .doc(orderUniqueIdState)
-              //   .update({
-              //     orderItems: newDeleteDataArray,
-              //   })
-              //   .then(() => {
-              //     console.log('成功しました。')
-              //   })
             }
-            // snapshot.forEach((doc) => {
-            //   console.log(doc)
-            //   console.log(doc.id)
-            //   console.log(doc.data())
-            // const fetchData = doc.data()
-            // fetchData.uniqueId = doc.id
-            // console.log(fetchData)
-            // dispatch(orderInfomation(fetchData))
-            // ステータスが0のオーダー情報のみ取得して各stateに商品オブジェクトと一意のオーダーIDを追加
-            // if (doc.data().status === 0) {
-            //   dispatch(updateOrderItems(doc.data().orderItems))
-            //   dispatch(orderUniqueId(doc.id))
-            // }
-            // }
-            // );
           });
+      } else {
+        dispatch(deleteOrderInfomationIdNum(rows[index]))
       }
-      // if (userIdState.login_user) {
-      //   firebase
-      //     .firestore()
-      //     .collection(`users/${userIdState.uid}/orders`)
-      //     .doc(uniqueId)
-      //     .delete()
-      //     .then(() => {
-      //       dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
-      //     })
-      //     .catch((error) => {
-      //       console.log(error)
-      //     });
-      // } else {
-      //   dispatch(deleteOrderInfomationIdNum({ itemId: itemId }))
-      // }
     }
   }
 
@@ -238,19 +171,6 @@ export const CartList = () => {
   }
 
   const classes = useStyles();
-
-
-  // 金額関連処理
-  let everyToppingTotalPrice = 0
-  let totalItemPrice = 0
-
-  // 商品の合計金額の処理
-  let totalToppingPrice = 0
-  if (rows.length !== 0) {
-    rows.forEach((totalItem) => {
-      totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
-    })
-  }
 
   useEffect(() => {
     console.log('orderForCartItemArrayの中身')
@@ -268,13 +188,54 @@ export const CartList = () => {
               if (Number(doc.data().status) === 0 && doc.data().orderItems.length > 0) {
                 // Firestoreから取得した「カートに入った状態のorderItems」をstoreのstateに保存(ただし、orderItemが空ではない時)
                 const orderItems = doc.data().orderItems;
+                console.log('setOrderItems(orderItems)')
                 dispatch(setOrderItems(orderItems));
               }
-            });
+            })
           });
       }
     })
   }, []);
+
+  console.log(orderItemsArray)
+  // firebaseの取得を終えた段階で発火（rowsに追加）
+  console.log(orderItemsArray)
+  orderItemsArray.forEach((order) => {
+    // statusが0（購入前）の商品を取ってくる
+    const filterObject = orderForCartItemArray.find(element => element.id === order.itemId)
+    console.log(filterObject);
+    const fetchData = createData(
+      { itemPath: filterObject.imagePath, itemName: filterObject.name },
+      { itemPrice: order.itemPrice, itemCount: order.itemCount },
+      order.toppingInfo,
+      order.uniqueId,
+      order.itemId,
+    )
+    // selectedToppingId.push(order.toppingInfo)
+    rows.push(fetchData)
+  })
+  console.log('rowsの中身')
+  console.log(rows)
+  console.log(orderItemsArray)
+  console.log(rows.length)
+  console.log(orderItemsArray.length)
+
+  // 金額関連処理
+  let everyToppingTotalPrice = 0
+  let totalItemPrice = 0
+
+  // 商品の合計金額の処理
+  let totalToppingPrice = 0
+  if (rows.length !== 0) {
+    rows.forEach((totalItem) => {
+      totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
+      console.log(totalItemPrice)
+    })
+  }
+
+  console.log(totalToppingPrice)
+
+
 
   return (
     <>
