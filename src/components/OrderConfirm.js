@@ -36,10 +36,6 @@ import { Select, MenuItem } from '@material-ui/core';
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
-
-//イメージ
-import image from '../img/2.jpg'
-
 const OrderConfirm =()=>{
     
     // console.log('OrderConfirmが発火')
@@ -47,6 +43,7 @@ const OrderConfirm =()=>{
     const orderState = useSelector((state)=>state.orderState);
     const toppingState = useSelector((state) => state.toppingState)
     const history = useHistory();
+    const handleLink= path => history.push(path);
 
     const errors={
         errorName:' ',
@@ -69,7 +66,7 @@ const OrderConfirm =()=>{
     const [destinationPayMethod, setDestinationPayMethod] = useState('');
     const [credit, setCreditCard] = useState('');
     const [errorMessages,setErrorMessages] =useState(errors);
-    const [isDisabled, setIsDisabled] = useState(true);
+    // const [isDisabled, setIsDisabled] = useState(true);
 
 
     const clear = ()=>{
@@ -213,7 +210,6 @@ const OrderConfirm =()=>{
     if(!destinationPayMethod){
         errorMessages.errorPayMethod='お支払い方法を選択してください'
     }else if(destinationPayMethod === '2'){
-        errorMessages.errorPayMethod=''
         creditCard = (<div style={{ padding: 10 }}>
             <TextField
             id="credit"
@@ -353,18 +349,18 @@ const OrderConfirm =()=>{
     const orderUniqueIdState = useSelector((state)=>state.orderUniqueIdState)
     const addDestination = ()=>{
         alert('宛先情報を追加')
-        const DestinationInfo = {
-            destinationName: destinationName,
-            destinationEmail: destinationEmail,
-            destinationZipcode: destinationZipcode,
-            destinationAddress: destinationAddress,
-            destinationTel: destinationTel,
-            destinationPreDate: destinationPreDate,
-            destinationPreTime: destinationPreTime,
-            destinationPayMethod: destinationPayMethod,
-            creditcardNum: credit
+        // const DestinationInfo = {
+        //     destinationName: destinationName,
+        //     destinationEmail: destinationEmail,
+        //     destinationZipcode: destinationZipcode,
+        //     destinationAddress: destinationAddress,
+        //     destinationTel: destinationTel,
+        //     destinationPreDate: destinationPreDate,
+        //     destinationPreTime: destinationPreTime,
+        //     destinationPayMethod: destinationPayMethod,
+        //     creditcardNum: credit
 
-        } 
+        // } 
         firebase
             .firestore()
             .collection(`users/${userIdState.uid}/orders/`)
@@ -379,7 +375,7 @@ const OrderConfirm =()=>{
               destinationPreTime: destinationPreTime,
               destinationPayMethod: destinationPayMethod,
               creditcardNum: credit,
-              status:2
+              status: destinationPayMethod,
             })
             .then(() => {
               console.log('成功しました。')
@@ -391,6 +387,11 @@ const OrderConfirm =()=>{
               console.log('失敗しました。')
               console.log(error)
             })
+    }
+
+    const toComplete = ()=>{
+        addDestination();
+        handleLink('/ordercomplete')
     }
 
   // 金額関連処理
@@ -620,11 +621,11 @@ const OrderConfirm =()=>{
                 <div> 
                     <Grid container alignItems="center" justify="center" style={{padding:10}}>
                         <Grid>
-                            <Button variant="outlined" color="primary" onClick={
-                                () => history.push('/ordercomplete')}disabled={errorMessages.errorName !==''||errorMessages.errorEmail !=='' || errorMessages.errorZipcode !==''||errorMessages.errorAddress !=''|| errorMessages.errorTel !=''|| errorMessages.errorPreTime !=''|| errorMessages.errorPayMethod !=''||errorMessages.errorCredit !==''}>
+                            <Button variant="outlined" color="primary"
+                            onClick={ toComplete }disabled={errorMessages.errorName !==''||errorMessages.errorEmail !=='' || errorMessages.errorZipcode !==''||errorMessages.errorAddress !=''|| errorMessages.errorTel !=''|| errorMessages.errorPreTime !=''|| errorMessages.errorPayMethod !=''}>
                                 この内容で注文する</Button>
                             <Button variant="outlined" color="inherit" onClick={clear}>クリア</Button>
-                            <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button>
+                            {/* <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button> */}
                         </Grid>
                     </Grid>
                 </div>
