@@ -122,24 +122,74 @@ export const CartList = () => {
 
 
   // カートリスト削除機能
+  const orderUniqueIdState = useSelector((state) => state.orderUniqueIdState)
   const userIdState = useSelector((state) => state.userIdState)
   const deleteItem = (uniqueId, itemId) => {
     if (window.confirm('本当に削除しますか？')) {
+
+      // ログインしているユーザーの処理（Firebaseの値の削除）
       if (userIdState.login_user) {
         firebase
           .firestore()
           .collection(`users/${userIdState.uid}/orders`)
-          .doc(uniqueId)
-          .delete()
-          .then(() => {
-            dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
-          })
-          .catch((error) => {
-            console.log(error)
+          .doc(orderUniqueIdState)
+          .get()
+          .then((snapshot) => {
+            console.log('ログイン状態でかつ現在のカートリストの情報を持ってくる。')
+            if (Number(snapshot.data().status) === 0 && snapshot.data().orderItems.length > 0) {
+              console.log(snapshot)
+              console.log(snapshot.data())
+              console.log(snapshot.id)
+              const newDeleteDataArray = []
+              const orderItems = snapshot.data().orderItems
+              // orderItems.forEach((orderItem) => {
+              //   if (orderItem.uniqueItemId !== id) {
+              //     newDeleteDataArray.push(orderItem)
+              //   }
+              // })
+              // firebase
+              //   .firestore()
+              //   .collection(`users/${userIdState.uid}/orders`)
+              //   .doc(orderUniqueIdState)
+              //   .update({
+              //     orderItems: newDeleteDataArray,
+              //   })
+              //   .then(() => {
+              //     console.log('成功しました。')
+              //   })
+            }
+            // snapshot.forEach((doc) => {
+            //   console.log(doc)
+            //   console.log(doc.id)
+            //   console.log(doc.data())
+            // const fetchData = doc.data()
+            // fetchData.uniqueId = doc.id
+            // console.log(fetchData)
+            // dispatch(orderInfomation(fetchData))
+            // ステータスが0のオーダー情報のみ取得して各stateに商品オブジェクトと一意のオーダーIDを追加
+            // if (doc.data().status === 0) {
+            //   dispatch(updateOrderItems(doc.data().orderItems))
+            //   dispatch(orderUniqueId(doc.id))
+            // }
+            // }
+            // );
           });
-      } else {
-        dispatch(deleteOrderInfomationIdNum({ itemId: itemId }))
       }
+      // if (userIdState.login_user) {
+      //   firebase
+      //     .firestore()
+      //     .collection(`users/${userIdState.uid}/orders`)
+      //     .doc(uniqueId)
+      //     .delete()
+      //     .then(() => {
+      //       dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
+      //     })
+      //     .catch((error) => {
+      //       console.log(error)
+      //     });
+      // } else {
+      //   dispatch(deleteOrderInfomationIdNum({ itemId: itemId }))
+      // }
     }
   }
 
