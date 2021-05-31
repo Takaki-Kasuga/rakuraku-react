@@ -47,9 +47,15 @@ export const ToppingItems = () => {
   useEffect(() => {
     const hawaiianSoltObject = {
       id: 1,
-      toppingPrice: hawaiianSolt,
       toppigName: "ハワイアンソルト"
     }
+
+    if (hawaiianSolt === 200) {
+      hawaiianSoltObject.toppingPriceM = hawaiianSolt
+    } else if (hawaiianSolt === 300) {
+      hawaiianSoltObject.toppingPriceL = hawaiianSolt
+    }
+
     dispatch(selectedToppings(hawaiianSoltObject))
     console.log(selectedToppingState)
   }, [hawaiianSolt])
