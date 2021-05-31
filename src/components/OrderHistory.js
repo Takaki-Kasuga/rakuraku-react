@@ -11,9 +11,10 @@ import Paper from "@material-ui/core/Paper";
 
 import { connect } from "react-redux";
 import { cancel } from "../actions";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useState, useEffect } from "react";
+import firebase from "../firebase/firebase";
 
 // const rows = [];
 
@@ -39,6 +40,26 @@ const OrderHistory = (props) => {
   const unorderhistory = props.unorderhistory;
   console.log(props.orderHistoryName);
   // console.log(props.unorderhistory);
+  const userIdState = useSelector((state) => state.userIdState);
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        firebase
+          .firestore()
+          .collection(`users/${userIdState.uid}/orders`)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              console.log(doc.id);
+              console.log(doc.data());
+              // const fetchData = doc.data();
+              // fetchData.uniqueId = doc.id;
+              // console.log(fetchData);
+              // dispatch(orderInfomation(fetchData));
+            });
+          });
+        }})
+  }, []);
   return (
     <React.Fragment>
       {/* <div>{unorderhistory.length == 0 && <h1>注文履歴がありません</h1>}

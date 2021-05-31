@@ -265,7 +265,7 @@ export const Home = () => {
       });
   }
 
-  console.log(new Date())
+  
   return (
     <>
 
