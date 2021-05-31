@@ -58,6 +58,7 @@ function App() {
               fetchData.uniqueId = doc.id
               console.log(fetchData)
               dispatch(orderInfomation(fetchData))
+              // ステータスが0のオーダー情報のみ取得して各stateに商品オブジェクトと一意のオーダーIDを追加
               if (doc.data().status === 0) {
                 dispatch(updateOrderItems(doc.data().orderItems))
                 dispatch(orderUniqueId(doc.id))

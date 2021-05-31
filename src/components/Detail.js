@@ -206,12 +206,16 @@ export const Detail = () => {
       console.log(updateOrderItemState)
 
       // // トッピングの有無により値が変わる
-
-
+      const ordersRef = firebase
+        .firestore().collection('users').doc(userIdState.uid).collection('orders');
+      const ref = ordersRef.doc();
+      const uniqueItemId = ref.id;
+      console.log(uniqueItemId)
       // 初回の値を入れるときstateの[]配列が0の時
       if (updateOrderItemState.length === 0) {
         setOrderInfo((orderInfo) => {
           orderInfo.orderItems.push({
+            uniqueItemId: uniqueItemId,
             itemId: Number(id),
             imagePath: selectedItem.imagePath,
             itemName: selectedItem.name,
@@ -256,6 +260,7 @@ export const Detail = () => {
           })
           console.log(orderInfo.orderItems)
           orderInfo.orderItems.push({
+            uniqueItemId: uniqueItemId,
             itemId: Number(id),
             imagePath: selectedItem.imagePath,
             itemName: selectedItem.name,
