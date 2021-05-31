@@ -208,7 +208,7 @@ export const CartList = () => {
 
                   <TableCell align="right" className={classes.toppingStyle}>
                     {/* everyToppingTotalPriceの初期化 */}
-                    {!row.toppingItem ? <spna style={{ display: 'none' }}></spna> :
+                    {!row.toppingItem ? <span style={{ display: 'none' }}></span> :
                       row.toppingItem.map((topping, index) => {
                         everyToppingTotalPrice = 0
                         return (
