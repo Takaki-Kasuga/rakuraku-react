@@ -8,10 +8,12 @@ export default (state = [], action) => {
       return itemArray;
     case SEARCH_ITEMS:
       const serchArray = []
-      const newState = [...state]
+      const newState = [...action.seachItemList[1]]
+      console.log(newState)
+      console.log(action)
       newState.forEach((search) => {
         const originName = search.name
-        const serchName = action.seachItemList
+        const serchName = action.seachItemList[0]
         if (originName.indexOf(serchName) !== -1) {
           serchArray.push(search)
         }
