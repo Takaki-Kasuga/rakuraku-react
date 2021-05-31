@@ -212,8 +212,7 @@ const OrderConfirm =()=>{
     if (!destinationPayMethod) {
         errorMessages.errorPayMethod = 'お支払い方法を選択してください'
     } else if (destinationPayMethod === '2') {
-        errorMessages.errorPayMethod = ''
-        creditCard = (<div style={{ padding: 10 }}>
+        creditCard = (<div style={{ padding: 10 }}>);
             <TextField
                 id="credit"
                 label="クレジットカード番号"
@@ -224,8 +223,9 @@ const OrderConfirm =()=>{
             />
             <div style={{ color: 'red' }}>{errorMessages.errorCredit}</div>
         </div>)
+    }else if(destinationPayMethod === '1') {
+        errorMessages.errorPayMethod = ''
     }
-
 
     const getState = (state) => state.userIdState.login_user;
 
@@ -283,7 +283,14 @@ const OrderConfirm =()=>{
             },
             error: {
                 color: 'red',
-            }
+            },
+            title: {
+                textAlign: 'center',
+            },
+            form: {
+                textAlign: 'center',
+                // width: 300
+            },
         })
     );
     const classes = useStyles();
@@ -407,7 +414,7 @@ const OrderConfirm =()=>{
         <React.Fragment>
             {!rows.length ? <h2>カートに商品がありません</h2> :
                 <div>
-                    <h2>注文確認</h2>
+                    <h2 className={classes.title}>注文内容確認</h2>
                     <Paper className={classes.root}>
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead>
@@ -500,13 +507,13 @@ const OrderConfirm =()=>{
                     </Paper>
                 </div>
             }
-            <div>
+            <div class={classes.form}>
                 <h2>お届け先情報</h2>
                 <div style={{ padding: 10 }}>
                     <TextField
                         id="name"
                         label="お名前"
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         variant="outlined"
                         placeholder="楽々　楽子"
                         value={destinationName}
@@ -518,7 +525,7 @@ const OrderConfirm =()=>{
                     <TextField
                         id="destinationEmail"
                         label="メールアドレス"
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         variant="outlined"
                         placeholder="XXX@XXXX"
                         value={destinationEmail}
@@ -530,7 +537,7 @@ const OrderConfirm =()=>{
                     <TextField
                         id="destinationZipcode"
                         label="郵便番号"
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         variant="outlined"
                         placeholder="XXX-XXXX"
                         value={destinationZipcode}
@@ -542,7 +549,7 @@ const OrderConfirm =()=>{
                     <TextField
                         id="destinationAddress"
                         label="住所"
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         variant="outlined"
                         value={destinationAddress}
                         onChange={destinationAddressChange}
@@ -553,7 +560,7 @@ const OrderConfirm =()=>{
                     <TextField
                         id="destinationTel"
                         label="電話番号"
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         variant="outlined"
                         placeholder="XXX-XXXX-XXXX"
                         value={destinationTel}
@@ -561,12 +568,12 @@ const OrderConfirm =()=>{
                     />
                     <div className={classes.error}>{errorMessages.errorTel}</div>
                 </div>
-                <div style={{ padding: 10 }}>
-                    <form className={classes.container} noValidate>
+                <div>
+                    <form className={classes.form} noValidate>
                         <TextField
                             id="date"
                             label="配達希望日"
-                            style={{ width: 250 }}
+                            style={{ width: 300 }}
                             type="date"
                             // defaultValue={new Date()}
                             className={classes.textField}
@@ -584,7 +591,7 @@ const OrderConfirm =()=>{
                 <FormControl>
                     <FormLabel component="legend">配達希望時間</FormLabel>
                     <Select
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={destinationPreTime}
@@ -625,13 +632,13 @@ const OrderConfirm =()=>{
                 {creditCard}
 
                 <div>
-                    <Grid container alignItems="center" justify="center" style={{ padding: 10 }}>
+                    <Grid container alignItems="center" justify="center" style={{ margin :10 }}>
                         <Grid>
-                            <Button variant="outlined" color="primary"
+                            <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
                             onClick={ toComplete }disabled={errorMessages.errorName !==''||errorMessages.errorEmail !=='' || errorMessages.errorZipcode !==''||errorMessages.errorAddress !=''|| errorMessages.errorTel !=''|| errorMessages.errorPreTime !=''|| errorMessages.errorPayMethod !=''}>
 
                                 この内容で注文する</Button>
-                            <Button variant="outlined" color="inherit" onClick={clear}>クリア</Button>
+                            <Button style={{ marginLeft: '10px' }} variant="outlined" color="inherit" onClick={clear}>クリア</Button>
                             {/* <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button> */}
                         </Grid>
                     </Grid>
