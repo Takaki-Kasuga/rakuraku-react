@@ -9,6 +9,7 @@ export const ResettingEmail = () => {
 
   const [email, setEmail] = useState(''),
     [errorMessage, setErrorMessage] = useState(errors),
+    [resetMessage, setResetMessage] = useState(''),
     [isDisabled, setIsDisabled] = useState(true);
 
   const isDisabledCheck = () => {
@@ -36,8 +37,12 @@ export const ResettingEmail = () => {
   };
 
   const passwordResetting = () => {
-    console.log(email);
-    firebase.auth().sendPasswordResetEmail(email);
+    firebase.auth().sendPasswordResetEmail(email)
+      .then(result => {
+        setResetMessage("再設定メールをお送り致しました。約3秒後にトップページに自動遷移致します。遷移しない場合は以下のボタンをクリックしてください。");
+      }).catch(error => {
+        setResetMessage("メール送信に失敗しました。正しいメールアドレスをご入力ください。");
+      })
   }
 
   return (
@@ -54,6 +59,8 @@ export const ResettingEmail = () => {
           <div><span>{errorMessage.emailError}</span></div>
         </div>
         <Button variant="contained" color="primary" disabled={isDisabled} onClick={passwordResetting}>再設定メールを送る</Button>
+        <div><span>{resetMessage}</span></div>
+        <Button variant="contained" color="primary" onClick={() => console.log('トップページに戻る処理入れる')}>トップページへ</Button>
       </form>
     </React.Fragment>
   )
