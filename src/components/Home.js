@@ -146,14 +146,14 @@ export const Home = () => {
   };
 
   // ローディング
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-    }, 300);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
+  //   }, 300);
+  //   return () => {
+  //     clearInterval(timer);
+  //   };
+  // }, []);
 
   // カードリスト
   // const classes = useStyles();

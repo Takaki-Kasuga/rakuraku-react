@@ -35,6 +35,8 @@ import NavigationIcon from '@material-ui/icons/Navigation';
 export const CartList = () => {
   const dispatch = useDispatch()
   const orderState = useSelector((state) => state.orderState)
+  const orderForCartItemArray = useSelector((state) => state.orderForCartState) //商品情報取得
+  const orderItemsArray = useSelector((state) => state.setOrderItems) //カート情報取得
   const toppingState = useSelector((state) => state.toppingState)
   const history = useHistory()
   const handleLink = path => history.push(path)
@@ -101,44 +103,93 @@ export const CartList = () => {
   const rows = [];
 
   console.log(orderState)
-  orderState.forEach((order) => {
-    console.log(order.status)
+  orderItemsArray.forEach((order) => {
     // statusが0（購入前）の商品を取ってくる
-    if (order.status === 0) {
-      const fetchData = createData(
-        { itemPath: order.imagePath, itemName: order.itemName },
-        { itemPrice: order.itemPrice, itemCount: order.itemCount },
-        order.toppingInfo,
-        order.uniqueId,
-        order.itemId,
-      )
-      // selectedToppingId.push(order.toppingInfo)
-      rows.push(fetchData)
-    }
+    const filterObject = orderForCartItemArray.find(element => element.id === order.itemId)
+    console.log(filterObject);
+    const fetchData = createData(
+      { itemPath: filterObject.imagePath, itemName: filterObject.name },
+      { itemPrice: order.itemPrice, itemCount: order.itemCount },
+      order.toppingInfo,
+      order.uniqueId,
+      order.itemId,
+    )
+    // selectedToppingId.push(order.toppingInfo)
+    rows.push(fetchData)
   })
   console.log('rowsの中身')
   console.log(rows)
 
 
   // カートリスト削除機能
+  const orderUniqueIdState = useSelector((state) => state.orderUniqueIdState)
   const userIdState = useSelector((state) => state.userIdState)
   const deleteItem = (uniqueId, itemId) => {
     if (window.confirm('本当に削除しますか？')) {
+
+      // ログインしているユーザーの処理（Firebaseの値の削除）
       if (userIdState.login_user) {
         firebase
           .firestore()
           .collection(`users/${userIdState.uid}/orders`)
-          .doc(uniqueId)
-          .delete()
-          .then(() => {
-            dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
-          })
-          .catch((error) => {
-            console.log(error)
+          .doc(orderUniqueIdState)
+          .get()
+          .then((snapshot) => {
+            console.log('ログイン状態でかつ現在のカートリストの情報を持ってくる。')
+            if (Number(snapshot.data().status) === 0 && snapshot.data().orderItems.length > 0) {
+              console.log(snapshot)
+              console.log(snapshot.data())
+              console.log(snapshot.id)
+              const newDeleteDataArray = []
+              const orderItems = snapshot.data().orderItems
+              // orderItems.forEach((orderItem) => {
+              //   if (orderItem.uniqueItemId !== id) {
+              //     newDeleteDataArray.push(orderItem)
+              //   }
+              // })
+              // firebase
+              //   .firestore()
+              //   .collection(`users/${userIdState.uid}/orders`)
+              //   .doc(orderUniqueIdState)
+              //   .update({
+              //     orderItems: newDeleteDataArray,
+              //   })
+              //   .then(() => {
+              //     console.log('成功しました。')
+              //   })
+            }
+            // snapshot.forEach((doc) => {
+            //   console.log(doc)
+            //   console.log(doc.id)
+            //   console.log(doc.data())
+            // const fetchData = doc.data()
+            // fetchData.uniqueId = doc.id
+            // console.log(fetchData)
+            // dispatch(orderInfomation(fetchData))
+            // ステータスが0のオーダー情報のみ取得して各stateに商品オブジェクトと一意のオーダーIDを追加
+            // if (doc.data().status === 0) {
+            //   dispatch(updateOrderItems(doc.data().orderItems))
+            //   dispatch(orderUniqueId(doc.id))
+            // }
+            // }
+            // );
           });
-      } else {
-        dispatch(deleteOrderInfomationIdNum({ itemId: itemId }))
       }
+      // if (userIdState.login_user) {
+      //   firebase
+      //     .firestore()
+      //     .collection(`users/${userIdState.uid}/orders`)
+      //     .doc(uniqueId)
+      //     .delete()
+      //     .then(() => {
+      //       dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
+      //     })
+      //     .catch((error) => {
+      //       console.log(error)
+      //     });
+      // } else {
+      //   dispatch(deleteOrderInfomationIdNum({ itemId: itemId }))
+      // }
     }
   }
 
@@ -167,6 +218,9 @@ export const CartList = () => {
   }
 
   useEffect(() => {
+    console.log('orderForCartItemArrayの中身')
+    console.log(orderForCartItemArray);
+    console.log(orderItemsArray)
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         firebase
@@ -180,6 +234,9 @@ export const CartList = () => {
                 // Firestoreから取得した「カートに入った状態のorderItems」をstoreのstateに保存(ただし、orderItemが空ではない時)
                 const orderItems = doc.data().orderItems;
                 dispatch(setOrderItems(orderItems));
+
+                // カートに入っている商品情報のみが入った新しい配列を作成
+                orderItemsArray.forEach(element => console.log(element))
               }
             });
           });
@@ -240,7 +297,7 @@ export const CartList = () => {
                     {console.log(row.toppingItem)}
                     {console.log(row.toppingItem === false)}
                     {console.log(row.toppingItem === true)}
-                    {!row.toppingItem ? <p>0円</p> :
+                    {!row.toppingItem.length ? <p>0円</p> :
                       row.toppingItem.map((topping, index) => {
                         // console.log(row.toppingItem === false)
                         console.log('toppingItemでmapで回す')
