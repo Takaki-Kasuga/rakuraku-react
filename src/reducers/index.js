@@ -8,6 +8,8 @@ import routingJudge from './routingJudge'
 import orderHistory from './orderHistory'
 import updateOrderItemState from './updateOrderItems'
 import orderUniqueIdState from './orderUniqueId'
+import orderForCartState from './orderForCart'
+import setOrderItems from './setOrderItems'
 
-export default combineReducers({ itemState, toppingState, userIdState, selectedToppingState, orderState, routingJudge, orderHistory, updateOrderItemState, orderUniqueIdState })
+export default combineReducers({ itemState, toppingState, userIdState, selectedToppingState, orderState, routingJudge, orderHistory, updateOrderItemState, orderUniqueIdState, orderForCartState, setOrderItems })
 

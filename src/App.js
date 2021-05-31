@@ -18,11 +18,11 @@ import { ResettingEmail } from './components/ResettingEmail.js';
 import { Login } from './components/Login.js';
 import { OrderComplete } from './components/OrderComplete.js';
 import OrderConfirm from './components/OrderConfirm.js';
-import OrderHistory  from './components/OrderHistory.js';
+import OrderHistory from './components/OrderHistory.js';
 import { RegisterEmail } from './components/RegisterEmail.js';
 import { TermOfUse } from './components/TermOfUse.js';
 import UserAccount from './components/UserAccount.js';
-import { orderInfomation, setUserInfo, deleteUserInfo, deleteAllOrder } from './actions/index'
+import { orderInfomation, setUserInfo, deleteUserInfo, deleteAllOrder, updateOrderItems, orderUniqueId, orderForCartInfomation } from './actions/index'
 import { ReorderRounded } from "@material-ui/icons";
 
 const getState = (state) => state.userIdState.login_user;
@@ -30,6 +30,7 @@ const getState = (state) => state.userIdState.login_user;
 function App() {
   const userIdState = useSelector((state) => state.userIdState)
   const getRoutingJudge = useSelector((state) => state.routingJudge.routingJudge)
+  const updateOrderItemState = useSelector((state) => state.updateOrderItemState)
   const dispatch = useDispatch()
 
   const storage = Number(localStorage.getItem('routingJudge'));
@@ -50,6 +51,7 @@ function App() {
           .collection(`users/${userIdState.uid}/orders`)
           .get()
           .then((snapshot) => {
+            console.log('orederの情報を取ってくる。')
             snapshot.forEach((doc) => {
               console.log(doc.id)
               console.log(doc.data())
@@ -57,6 +59,11 @@ function App() {
               fetchData.uniqueId = doc.id
               console.log(fetchData)
               dispatch(orderInfomation(fetchData))
+              // ステータスが0のオーダー情報のみ取得して各stateに商品オブジェクトと一意のオーダーIDを追加
+              if (doc.data().status === 0) {
+                dispatch(updateOrderItems(doc.data().orderItems))
+                dispatch(orderUniqueId(doc.id))
+              }
             }
             );
           });
