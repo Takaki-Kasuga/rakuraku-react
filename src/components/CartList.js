@@ -100,6 +100,7 @@ export const CartList = () => {
   // トッピングアイテムを入れる配列
   const rows = [];
 
+  console.log(orderState)
   orderState.forEach((order) => {
     console.log(order.status)
     // statusが0（購入前）の商品を取ってくる
@@ -115,6 +116,8 @@ export const CartList = () => {
       rows.push(fetchData)
     }
   })
+  console.log('rowsの中身')
+  console.log(rows)
 
 
   // カートリスト削除機能
@@ -129,6 +132,9 @@ export const CartList = () => {
           .delete()
           .then(() => {
             dispatch(deleteOrderInfomation({ uniqueId: uniqueId }))
+          })
+          .catch((error) => {
+            console.log(error)
           });
       } else {
         dispatch(deleteOrderInfomationIdNum({ itemId: itemId }))
@@ -210,16 +216,29 @@ export const CartList = () => {
                         )
                       })
                     }
+                    {console.log(row.toppingItem)}
+                    {console.log(row.toppingItem === false)}
+                    {console.log(row.toppingItem === true)}
                     {!row.toppingItem ? <p>0円</p> :
                       row.toppingItem.map((topping, index) => {
-                        totalToppingPrice += topping.toppingPrice
-                        everyToppingTotalPrice += topping.toppingPrice
+                        // console.log(row.toppingItem === false)
+                        console.log('toppingItemでmapで回す')
+                        console.log(topping.toppingPrice)
+                        console.log(topping)
+                        if (topping.toppingPriceM) {
+                          everyToppingTotalPrice += topping.toppingPriceM
+                          totalToppingPrice += topping.toppingPriceM
+                        } else if (topping.toppingPriceL) {
+                          everyToppingTotalPrice += topping.toppingPriceL
+                          totalToppingPrice += topping.toppingPriceL
+                        }
                         return (
                           <div key={index}>
                             <p>
-                              {topping.toppingPrice === 200 ? topping.toppigName + 'M' : topping.toppigName + 'L'}
+                              {topping.toppingPriceM === 200 ? topping.toppigName + 'M' : topping.toppigName + 'L'}
                               <br />：
-                              {Number(topping.toppingPrice).toLocaleString()}円</p>
+                            {topping.toppingPriceM ? Number(topping.toppingPriceM).toLocaleString() : Number(topping.toppingPriceL).toLocaleString()}
+                            円</p>
                           </div>
                         )
                       })

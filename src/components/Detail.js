@@ -196,7 +196,7 @@ export const Detail = () => {
       alert('商品サイズを選択してください。')
     } else {
       const selectedToppingArray = selectedToppingState.filter((value) => {
-        return value.toppingPrice !== 0
+        return Object.keys(value).length !== 2
       })
 
       // トッピングの有無により値が変わる
