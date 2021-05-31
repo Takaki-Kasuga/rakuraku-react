@@ -25,6 +25,8 @@ export const Login = () => {
   const isDisabledCheck = () => {
     if (errorMessage.emailError === "" && errorMessage.passwordError === "") {
       setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
     }
   }
 
@@ -34,8 +36,10 @@ export const Login = () => {
     if (new_value === "") {
       console.log('空です')
       errorMessage.emailError = "メールアドレスを入力してください"
+      isDisabledCheck();
     } else if (new_value.indexOf("@") == -1) {
       errorMessage.emailError = "メールアドレスの形式が不正です"
+      isDisabledCheck();
     } else {
       errorMessage.emailError = "";
       isDisabledCheck();
@@ -47,8 +51,10 @@ export const Login = () => {
     setPassword(new_value);
     if (new_value === "") {
       errorMessage.passwordError = "パスワードを入力してください"
+      isDisabledCheck();
     } else if (new_value.length < 6) {
       errorMessage.passwordError = "6文字未満です"
+      isDisabledCheck();
     } else {
       errorMessage.passwordError = "";
       isDisabledCheck();
@@ -74,14 +80,14 @@ export const Login = () => {
             メールアドレス:
           </label>
           <TextField value={email} type={"email"} onChange={inputEmail} />
-          <span>{errorMessage.emailError}</span>
+          <div><span>{errorMessage.emailError}</span></div>
         </div>
         <div>
           <label>
             パスワード:
           </label>
           <TextField value={password} type={"password"} onChange={inputPassword} />
-          <span>{errorMessage.passwordError}</span>
+          <div><span>{errorMessage.passwordError}</span></div>
         </div>
         <Button variant="contained" color="primary" onClick={login} disabled={isDisabled}>ログイン</Button>
       </form>
