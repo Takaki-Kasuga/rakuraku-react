@@ -18,6 +18,7 @@ export const UPDATE_ORDER_ITEMS = 'UPDATE_ORDER_ITEMS';
 export const ORDER_UNIQUE_ID = 'ORDER_UNIQUE_ID';
 export const SET_ORDER_FOR_CART = 'SET_ORDER_FOR_CART';
 export const SET_ORDER_ITEMS = 'SET_ORDER_ITEMS';
+export const DELETE_ORDER_ITEMS = 'DELETE_ORDER_ITEMS';
 
 
 export const CANCEL = 'cancel'
@@ -216,5 +217,12 @@ export const orderUniqueId = (orderUniqueId) => {
   return ({
     type: ORDER_UNIQUE_ID,
     orderUniqueIdForCart: orderUniqueId
+  })
+}
+
+export const deleteOrderItems = (deleteOrderItems) => {
+  return ({
+    type: DELETE_ORDER_ITEMS,
+    deleteOrderItemsId: deleteOrderItems
   })
 }

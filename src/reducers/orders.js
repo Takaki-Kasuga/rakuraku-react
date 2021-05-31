@@ -5,13 +5,13 @@ export default (state = [], action) => {
     case SET_ORDERS:
       const orderArray = [...state, action.orderInfomationList]
       return orderArray;
-    case DELETE_ORDER_INFO:
-      const deleteArray = [...state]
-      const deleteIndex = deleteArray.findIndex((everyobj) => {
-        return everyobj.uniqueId === action.uniqueId
-      })
-      deleteArray.splice(deleteIndex, 1)
-      return deleteArray
+    // case DELETE_ORDER_INFO:
+    //   const deleteArray = [...state]
+    //   const deleteIndex = deleteArray.findIndex((everyobj) => {
+    //     return everyobj.uniqueId === action.uniqueId
+    //   })
+    //   deleteArray.splice(deleteIndex, 1)
+    //   return deleteArray
     case DELETE_ORDER_INFO_NOLOGIN:
       const deleteIdArray = [...state]
       const deleteIdIndex = deleteIdArray.findIndex((everyobj) => {
