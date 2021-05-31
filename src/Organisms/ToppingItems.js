@@ -47,11 +47,25 @@ export const ToppingItems = () => {
   useEffect(() => {
     const hawaiianSoltObject = {
       id: 1,
-      toppingPrice: hawaiianSolt,
-      toppigName: "ハワイアンソルト"
+      toppigName: "ハワイアンソルト",
     }
+
+    if (hawaiianSolt === 200) {
+      hawaiianSoltObject.toppingPriceM = hawaiianSolt
+    } else if (hawaiianSolt === 300) {
+      hawaiianSoltObject.toppingPriceL = hawaiianSolt
+    } else if (hawaiianSolt === 0) {
+      if (hawaiianSoltObject.toppingPriceM) {
+        delete hawaiianSoltObject.toppingPriceM
+      } else if (hawaiianSoltObject.toppingPriceL) {
+        delete hawaiianSoltObject.toppingPriceL
+      }
+    }
+
+    console.log(hawaiianSoltObject)
     dispatch(selectedToppings(hawaiianSoltObject))
     console.log(selectedToppingState)
+
   }, [hawaiianSolt])
 
 
@@ -66,9 +80,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const hawaiianMayonnaiseObject = {
       id: 2,
-      toppingPrice: hawaiianMayonnaise,
       toppigName: "ハワイアンマヨネーズ"
     }
+
+    if (hawaiianMayonnaise === 200) {
+      hawaiianMayonnaiseObject.toppingPriceM = hawaiianMayonnaise
+    } else if (hawaiianMayonnaise === 300) {
+      hawaiianMayonnaiseObject.toppingPriceL = hawaiianMayonnaise
+    } else if (hawaiianMayonnaise === 0) {
+      if (hawaiianMayonnaiseObject.toppingPriceM) {
+        delete hawaiianMayonnaiseObject.toppingPriceM
+      } else if (hawaiianMayonnaiseObject.toppingPriceL) {
+        delete hawaiianMayonnaiseObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(hawaiianMayonnaiseObject))
     console.log(hawaiianMayonnaise)
   }, [hawaiianMayonnaise])
@@ -83,9 +109,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const hawaiianTomatoObject = {
       id: 3,
-      toppingPrice: hawaiianTomato,
       toppigName: "ハワイアントマト"
     }
+
+    if (hawaiianTomato === 200) {
+      hawaiianTomatoObject.toppingPriceM = hawaiianTomato
+    } else if (hawaiianTomato === 300) {
+      hawaiianTomatoObject.toppingPriceL = hawaiianTomato
+    } else if (hawaiianTomato === 0) {
+      if (hawaiianTomatoObject.toppingPriceM) {
+        delete hawaiianTomatoObject.toppingPriceM
+      } else if (hawaiianTomatoObject.toppingPriceL) {
+        delete hawaiianTomatoObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(hawaiianTomatoObject))
     console.log(hawaiianTomato)
   }, [hawaiianTomato])
@@ -100,9 +138,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const blueCheeseObject = {
       id: 4,
-      toppingPrice: blueCheese,
       toppigName: "ブルーチーズ"
     }
+
+    if (blueCheese === 200) {
+      blueCheeseObject.toppingPriceM = blueCheese
+    } else if (blueCheese === 300) {
+      blueCheeseObject.toppingPriceL = blueCheese
+    } else if (blueCheese === 0) {
+      if (blueCheeseObject.toppingPriceM) {
+        delete blueCheeseObject.toppingPriceM
+      } else if (blueCheeseObject.toppingPriceL) {
+        delete blueCheeseObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(blueCheeseObject))
     console.log(blueCheese)
   }, [blueCheese])
@@ -117,9 +167,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const hawaiianChocolateObject = {
       id: 5,
-      toppingPrice: hawaiianChocolate,
       toppigName: "ハワイアンチョコレート"
     }
+
+    if (hawaiianChocolate === 200) {
+      hawaiianChocolateObject.toppingPriceM = hawaiianChocolate
+    } else if (hawaiianChocolate === 300) {
+      hawaiianChocolateObject.toppingPriceL = hawaiianChocolate
+    } else if (hawaiianChocolate === 0) {
+      if (hawaiianChocolateObject.toppingPriceM) {
+        delete hawaiianChocolateObject.toppingPriceM
+      } else if (hawaiianChocolateObject.toppingPriceL) {
+        delete hawaiianChocolateObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(hawaiianChocolateObject))
     console.log(hawaiianChocolate)
   }, [hawaiianChocolate])
@@ -135,9 +197,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const anchovyObject = {
       id: 6,
-      toppingPrice: anchovy,
       toppigName: "アンチョビ"
     }
+
+    if (anchovy === 200) {
+      anchovyObject.toppingPriceM = anchovy
+    } else if (anchovy === 300) {
+      anchovyObject.toppingPriceL = anchovy
+    } else if (anchovy === 0) {
+      if (anchovyObject.toppingPriceM) {
+        delete anchovyObject.toppingPriceM
+      } else if (anchovyObject.toppingPriceL) {
+        delete anchovyObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(anchovyObject))
     console.log(anchovy)
   }, [anchovy])
@@ -152,9 +226,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const shrimpObject = {
       id: 7,
-      toppingPrice: shrimp,
       toppigName: "エビ"
     }
+
+    if (shrimp === 200) {
+      shrimpObject.toppingPriceM = shrimp
+    } else if (shrimp === 300) {
+      shrimpObject.toppingPriceL = shrimp
+    } else if (shrimp === 0) {
+      if (shrimpObject.toppingPriceM) {
+        delete shrimpObject.toppingPriceM
+      } else if (shrimpObject.toppingPriceL) {
+        delete shrimpObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(shrimpObject))
     console.log(shrimp)
   }, [shrimp])
@@ -169,9 +255,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const garlicRiceObject = {
       id: 8,
-      toppingPrice: garlicRice,
       toppigName: "ガーリックスライス"
     }
+
+    if (garlicRice === 200) {
+      garlicRiceObject.toppingPriceM = garlicRice
+    } else if (garlicRice === 300) {
+      garlicRiceObject.toppingPriceL = garlicRice
+    } else if (garlicRice === 0) {
+      if (garlicRiceObject.toppingPriceM) {
+        delete garlicRiceObject.toppingPriceM
+      } else if (garlicRiceObject.toppingPriceL) {
+        delete garlicRiceObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(garlicRiceObject))
     console.log(garlicRice)
   }, [garlicRice])
@@ -186,9 +284,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const tropicalFruitsObject = {
       id: 9,
-      toppingPrice: tropicalFruits,
       toppigName: "トロピカルフルーツ"
     }
+
+    if (tropicalFruits === 200) {
+      tropicalFruitsObject.toppingPriceM = tropicalFruits
+    } else if (tropicalFruits === 300) {
+      tropicalFruitsObject.toppingPriceL = tropicalFruits
+    } else if (tropicalFruits === 0) {
+      if (tropicalFruitsObject.toppingPriceM) {
+        delete tropicalFruitsObject.toppingPriceM
+      } else if (tropicalFruitsObject.toppingPriceL) {
+        delete tropicalFruitsObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(tropicalFruitsObject))
     console.log(tropicalFruits)
   }, [tropicalFruits])
@@ -203,9 +313,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const hawaiianHoneyObject = {
       id: 10,
-      toppingPrice: hawaiianHoney,
       toppigName: "ハワイ産はちみつ"
     }
+
+    if (hawaiianHoney === 200) {
+      hawaiianHoneyObject.toppingPriceM = hawaiianHoney
+    } else if (hawaiianHoney === 300) {
+      hawaiianHoneyObject.toppingPriceL = hawaiianHoney
+    } else if (hawaiianHoney === 0) {
+      if (hawaiianHoneyObject.toppingPriceM) {
+        delete hawaiianHoneyObject.toppingPriceM
+      } else if (hawaiianHoneyObject.toppingPriceL) {
+        delete hawaiianHoneyObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(hawaiianHoneyObject))
     console.log(hawaiianHoney)
   }, [hawaiianHoney])
@@ -220,9 +342,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const coconutObject = {
       id: 11,
-      toppingPrice: coconut,
       toppigName: "ココナッツ"
     }
+
+    if (coconut === 200) {
+      coconutObject.toppingPriceM = coconut
+    } else if (coconut === 300) {
+      coconutObject.toppingPriceL = coconut
+    } else if (coconut === 0) {
+      if (coconutObject.toppingPriceM) {
+        delete coconutObject.toppingPriceM
+      } else if (coconutObject.toppingPriceL) {
+        delete coconutObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(coconutObject))
     console.log(coconut)
   }, [coconut])
@@ -237,9 +371,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const mangoObject = {
       id: 12,
-      toppingPrice: mango,
       toppigName: "マンゴー"
     }
+
+    if (mango === 200) {
+      mangoObject.toppingPriceM = mango
+    } else if (mango === 300) {
+      mangoObject.toppingPriceL = mango
+    } else if (mango === 0) {
+      if (mangoObject.toppingPriceM) {
+        delete mangoObject.toppingPriceM
+      } else if (mangoObject.toppingPriceL) {
+        delete mangoObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(mangoObject))
     console.log(mango)
   }, [mango])
@@ -254,9 +400,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const pineappleObject = {
       id: 13,
-      toppingPrice: pineapple,
       toppigName: "パイナップル"
     }
+
+    if (pineapple === 200) {
+      pineappleObject.toppingPriceM = pineapple
+    } else if (pineapple === 300) {
+      pineappleObject.toppingPriceL = pineapple
+    } else if (pineapple === 0) {
+      if (pineappleObject.toppingPriceM) {
+        delete pineappleObject.toppingPriceM
+      } else if (pineappleObject.toppingPriceL) {
+        delete pineappleObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(pineappleObject))
     console.log(pineapple)
   }, [pineapple])
@@ -271,9 +429,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const mochiObject = {
       id: 14,
-      toppingPrice: mochi,
       toppigName: "もち"
     }
+
+    if (mochi === 200) {
+      mochiObject.toppingPriceM = mochi
+    } else if (mochi === 300) {
+      mochiObject.toppingPriceL = mochi
+    } else if (mochi === 0) {
+      if (mochiObject.toppingPriceM) {
+        delete mochiObject.toppingPriceM
+      } else if (mochiObject.toppingPriceL) {
+        delete mochiObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(mochiObject))
     console.log(mochi)
   }, [mochi])
@@ -288,9 +458,22 @@ export const ToppingItems = () => {
   useEffect(() => {
     const coffeeObject = {
       id: 15,
-      toppingPrice: coffee,
       toppigName: "コーヒー"
     }
+
+    if (coffee === 200) {
+      coffeeObject.toppingPriceM = coffee
+    } else if (coffee === 300) {
+      coffeeObject.toppingPriceL = coffee
+    } else if (coffee === 0) {
+      if (coffeeObject.toppingPriceM) {
+        delete coffeeObject.toppingPriceM
+      } else if (coffeeObject.toppingPriceL) {
+        delete coffeeObject.toppingPriceL
+      }
+    }
+
+
     dispatch(selectedToppings(coffeeObject))
     console.log(coffee)
   }, [coffee])
@@ -305,9 +488,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const spriteObject = {
       id: 16,
-      toppingPrice: sprite,
       toppigName: "スプライト"
     }
+
+    if (sprite === 200) {
+      spriteObject.toppingPriceM = sprite
+    } else if (sprite === 300) {
+      spriteObject.toppingPriceL = sprite
+    } else if (sprite === 0) {
+      if (spriteObject.toppingPriceM) {
+        delete spriteObject.toppingPriceM
+      } else if (spriteObject.toppingPriceL) {
+        delete spriteObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(spriteObject))
     console.log(sprite)
   }, [sprite])
@@ -322,9 +517,21 @@ export const ToppingItems = () => {
   useEffect(() => {
     const gingerAleObject = {
       id: 17,
-      toppingPrice: gingerAle,
       toppigName: "ジンジャエール"
     }
+
+    if (gingerAle === 200) {
+      gingerAleObject.toppingPriceM = gingerAle
+    } else if (gingerAle === 300) {
+      gingerAleObject.toppingPriceL = gingerAle
+    } else if (gingerAle === 0) {
+      if (gingerAleObject.toppingPriceM) {
+        delete gingerAleObject.toppingPriceM
+      } else if (gingerAleObject.toppingPriceL) {
+        delete gingerAleObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(gingerAleObject))
     console.log(gingerAle)
   }, [gingerAle])
@@ -339,16 +546,24 @@ export const ToppingItems = () => {
   useEffect(() => {
     const colaObject = {
       id: 18,
-      toppingPrice: cola,
       toppigName: "コーラ"
     }
+
+    if (cola === 200) {
+      colaObject.toppingPriceM = cola
+    } else if (cola === 300) {
+      colaObject.toppingPriceL = cola
+    } else if (cola === 0) {
+      if (colaObject.toppingPriceM) {
+        delete colaObject.toppingPriceM
+      } else if (colaObject.toppingPriceL) {
+        delete colaObject.toppingPriceL
+      }
+    }
+
     dispatch(selectedToppings(colaObject))
     console.log(cola)
   }, [cola])
-
-  console.log(toppingState)
-  console.log(toppingState[1].Lsize)
-  console.log('ああああ')
 
 
   return (
