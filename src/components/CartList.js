@@ -35,6 +35,7 @@ import NavigationIcon from '@material-ui/icons/Navigation';
 export const CartList = () => {
   const dispatch = useDispatch()
   const orderState = useSelector((state) => state.orderState)
+  const orderForCartItemArray = useSelector((state) => state.orderForCartState) //商品情報取得
   const toppingState = useSelector((state) => state.toppingState)
   const history = useHistory()
   const handleLink = path => history.push(path)
