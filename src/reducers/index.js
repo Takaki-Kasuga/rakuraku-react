@@ -3,4 +3,5 @@ import itemState from './items'
 import toppingState from './toppings'
 import userIdState from './user'
 
-export default combineReducers({ itemState, toppingState, userIdState })
+import orderHistory from './orderHistory'
+export default combineReducers({ itemState, toppingState, userIdState,orderHistory  })

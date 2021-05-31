@@ -15,7 +15,7 @@ import { ResettingEmail } from './components/ResettingEmail.js';
 import { Login } from './components/Login.js';
 import { OrderComplete } from './components/OrderComplete.js';
 import OrderConfirm from './components/OrderConfirm.js';
-import { OrderHistory } from './components/OrderHistory.js';
+import OrderHistory  from './components/OrderHistory.js';
 import { RegisterEmail } from './components/RegisterEmail.js';
 import { TermOfUse } from './components/TermOfUse.js';
 import UserAccount from './components/UserAccount.js';

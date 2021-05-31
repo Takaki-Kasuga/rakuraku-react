@@ -1,7 +1,7 @@
 import React from "react";
 //ボタン
 import { Button } from "@material-ui/core";
-//使えるか分からないけどテーブル
+//テーブル
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -9,43 +9,73 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
+import { connect } from "react-redux";
+import { cancel } from "../actions";
 
-export const OrderHistory = () => {
+
+
+
+ const OrderHistory = (props) => {
+  console.log(props.orderHistoryName);
   return (
     <React.Fragment>
-      <table border="1">
-        <tr>
-          <th>商品画像</th>
-          <th>商品名</th>
-          <th>商品価格</th>
-          <th>トッピング名</th>
-          <th>トッピング価格</th>
-          <th>小計</th>
-          <th>小計の消費税</th>
-          <th>商品個数</th>
-          <th>配達指定日</th>
-        </tr>
-        <tr>
-          <td>商品画像が入る</td>
-          <td>商品名が入る</td>
-          <td>商品価格が入る</td>
-          <td>トッピング名が入る</td>
-          <td>トッピング価格が入る</td>
-          <td>小計が入る</td>
-          <td>小計の消費税が入る</td>
-          <td>商品個数が入る</td>
-          <td>配達指定日</td>
-        </tr>
+      <h1 align="center">注文履歴</h1>
+      <table>
+        <TableHead>
+          <TableRow>
+            <TableCell>商品画像</TableCell>
+            <TableCell>商品名</TableCell>
+            <TableCell>商品価格</TableCell>
+            <TableCell>トッピング名</TableCell>
+            <TableCell>トッピング価格</TableCell>
+            <TableCell>小計</TableCell>
+            <TableCell>小計の消費税</TableCell>
+            <TableCell>商品個数</TableCell>
+            <TableCell>配達指定日</TableCell>
+          </TableRow>
+        </TableHead>
+
+        <TableBody>
+          <TableCell>{props.orderHistoryImagePath}</TableCell>
+          <TableCell>{props.orderHistoryName}</TableCell>
+          <TableCell>{props.orderHistoryPrice}</TableCell>
+          <TableCell>{props.orderHistoryTopping}</TableCell>
+          <TableCell>{props.orderHistoryToppingPrice}</TableCell>
+          <TableCell>{props.orderHistorySmallTotalPrice}</TableCell>
+          <TableCell>{props.orderHistorySmallTotalTax}</TableCell>
+          <TableCell>{props.orderHistoryItemCount}</TableCell>
+          <TableCell>{props.orderHistoryDestinationTime}</TableCell>
+        </TableBody>
       </table>
-      <button>キャンセル</button>
       <a href="/detail/:id">
         <button>この商品をもう一度注文</button>
       </a>
-      <a href="/">
-        <Button variant="contained" color="primary">
-          メニューの一覧に戻る
-        </Button>
-      </a>
+      <button onClick={props.cancel}>キャンセル</button>
+      <div align="center">
+        <a href="/" style={{ textDecoration: "none" }}>
+          <Button variant="contained" color="primary">
+            メニューの一覧に戻る
+          </Button>
+        </a>
+      </div>
     </React.Fragment>
   );
 };
+
+const mapStateToProps = (state) => ({
+  orderHistoryImagePath: state.orderHistory.orderHistoryImagePath,
+  orderHistoryName: state.orderHistory.orderHistoryName,
+  orderHistoryPrice: state.orderHistory.orderHistoryPrice,
+  orderHistoryTopping: state.orderHistory.orderHistoryTopping,
+  orderHistoryToppingPrice: state.orderHistory.orderHistoryToppingPrice,
+  orderHistorySmallTotalPrice: state.orderHistory.orderHistorySmallTotalPrice,
+  orderHistorySmallTotalTax: state.orderHistory.orderHistorySmallTotalTax,
+  orderHistoryItemCount: state.orderHistory.orderHistoryItemCount,
+  orderHistoryDestinationTime: state.orderHistory.orderHistoryDestinationTime,
+});
+//キャンセルボタン
+const mapDispatchToProps = (dispatch) => ({
+  cancel: () => dispatch(cancel()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(OrderHistory);

@@ -5,6 +5,10 @@ export const SET_TOPPINGS = 'SET_TOPPINGS'
 export const SET_USER_INFO = 'SET_USER_INFO';
 export const DELETE_USER_INFO = 'DELETE_USER_INFO';
 
+
+export const CANCEL = 'cancel'
+export const ITEM = 'item'
+
 export const items = (items) => {
   console.log(items)
   console.log(items.length)
@@ -62,3 +66,7 @@ export const logout = () =>
       await firebase.auth().signOut()
     }
   }
+
+export const cancel = () => ({
+  type:CANCEL
+})
