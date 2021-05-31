@@ -12,13 +12,13 @@ export default (state = [], action) => {
     //   })
     //   deleteArray.splice(deleteIndex, 1)
     //   return deleteArray
-    case DELETE_ORDER_INFO_NOLOGIN:
-      const deleteIdArray = [...state]
-      const deleteIdIndex = deleteIdArray.findIndex((everyobj) => {
-        return everyobj.itemId === action.deleteOrderInfomationIdNum.itemId
-      })
-      deleteIdArray.splice(deleteIdIndex, 1)
-      return deleteIdArray
+    // case DELETE_ORDER_INFO_NOLOGIN:
+    //   const deleteIdArray = [...state]
+    //   const deleteIdIndex = deleteIdArray.findIndex((everyobj) => {
+    //     return everyobj.itemId === action.deleteOrderInfomationIdNum.itemId
+    //   })
+    //   deleteIdArray.splice(deleteIdIndex, 1)
+    //   return deleteIdArray
     case DELETE_ALL_ORDER:
       console.log('DELETE_ALL_ORDERが発火')
       const deleteAllArray = [...state]
