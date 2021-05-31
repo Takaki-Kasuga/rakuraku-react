@@ -51,7 +51,7 @@ import { AddShoppingCart } from '@material-ui/icons';
 // firebase
 import firebase from '../firebase/firebase'
 
-import { orderInfomation, defaultSelectedToppings } from '../actions/index'
+import { orderInfomation, defaultSelectedToppings, updateOrderItems, orderUniqueId } from '../actions/index'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,6 +114,8 @@ export const Detail = () => {
   const toppingState = useSelector((state) => state.toppingState)
   const userIdState = useSelector((state) => state.userIdState)
   const selectedToppingState = useSelector((state) => state.selectedToppingState)
+  const updateOrderItemState = useSelector((state) => state.updateOrderItemState)
+  const orderUniqueIdState = useSelector((state) => state.orderUniqueIdState)
   const [selectedItem, setSelectedItem] = useState('')
   const [toppingList, setToppingList] = useState('')
   // パラメーター受け取り
@@ -175,20 +177,19 @@ export const Detail = () => {
     setTopping(event.target.value);
   };
 
-  // Firebaseのorderにカート情報に追加する
   // Firebaseのorderにカート情報を追加する
   const [orderInfo, setOrderInfo] = useState({
-    // userId
-    itemId: 0,
     status: 0,
-    imagePath: null,
-    itemName: null,
-    itemPrice: 0,
-    // toppingId:
-    // toppingName:
-    // toppingPrice:
-    itemCount: 0,
-    toppingInfo: null
+    orderItems: [
+      // {
+      //   id: 'id',
+      //   itemId: 0,
+      //   itemPrice: 0,
+      //   itemCount: 0,
+      //   imagePath: null,
+      //   itemName: null,
+      // }
+    ]
   })
 
   const addCart = () => {
@@ -199,44 +200,145 @@ export const Detail = () => {
         return Object.keys(value).length !== 2
       })
 
-      // トッピングの有無により値が変わる
-      if (selectedToppingArray.length === 0) {
+      console.log('selectedToppingArrayが発火')
+      console.log(selectedToppingArray)
+      console.log('updateOrderItemStateが発火')
+      console.log(updateOrderItemState)
+
+      // // トッピングの有無により値が変わる
+
+
+      // 初回の値を入れるときstateの[]配列が0の時
+      if (updateOrderItemState.length === 0) {
         setOrderInfo((orderInfo) => {
-          orderInfo.itemId = Number(id)
-          orderInfo.imagePath = selectedItem.imagePath
-          orderInfo.itemName = selectedItem.name
-          orderInfo.itemPrice = Number(itemValue)
-          orderInfo.itemCount = Number(itemCount)
+          orderInfo.orderItems.push({
+            itemId: Number(id),
+            imagePath: selectedItem.imagePath,
+            itemName: selectedItem.name,
+            itemPrice: Number(itemValue),
+            itemCount: Number(itemCount),
+            toppingInfo: selectedToppingArray
+          })
         })
+
+        // 新規で入力する時
+        if (userIdState.uid) {
+          console.log('新規入力')
+          firebase
+            .firestore()
+            .collection(`users/${userIdState.uid}/orders`)
+            .add(orderInfo)
+            .then((doc) => {
+              console.log('成功しました。')
+              console.log(doc.id)
+              setOrderInfo(orderInfo.uniqueId = doc.id)
+              dispatch(orderInfomation(orderInfo))
+              dispatch(updateOrderItems(orderInfo.orderItems))
+              dispatch(orderUniqueId(doc.id))
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+          // 画面遷移
+          // handleLink('/cartlist')
+        } else {
+          dispatch(orderInfomation(orderInfo))
+          // handleLink('/cartlist')
+        }
+
+        // 追加入力
       } else {
+        console.log(updateOrderItemState)
         setOrderInfo((orderInfo) => {
-          orderInfo.itemId = Number(id)
-          orderInfo.imagePath = selectedItem.imagePath
-          orderInfo.itemName = selectedItem.name
-          orderInfo.itemPrice = Number(itemValue)
-          orderInfo.itemCount = Number(itemCount)
-          orderInfo.toppingInfo = selectedToppingArray
+          updateOrderItemState.forEach((oldOrderItems) => {
+            orderInfo.orderItems.push(oldOrderItems)
+            console.log(oldOrderItems)
+          })
+          console.log(orderInfo.orderItems)
+          orderInfo.orderItems.push({
+            itemId: Number(id),
+            imagePath: selectedItem.imagePath,
+            itemName: selectedItem.name,
+            itemPrice: Number(itemValue),
+            itemCount: Number(itemCount),
+            toppingInfo: selectedToppingArray
+          })
         })
+        console.log(orderInfo)
+        // 更新するとき
+        console.log('追加入力')
+        if (userIdState.uid) {
+          firebase
+            .firestore()
+            .collection(`users/${userIdState.uid}/orders`)
+            .doc(orderUniqueIdState)
+            .update({
+              orderItems: orderInfo.orderItems,
+            })
+            .then(() => {
+              console.log('成功しました。')
+              // console.log(doc.id)
+              dispatch(updateOrderItems(orderInfo.orderItems))
+              dispatch(orderInfomation(orderInfo))
+
+              // setOrderInfo(orderInfo.uniqueId = doc.id)
+            })
+            .catch((error) => {
+              console.log('失敗しました。')
+              console.log(error)
+            })
+          // 画面遷移
+          // handleLink('/cartlist')
+        } else {
+          dispatch(orderInfomation(orderInfo))
+          // handleLink('/cartlist')
+        }
       }
 
-      if (userIdState.uid) {
-        firebase
-          .firestore()
-          .collection(`users/${userIdState.uid}/orders`)
-          .add(orderInfo)
-          .then((doc) => {
-            setOrderInfo(orderInfo.uniqueId = doc.id)
-            dispatch(orderInfomation(orderInfo))
-          })
-          .catch((error) => {
-            console.log(error)
-          })
-        // 画面遷移
-        handleLink('/cartlist')
-      } else {
-        dispatch(orderInfomation(orderInfo))
-        handleLink('/cartlist')
-      }
+
+
+      // if (selectedToppingArray.length === 0) {
+      //   setOrderInfo((orderInfo) => {
+      //     orderInfo.orderItems[0].itemId = Number(id)
+      //     orderInfo.orderItems[0].imagePath = selectedItem.imagePath
+      //     orderInfo.orderItems[0].itemName = selectedItem.name
+      //     orderInfo.orderItems[0].itemPrice = Number(itemValue)
+      //     orderInfo.orderItems[0].itemCount = Number(itemCount)
+      //   })
+      // }
+      // else {
+      //   console.log('selectedToppingArray.length === 0出ない時')
+      //   setOrderInfo((orderInfo) => {
+      //     orderInfo.orderItems[0].itemId = Number(id)
+      //     orderInfo.orderItems[0].imagePath = selectedItem.imagePath
+      //     orderInfo.orderItems[0].itemName = selectedItem.name
+      //     orderInfo.orderItems[0].itemPrice = Number(itemValue)
+      //     orderInfo.orderItems[0].itemCount = Number(itemCount)
+      //     orderInfo.orderItems[0].toppingInfo = selectedToppingArray
+      //   })
+      // }
+
+      // console.log(orderInfo.orderItems)
+      // if (userIdState.uid) {
+      //   firebase
+      //     .firestore()
+      //     .collection(`users/${userIdState.uid}/orders`)
+      //     .add(orderInfo)
+      //     .then((doc) => {
+      //       console.log('成功しました。')
+      //       console.log(doc.id)
+      //       setOrderInfo(orderInfo.uniqueId = doc.id)
+      //       dispatch(orderInfomation(orderInfo))
+      //     })
+      //     .catch((error) => {
+      //       console.log(error)
+      //     })
+      //   // 画面遷移
+      //   // handleLink('/cartlist')
+      // } else {
+      //   dispatch(orderInfomation(orderInfo))
+      //   // handleLink('/cartlist')
+      // }
     }
   }
 

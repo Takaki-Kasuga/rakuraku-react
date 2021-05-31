@@ -14,6 +14,8 @@ export const DELETE_ALL_ORDER = 'DELETE_ALL_ORDER'
 export const CHANGE_ROUTING_STATUS = 'CHANGE_ROUTING_STATUS';
 export const CHANGE_ZERO_ROUTING_STATUS = 'CHANGE_ZERO_ROUTING_STATUS';
 export const JUDGE_SCREEN_STATUS = 'JUDGE_SCREEN_STATUS';
+export const UPDATE_ORDER_ITEMS = 'UPDATE_ORDER_ITEMS';
+export const ORDER_UNIQUE_ID = 'ORDER_UNIQUE_ID';
 
 
 export const CANCEL = 'cancel'
@@ -148,7 +150,7 @@ export const logout = () =>
   }
 
 export const cancel = () => ({
-  type:CANCEL
+  type: CANCEL
 })
 
 export const signUp = (username, email, password, confirmPassword) => {
@@ -182,4 +184,19 @@ export const signIn = (email, password) => {
         alert('メールアドレスかパスワードが間違えています')
       })
   }
+}
+
+export const updateOrderItems = (updateOrderItems) => {
+  console.log('UPDATE_ORDER_ITEMS')
+  return ({
+    type: UPDATE_ORDER_ITEMS,
+    updateOrderItemsList: updateOrderItems
+  })
+}
+
+export const orderUniqueId = (orderUniqueId) => {
+  return ({
+    type: ORDER_UNIQUE_ID,
+    orderUniqueIdForCart: orderUniqueId
+  })
 }
