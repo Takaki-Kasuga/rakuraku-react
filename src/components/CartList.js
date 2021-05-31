@@ -36,6 +36,7 @@ export const CartList = () => {
   const dispatch = useDispatch()
   const orderState = useSelector((state) => state.orderState)
   const orderForCartItemArray = useSelector((state) => state.orderForCartState) //商品情報取得
+  const orderItemsArray = useSelector((state) => state.setOrderItems) //カート情報取得
   const toppingState = useSelector((state) => state.toppingState)
   const history = useHistory()
   const handleLink = path => history.push(path)
@@ -102,20 +103,19 @@ export const CartList = () => {
   const rows = [];
 
   console.log(orderState)
-  orderState.forEach((order) => {
-    console.log(order.status)
+  orderItemsArray.forEach((order) => {
     // statusが0（購入前）の商品を取ってくる
-    if (order.status === 0) {
-      const fetchData = createData(
-        { itemPath: order.imagePath, itemName: order.itemName },
-        { itemPrice: order.itemPrice, itemCount: order.itemCount },
-        order.toppingInfo,
-        order.uniqueId,
-        order.itemId,
-      )
-      // selectedToppingId.push(order.toppingInfo)
-      rows.push(fetchData)
-    }
+    const filterObject = orderForCartItemArray.find(element => element.id === order.itemId)
+    console.log(filterObject);
+    const fetchData = createData(
+      { itemPath: filterObject.imagePath, itemName: filterObject.name },
+      { itemPrice: order.itemPrice, itemCount: order.itemCount },
+      order.toppingInfo,
+      order.uniqueId,
+      order.itemId,
+    )
+    // selectedToppingId.push(order.toppingInfo)
+    rows.push(fetchData)
   })
   console.log('rowsの中身')
   console.log(rows)
@@ -168,6 +168,9 @@ export const CartList = () => {
   }
 
   useEffect(() => {
+    console.log('orderForCartItemArrayの中身')
+    console.log(orderForCartItemArray);
+    console.log(orderItemsArray)
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         firebase
@@ -181,6 +184,9 @@ export const CartList = () => {
                 // Firestoreから取得した「カートに入った状態のorderItems」をstoreのstateに保存(ただし、orderItemが空ではない時)
                 const orderItems = doc.data().orderItems;
                 dispatch(setOrderItems(orderItems));
+
+                // カートに入っている商品情報のみが入った新しい配列を作成
+                orderItemsArray.forEach(element => console.log(element))
               }
             });
           });
@@ -241,7 +247,7 @@ export const CartList = () => {
                     {console.log(row.toppingItem)}
                     {console.log(row.toppingItem === false)}
                     {console.log(row.toppingItem === true)}
-                    {!row.toppingItem ? <p>0円</p> :
+                    {!row.toppingItem.length ? <p>0円</p> :
                       row.toppingItem.map((topping, index) => {
                         // console.log(row.toppingItem === false)
                         console.log('toppingItemでmapで回す')
