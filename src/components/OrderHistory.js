@@ -158,19 +158,6 @@ const OrderHistory = () => {
     console.log(parentRows);
   })
 
-  // orderedItemsArray.forEach((order) => {
-  //   const filterObject = orderForCartItemArray.find(element => element.id === order.itemId)
-  //   console.log(filterObject);
-  //   const fetchData = createData(
-  //     { itemPath: filterObject.imagePath, itemName: filterObject.name },
-  //     { itemPrice: order.itemPrice, itemCount: order.itemCount },
-  //     order.toppingInfo,
-  //     order.uniqueId,
-  //     order.itemId,
-  //   )
-  //   rows.push(fetchData)
-  // })
-
   const changeToDetail = path => history.push(path)
 
   const cancel = () => {
@@ -183,20 +170,20 @@ const OrderHistory = () => {
         {!parentRows.length ? <h2>注文した商品はありません</h2> :
           <Paper className={classes.root}>
             <Table className={classes.table} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>商品名</TableCell>
-                  <TableCell>商品価格</TableCell>
-                  <TableCell>トッピング価格</TableCell>
-                  <TableCell>小計</TableCell>
-                  <TableCell>配達指定日</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
 
-                {parentRows.map((childRows, index) => (
-                  <div style={{ "margin-bottom": "40px" }}>
-                    {childRows.map((row) => (
+              {parentRows.map((childRows, index) => (
+                <div style={{ "margin-bottom": "40px" }}>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>商品名</TableCell>
+                      <TableCell>商品価格</TableCell>
+                      <TableCell>トッピング価格</TableCell>
+                      <TableCell>小計</TableCell>
+                      <TableCell>配達指定日</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  {childRows.map((row) => (
+                    <TableBody>
                       <TableRow key={index} style={{ alignItems: 'flex-start' }}>
                         <TableCell className={classes.cardMediaStyle} component="th" scope="row">
 
@@ -264,11 +251,11 @@ const OrderHistory = () => {
                           <Button color="primary" onClick={() => { changeToDetail(`/detail/${row.itemId}`) }}>この商品をもう一度購入する</Button>
                         </TableCell>
                       </TableRow>
-                    ))}
-                    <Button onClick={cancel}>キャンセル</Button>
-                  </div>
-                ))}
-              </TableBody>
+                    </TableBody>
+                  ))}
+                  <Button onClick={cancel}>キャンセル</Button>
+                </div>
+              ))}
             </Table>
           </Paper>
         }
