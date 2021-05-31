@@ -3,6 +3,7 @@ import { Button, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../actions/index.js";
 
+
 export const RegisterEmail = () => {
   const errors = {
     nameError: " ",
@@ -112,42 +113,73 @@ export const RegisterEmail = () => {
 
   return (
     <React.Fragment>
-      <h2>新規登録</h2>
-      <p>登録を持って利用規約に同意したものとみなします。</p>
+      <h2 align="center">新規登録</h2>
+      <p align="center">登録を持って利用規約に同意したものとみなします。</p>
       <form>
         <div>
-          <label>
-            名前:
-          </label>
-          <TextField fullWidth={true} value={username} onChange={inputName} type={"text"} />
-          <div><span>{errorMessage.nameError}</span></div>
+          <label>名前:</label>
+          <TextField
+            fullWidth={true}
+            value={username}
+            onChange={inputName}
+            type={"text"}
+          />
+          <div>
+            <span>{errorMessage.nameError}</span>
+          </div>
         </div>
         <div>
-          <label>
-            メールアドレス:
-          </label>
-          <TextField fullWidth={true} value={email} type={"email"} onChange={inputEmail} />
-          <div><span>{errorMessage.emailError}</span></div>
+          <label>メールアドレス:</label>
+          <TextField
+            fullWidth={true}
+            value={email}
+            type={"email"}
+            onChange={inputEmail}
+          />
+          <div>
+            <span>{errorMessage.emailError}</span>
+          </div>
         </div>
         <div>
-          <label>
-            パスワード(6文字以上):
-          </label>
-          <TextField fullWidth={true} value={password} type={"password"} onChange={inputPassword} />
-          <div><span>{errorMessage.passwordError}</span></div>
+          <label>パスワード(6文字以上):</label>
+          <TextField
+            fullWidth={true}
+            value={password}
+            type={"password"}
+            onChange={inputPassword}
+          />
+          <div>
+            <span>{errorMessage.passwordError}</span>
+          </div>
         </div>
         <div>
-          <label>
-            確認用パスワード:
-          </label>
-          <TextField fullWidth={true} value={confirmPassword} type={"password"} onChange={inputConfirmPassword} />
-          <div><span>{errorMessage.confirmPasswordError}</span></div>
+          <label>確認用パスワード:</label>
+          <TextField
+            fullWidth={true}
+            value={confirmPassword}
+            type={"password"}
+            onChange={inputConfirmPassword}
+          />
+          <div>
+            <span>{errorMessage.confirmPasswordError}</span>
+          </div>
         </div>
-        <div>
-          <Button variant="contained" color="primary" onClick={register} disabled={isDisabled}>登録</Button>
-          <Button variant="contained" color="primary" onClick={clear}>クリア</Button>
+        <div align="center">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={register}
+            disabled={isDisabled}
+          >
+            登録
+          </Button>
+          <div align="center">
+            <Button variant="contained" color="primary" onClick={clear}>
+              クリア
+            </Button>
+          </div>
         </div>
       </form>
     </React.Fragment>
-  )
+  );
 }
