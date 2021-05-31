@@ -1,61 +1,89 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import {
-  Link
+  Link,
+  useHistory
 } from 'react-router-dom';
-import firebase from '../firebase/firebase';
 import { useDispatch, useSelector } from "react-redux";
-import { loginWithGoogle, setUserInfo, deleteUserInfo } from "../actions/index.js";
+import { loginWithGoogle, signIn } from "../actions/index.js";
 
 
 export const Login = () => {
   const dispatch = useDispatch();
+  const getRoutingJudge = useSelector((state) => state.routingJudge.routingJudge)
 
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
+  const errors = {
+    emailError: " ",
+    passwordError: " ",
+  };
 
-  const getState = (state) => state;
-  const stateContent = useSelector(getState);
-  console.log('stateの中身です');
-  console.log(stateContent);
+  const [email, setEmail] = useState(''),
+    [password, setPassword] = useState(''),
+    [errorMessage, setErrorMessage] = useState(errors),
+    [isDisabled, setIsDisabled] = useState(true);
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUserName(firebase.auth().currentUser.displayName);
-        setUserEmail(firebase.auth().currentUser.email);
-        const user_name = firebase.auth().currentUser.displayName;
-        const user_email = firebase.auth().currentUser.email;
-        const user_id = firebase.auth().currentUser.uid;
-        dispatch(setUserInfo(user_id, user_name, user_email));
-      } else {
-        console.log('userはログインしていません');
-        setUserName('');
-        setUserEmail('');
-        dispatch(deleteUserInfo());
-      }
-    })
-  }, []);
+  const isDisabledCheck = () => {
+    if (errorMessage.emailError === "" && errorMessage.passwordError === "") {
+      setIsDisabled(false);
+    }
+  }
+
+  const inputEmail = (e) => {
+    const new_value = e.target.value;
+    setEmail(new_value)
+    if (new_value === "") {
+      console.log('空です')
+      errorMessage.emailError = "メールアドレスを入力してください"
+    } else if (new_value.indexOf("@") == -1) {
+      errorMessage.emailError = "メールアドレスの形式が不正です"
+    } else {
+      errorMessage.emailError = "";
+      isDisabledCheck();
+    }
+  };
+
+  const inputPassword = (e) => {
+    const new_value = e.target.value;
+    setPassword(new_value);
+    if (new_value === "") {
+      errorMessage.passwordError = "パスワードを入力してください"
+    } else if (new_value.length < 6) {
+      errorMessage.passwordError = "6文字未満です"
+    } else {
+      errorMessage.passwordError = "";
+      isDisabledCheck();
+    }
+  };
+
+  const login = () => {
+    localStorage.setItem('routingJudge', Number(getRoutingJudge));
+    dispatch(signIn(email, password))
+  }
+
+  const googleLogin = () => {
+    localStorage.setItem('routingJudge', Number(getRoutingJudge));
+    dispatch(loginWithGoogle());
+  }
 
   return (
     <React.Fragment>
       <h2>メールアドレスでログインする</h2>
-      <p> ログイン中ユーザー: {userName}</p>
-      <p> ユーザーのEmail: {userEmail}</p>
       <form>
         <div>
           <label>
             メールアドレス:
           </label>
-          <TextField />
+          <TextField value={email} type={"email"} onChange={inputEmail} />
+          <span>{errorMessage.emailError}</span>
         </div>
         <div>
           <label>
             パスワード:
           </label>
-          <TextField />
+          <TextField value={password} type={"password"} onChange={inputPassword} />
+          <span>{errorMessage.passwordError}</span>
         </div>
-        <Button variant="contained" color="primary">ログイン</Button>
+        <Button variant="contained" color="primary" onClick={login} disabled={isDisabled}>ログイン</Button>
       </form>
 
       <div>
@@ -68,7 +96,7 @@ export const Login = () => {
 
       <div>
         <h3>Googleでログインする</h3>
-        <Button variant="contained" color="primary" onClick={() => { dispatch(loginWithGoogle()) }}>Googleでログイン</Button>
+        <Button variant="contained" color="primary" onClick={googleLogin}>Googleでログイン</Button>
       </div>
 
     </React.Fragment >

@@ -3,7 +3,7 @@ import firebase from '../firebase/firebase'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { items, toppings } from '../actions/index'
+import { items, toppings, seachItems } from '../actions/index'
 // マテリアルUI
 // コンテイナー
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -38,15 +38,48 @@ import TextField from '@material-ui/core/TextField';
 // 検索ボタン
 import Button from '@material-ui/core/Button';
 
+// ローディング
+import PropTypes from 'prop-types';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Box from '@material-ui/core/Box';
+
+
+// ローディング
+function LinearProgressWithLabel(props) {
+  return (
+    <Box display="flex" alignItems="center">
+      <Box width="100%" mr={1}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box minWidth={35}>
+        <Typography variant="body2" color="textSecondary">{`${Math.round(
+          props.value,
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
+LinearProgressWithLabel.propTypes = {
+  /**
+   * The value of the progress indicator for the determinate and buffer variants.
+   * Value between 0 and 100.
+   */
+  value: PropTypes.number.isRequired,
+};
+
+
 // グリッドスタイル
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    cursor: 'pointer'
+    cursor: 'pointer',
+    width: '300px',
+    'margin': '20px',
   },
   searchbox: {
     display: 'flex',
-    flexWrap: 'wrap',
+    'flex-wrap': 'wrap',
     'text-align': 'center',
     'justify-content': 'center',
     width: '80%',
@@ -68,9 +101,8 @@ const useStyles = makeStyles((theme) => ({
   },
   flex: {
     display: 'flex',
-    'justify-content': 'center',
     'flex-wrap': 'wrap',
-    'justify-content': 'space-around'
+    'justify-content': 'center',
   },
   control: {
     padding: theme.spacing(2),
@@ -92,6 +124,9 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
+  full: {
+    width: '100%',
+  }
 }));
 
 
@@ -99,7 +134,9 @@ export const Home = () => {
   const dispatch = useDispatch()
   const itemState = useSelector((state) => state.itemState)
   const toppingState = useSelector((state) => state.toppingState)
-
+  const [judgeScreenStatus, setJudgeScreenStatus] = useState(false);
+  // ローディング
+  const [progress, setProgress] = React.useState(10);
   // グリッドスタイル
   const [spacing, setSpacing] = React.useState(2);
   const classes = useStyles();
@@ -107,6 +144,16 @@ export const Home = () => {
   const handleChange = (event) => {
     setSpacing(Number(event.target.value));
   };
+
+  // ローディング
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
+    }, 300);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   // カードリスト
   // const classes = useStyles();
@@ -145,205 +192,168 @@ export const Home = () => {
         snapshot.forEach((doc) => {
           toppingArray.push(doc.data())
         })
-        console.log(toppingArray[0].array)
-        console.log(toppingArray[0].array.length)
         dispatch(toppings(toppingArray[0].array))
       });
   }, [])
 
-  console.log(itemState)
-  console.log(itemState.length)
+  // 文字検索（該当の商品を取得）
+  const [searchValue, setSearchValue] = useState(null);
+  const setSearchValueMethod = (event) => {
+    setSearchValue(event.target.value)
+  }
+  const filteringItems = (searchValue) => {
+    // 何か１つでも文字が入力されている時
+    if (searchValue) {
+      dispatch(seachItems(searchValue))
+      // dispatch(judgeScreenStatus(searchValue))
+      // if (!itemState.length) {
+      //   setJudgeScreenStatus(false)
+      //   console.log(judgeScreenStatus)
+      // } else {
+      //   setJudgeScreenStatus(true)
+      //   console.log(judgeScreenStatus)
+      // }
+    } else {
+      firebase
+        .firestore()
+        .collection(`items/`)
+        .get()
+        .then((snapshot) => {
+          const itemArray = []
+          snapshot.forEach((doc) => {
+            itemArray.push(doc.data())
+          })
+          dispatch(items(itemArray))
+        });
+    }
+  }
 
+  const allItem = () => {
+    firebase
+      .firestore()
+      .collection(`items/`)
+      .get()
+      .then((snapshot) => {
+        const itemArray = []
+        snapshot.forEach((doc) => {
+          itemArray.push(doc.data())
+        })
+        dispatch(items(itemArray))
+      });
+  }
+
+  const changeToStatus = () => {
+    setJudgeScreenStatus(true)
+    console.log(judgeScreenStatus)
+  }
 
   return (
     <>
-      <div className={classes.searchbox}>
-        <TextField
-          className={classes.textField}
-          id="filled-full-width"
-          label="Label"
-          placeholder="Search Items"
-          fullWidth
-          // style={{ margin: '0 auto' }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="filled"
-        />
-        <Button variant="contained" color="primary">
-          検索
-        </Button>
-      </div>
+
       <CssBaseline />
       <Container maxWidth="lg">
-        <Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} >
-          <Grid container className={classes.root} spacing={2}>
-            <Grid item xs={12}>
-              <Grid container justify="center" spacing={spacing}>
-                {!itemState.length ? <h1>Loding..</h1> :
-                  <Grid item className={classes.flex}>
-                    {itemState.map((item) => {
-                      return (
-                        <Card onClick={() => { changeToDetail(`/detail/${item.id}`) }} key={item.id} className={classes.root} >
-                          <CardHeader
-                            avatar={
-                              <Avatar aria-label="recipe" className={classes.avatar}>
-                                Me
+        <Grid container justify="center" spacing={spacing}>
+          {itemState.length === 0 && !judgeScreenStatus ?
+            <div className={classes.full}>
+              <LinearProgressWithLabel value={progress} />
+            </div>
+            : itemState.length === 0 && judgeScreenStatus ?
+              <div>
+                <div>
+                  <h1>該当する商品がありません</h1>
+                  <Button variant="contained" onClick={() => {
+                    allItem();
+                  }}>一覧を表示する。</Button>
+                </div>
+              </div>
+              :
+              <div>
+                <div className={classes.searchbox}>
+                  <TextField
+                    onKeyPress={e => {
+                      if (e.key == 'Enter') {
+                        e.preventDefault()
+                        filteringItems(searchValue)
+                        changeToStatus()
+                      }
+                    }
+                    }
+                    className={classes.textField}
+                    id="filled-full-width"
+                    label="Label"
+                    placeholder="Search Items"
+                    fullWidth
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    variant="filled"
+                    value={searchValue}
+                    onChange={setSearchValueMethod}
+                    disabled={!itemState.length ? true : false}
+                  />
+                  <Button variant="contained" color="primary"
+                    disabled={!itemState.length ? true : false}
+                    onClick={() => {
+                      filteringItems(searchValue);
+                      changeToStatus();
+                    }}>
+                    検索
+        </Button>
+
+                </div>
+                <Grid item className={classes.flex}>
+                  {itemState.map((item) => {
+                    return (
+                      <Card onClick={() => { changeToDetail(`/detail/${item.id}`) }} key={item.id} className={classes.root} >
+                        <CardHeader
+                          avatar={
+                            <Avatar aria-label="recipe" className={classes.avatar}>
+                              Me
                           </Avatar>
-                            }
-                            action={
-                              <IconButton aria-label="settings">
-                                <MoreVertIcon />
-                              </IconButton>
-                            }
-                            title="Shrimp and Chorizo Paella"
-                            subheader="September 14, 2016"
-                          />
-                          <CardMedia
-                            className={classes.media}
-                            image={item.imagePath}
-                            title="Paella dish"
-                          />
-                          <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2">
-                              {item.name}
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                              {item.description}
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                              Lサイズ：{(item.price.Lsize).toLocaleString()}円（税抜き）
-                            </Typography>
-                            <Typography variant="body2" color="textSecondary" component="p">
-                              Mサイズ：{(item.price.Msize).toLocaleString()}円（税抜き）
-                            </Typography>
-                          </CardContent>
-                          <CardActions disableSpacing>
-                            <IconButton aria-label="add to favorites">
-                              <FavoriteIcon />
+                          }
+                          action={
+                            <IconButton aria-label="settings">
+                              <MoreVertIcon />
                             </IconButton>
-                            <IconButton aria-label="share">
-                              <ShareIcon />
-                            </IconButton>
-                          </CardActions>
-                        </Card>
-                      )
-                    })}
-                  </Grid>
-                }
-              </Grid>
-            </Grid>
-          </Grid>
-        </Typography>
+                          }
+                          title="Shrimp and Chorizo Paella"
+                          subheader="September 14, 2016"
+                        />
+                        <CardMedia
+                          className={classes.media}
+                          image={item.imagePath}
+                          title="Paella dish"
+                        />
+                        <CardContent>
+                          <Typography gutterBottom variant="h5" component="h2">
+                            {item.name}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary" component="p">
+                            {item.description}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary" component="p">
+                            Lサイズ：{(item.price.Lsize).toLocaleString()}円（税抜き）
+                            </Typography>
+                          <Typography variant="body2" color="textSecondary" component="p">
+                            Mサイズ：{(item.price.Msize).toLocaleString()}円（税抜き）
+                            </Typography>
+                        </CardContent>
+                        <CardActions disableSpacing>
+                          <IconButton aria-label="add to favorites">
+                            <FavoriteIcon />
+                          </IconButton>
+                          <IconButton aria-label="share">
+                            <ShareIcon />
+                          </IconButton>
+                        </CardActions>
+                      </Card>
+                    )
+                  })}
+                </Grid>
+              </div>
+          }
+        </Grid>
       </Container>
     </>
   )
 }
-
-
-{/* <Grid item className={classes.flex}>
-  <Card className={classes.root} >
-    <CardHeader
-      avatar={
-        <Avatar aria-label="recipe" className={classes.avatar}>
-          Me
-                          </Avatar>
-      }
-      action={
-        <IconButton aria-label="settings">
-          <MoreVertIcon />
-        </IconButton>
-      }
-      title="Shrimp and Chorizo Paella"
-      subheader="September 14, 2016"
-    />
-    <CardMedia
-      className={classes.media}
-      image='https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037'
-      title="Paella dish"
-    />
-    <CardContent>
-      <Typography variant="body2" color="textSecondary" component="p">
-        デスクリプション
-                        </Typography>
-    </CardContent>
-    <CardActions disableSpacing>
-      <IconButton aria-label="add to favorites">
-        <FavoriteIcon />
-      </IconButton>
-      <IconButton aria-label="share">
-        <ShareIcon />
-      </IconButton>
-    </CardActions>
-  </Card>
-  <Card className={classes.root}>
-    <CardHeader
-      avatar={
-        <Avatar aria-label="recipe" className={classes.avatar}>
-          R
-                          </Avatar>
-      }
-      action={
-        <IconButton aria-label="settings">
-          <MoreVertIcon />
-        </IconButton>
-      }
-      title="Shrimp and Chorizo Paella"
-      subheader="September 14, 2016"
-    />
-    <CardMedia
-      className={classes.media}
-      image='https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037'
-      title="Paella dish"
-    />
-    <CardContent>
-      <Typography variant="body2" color="textSecondary" component="p">
-        デスクリプション
-                        </Typography>
-    </CardContent>
-    <CardActions disableSpacing>
-      <IconButton aria-label="add to favorites">
-        <FavoriteIcon />
-      </IconButton>
-      <IconButton aria-label="share">
-        <ShareIcon />
-      </IconButton>
-    </CardActions>
-  </Card>
-  <Card className={classes.root}>
-    <CardHeader
-      avatar={
-        <Avatar aria-label="recipe" className={classes.avatar}>
-          R
-                          </Avatar>
-      }
-      action={
-        <IconButton aria-label="settings">
-          <MoreVertIcon />
-        </IconButton>
-      }
-      title="Shrimp and Chorizo Paella"
-      subheader="September 14, 2016"
-    />
-    <CardMedia
-      className={classes.media}
-      image='https://firebasestorage.googleapis.com/v0/b/rakuraku-react.appspot.com/o/8.jpg?alt=media&token=5482ca98-4d73-493c-8a3e-e3bc5b7c7037'
-      title="Paella dish"
-    />
-    <CardContent>
-      <Typography variant="body2" color="textSecondary" component="p">
-        デスクリプション
-                        </Typography>
-    </CardContent>
-    <CardActions disableSpacing>
-      <IconButton aria-label="add to favorites">
-        <FavoriteIcon />
-      </IconButton>
-      <IconButton aria-label="share">
-        <ShareIcon />
-      </IconButton>
-    </CardActions>
-  </Card>
-  <Paper className={classes.paper} />
-</Grid> */}
-

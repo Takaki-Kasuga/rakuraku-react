@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
 //ロゴ画像
@@ -14,6 +14,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
+import firebase from '../firebase/firebase';
+
+import { deleteAllOrder } from '../actions/index'
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -26,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const getState = (state) => state.userIdState.login_user;
+
 const Header = () => {
     const history = useHistory();
     const dispatch = useDispatch();
@@ -35,12 +41,30 @@ const Header = () => {
         height: "25.2px",
     }
 
-    const getState = (state) => state;
     const stateContent = useSelector(getState);
+    const [loginUser, setLoginUser] = useState(false);
 
-    console.log('stateContentです')
-    console.log(stateContent.userIdState.login_user)
-    const login_user = stateContent.userIdState.login_user;
+    useEffect(() => {
+        firebase.auth().onAuthStateChanged((user) => {
+            console.log(stateContent);
+            setLoginUser(stateContent);
+        })
+    }, [stateContent]);
+
+
+    const LoginOrLogout = (props) => {
+        console.log(props);
+        if (props.user === true) {
+            return (
+                <React.Fragment>
+                    <Button color="secondary" onClick={() => history.push('/useraccount')}>アカウント</Button>
+                    <Button color="secondary" onClick={() => { dispatch(logout()); dispatch(deleteAllOrder()); }}>ログアウト</Button>
+                </React.Fragment>
+            )
+        } else {
+            return <Button color="secondary" onClick={() => history.push('/login')}>ログイン</Button>
+        }
+    }
 
     return (
         <React.Fragment>
@@ -50,9 +74,7 @@ const Header = () => {
                         <Typography variant="h6" className={classes.title}>
                             <a href="/"><img src={logo} style={style} /></a>
                         </Typography>
-                        <Button color="secondary" onClick={() => history.push('/useraccount')}>アカウント</Button>
-                        <Button color="secondary" onClick={() => history.push('/login')}>ログイン</Button>
-                        <Button color="secondary" onClick={() => { dispatch(logout()) }}>ログアウト</Button>
+                        <LoginOrLogout user={loginUser} />
                         <Button color="secondary" onClick={() => history.push('/cartlist')}>ショッピングカート</Button>
                         <Button color="secondary" onClick={() => history.push('/orderhistory')}>注文履歴</Button>
                     </Toolbar>
