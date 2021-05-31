@@ -15,6 +15,10 @@ export const CHANGE_ROUTING_STATUS = 'CHANGE_ROUTING_STATUS';
 export const CHANGE_ZERO_ROUTING_STATUS = 'CHANGE_ZERO_ROUTING_STATUS';
 export const JUDGE_SCREEN_STATUS = 'JUDGE_SCREEN_STATUS';
 
+
+export const CANCEL = 'cancel'
+export const ITEM = 'item'
+
 export const items = (items) => {
   return ({
     type: SET_ITEMS,
@@ -142,6 +146,10 @@ export const logout = () =>
         })
     }
   }
+
+export const cancel = () => ({
+  type:CANCEL
+})
 
 export const signUp = (username, email, password, confirmPassword) => {
   return async (dispatch) => {
