@@ -22,7 +22,7 @@ import OrderHistory from './components/OrderHistory.js';
 import { RegisterEmail } from './components/RegisterEmail.js';
 import { TermOfUse } from './components/TermOfUse.js';
 import UserAccount from './components/UserAccount.js';
-import { orderInfomation, setUserInfo, deleteUserInfo, deleteAllOrder, updateOrderItems, orderUniqueId } from './actions/index'
+import { orderInfomation, setUserInfo, deleteUserInfo, deleteAllOrder, updateOrderItems, orderUniqueId, orderForCartInfomation } from './actions/index'
 import { ReorderRounded } from "@material-ui/icons";
 
 const getState = (state) => state.userIdState.login_user;

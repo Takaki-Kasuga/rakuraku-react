@@ -3,7 +3,7 @@ import firebase from '../firebase/firebase'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { items, toppings, seachItems } from '../actions/index'
+import { items, toppings, seachItems, orderForCartInfomation } from '../actions/index'
 // マテリアルUI
 // コンテイナー
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -178,6 +178,7 @@ export const Home = () => {
           itemArray.push(doc.data())
         })
         dispatch(items(itemArray))
+        dispatch(orderForCartInfomation(itemArray))
       });
   }, [])
 
