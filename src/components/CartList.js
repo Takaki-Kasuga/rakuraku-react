@@ -141,38 +141,38 @@ export const CartList = () => {
               console.log(snapshot.id)
               const newDeleteDataArray = []
               const orderItems = snapshot.data().orderItems
-              //   orderItems.forEach((orderItem) => {
-              //     if (orderItem.uniqueItemId !== id) {
-              //       newDeleteDataArray.push(orderItem)
-              //     }
+              // orderItems.forEach((orderItem) => {
+              //   if (orderItem.uniqueItemId !== id) {
+              //     newDeleteDataArray.push(orderItem)
+              //   }
+              // })
+              // firebase
+              //   .firestore()
+              //   .collection(`users/${userIdState.uid}/orders`)
+              //   .doc(orderUniqueIdState)
+              //   .update({
+              //     orderItems: newDeleteDataArray,
               //   })
-              //   firebase
-              //     .firestore()
-              //     .collection(`users/${userIdState.uid}/orders`)
-              //     .doc(orderUniqueIdState)
-              //     .update({
-              //       orderItems: newDeleteDataArray,
-              //     })
-              //     .then(() => {
-              //       console.log('成功しました。')
-              //     })
-              // }
-              // snapshot.forEach((doc) => {
-              //   console.log(doc)
-              //   console.log(doc.id)
-              //   console.log(doc.data())
-              // const fetchData = doc.data()
-              // fetchData.uniqueId = doc.id
-              // console.log(fetchData)
-              // dispatch(orderInfomation(fetchData))
-              // ステータスが0のオーダー情報のみ取得して各stateに商品オブジェクトと一意のオーダーIDを追加
-              // if (doc.data().status === 0) {
-              //   dispatch(updateOrderItems(doc.data().orderItems))
-              //   dispatch(orderUniqueId(doc.id))
-              // }
-              // }
-              // );
-            });
+              //   .then(() => {
+              //     console.log('成功しました。')
+              //   })
+            }
+            // snapshot.forEach((doc) => {
+            //   console.log(doc)
+            //   console.log(doc.id)
+            //   console.log(doc.data())
+            // const fetchData = doc.data()
+            // fetchData.uniqueId = doc.id
+            // console.log(fetchData)
+            // dispatch(orderInfomation(fetchData))
+            // ステータスが0のオーダー情報のみ取得して各stateに商品オブジェクトと一意のオーダーIDを追加
+            // if (doc.data().status === 0) {
+            //   dispatch(updateOrderItems(doc.data().orderItems))
+            //   dispatch(orderUniqueId(doc.id))
+            // }
+            // }
+            // );
+          });
       }
       // if (userIdState.login_user) {
       //   firebase
