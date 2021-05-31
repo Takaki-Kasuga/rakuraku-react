@@ -86,17 +86,59 @@ const OrderConfirm =()=>{
 
 
     // //フォームの値が変わったときに発動させる関数を定義
+    //名前
     const destinationNameChange = useCallback((e)=>{
         setDestinationName(e.target.value);
     },[setDestinationName])
+
+    //メールアドレス
+    const destinationEmailChange = useCallback((e)=>{
+        setDestinationEmail(e.target.value);
+    },[setDestinationEmail])
+
+    //郵便番号
+    const destinationZipcodeChange = useCallback((e)=>{
+        setDestinationZipcode(e.target.value);
+    },[setDestinationZipcode])
+
+    //住所
+    const destinationAddressChange = useCallback((e)=>{
+        setDestinationAddress(e.target.value);
+    },[setDestinationAddress])
+
+    //電話番号
+    const destinationTelChange = useCallback((e)=>{
+        setDestinationTel(e.target.value);
+    },[setDestinationTel])
+
+    //配達希望日
+    const destinationPreDateChange = useCallback((e)=>{
+        setDestinationPreDate(e.target.value);
+    },[setDestinationPreDate])
+    
+    //配達希望時間
+    const destinationPreTimeChange = useCallback((e)=>{
+        setDestinationPreTime(e.target.value);
+    },[setDestinationPreTime])
+
+    //支払い方法
+    const destinationPayMethodChange = useCallback((e)=>{
+        setDestinationPayMethod(e.target.value);
+    },[setDestinationPayMethod])
+
+    //クレカ
+    const creaditCardChange = useCallback((e)=>{
+        setCreditCard(e.target.value);
+    },[setCreditCard]);
+
+
+    //エラーメッセージ
     if(!destinationName){
         errorMessages.errorName ='名前を入力してください'
     }else{
         errorMessages.errorName =''
     }
-    const destinationEmailChange = useCallback((e)=>{
-        setDestinationEmail(e.target.value);
-    },[setDestinationEmail])
+
     if(!destinationEmail){
         errorMessages.errorEmail ='メールアドレスを入力してください'
     //     //indexOfは文字列から引数が見つからなかったら-1を返す
@@ -105,9 +147,6 @@ const OrderConfirm =()=>{
     }else{
         errorMessages.errorEmail =''
     }
-    const destinationZipcodeChange = useCallback((e)=>{
-        setDestinationZipcode(e.target.value);
-    },[setDestinationZipcode])
 
     if(!destinationZipcode){
         errorMessages.errorZipcode ='郵便番号を入力してください'
@@ -117,19 +156,12 @@ const OrderConfirm =()=>{
         errorMessages.errorZipcode =''
     }
 
-    const destinationAddressChange = useCallback((e)=>{
-        setDestinationAddress(e.target.value);
-    },[setDestinationAddress])
     if(!destinationAddress){
         errorMessages.errorAddress ='住所を入力してください'
     }else{
         errorMessages.errorAddress =''
     }
 
-
-    const destinationTelChange = useCallback((e)=>{
-        setDestinationTel(e.target.value);
-    },[setDestinationTel])
     if(!destinationTel){
         errorMessages.errorTel ='電話番号を入力してください'
     }else if(!destinationTel.match(/^0\d{1,4}-\d{1,4}-\d{3,4}$/)){
@@ -140,14 +172,14 @@ const OrderConfirm =()=>{
 
     const DateTime =()=>{
         let datedate = new Date(destinationPreDate);
-        console.log(datedate);
+        // console.log(datedate);
         let plusHour = destinationPreTime*60*60*1000; //des〜が1なら＋1時間のミリ秒＝10時のミリ秒
     
         let makeDateTime = datedate.getTime()+plusHour
         let dateTime = new Date(makeDateTime)
     
         let date = new Date();//今日
-        console.log(dateTime - date);
+        // console.log(dateTime - date);
 
         if (!(destinationPreDate && destinationPreTime)) {
             errorMessages.errorPreTime = '配達日時を入力して下さい'
@@ -159,12 +191,11 @@ const OrderConfirm =()=>{
             errorMessages.errorPreTime = ''
         }
     }
+
     if (!(destinationPreDate && destinationPreTime)) {
         errorMessages.errorPreTime = '配達日時を入力して下さい'
     }
-    const destinationPreDateChange = useCallback((e)=>{
-        setDestinationPreDate(e.target.value);
-    },[setDestinationPreDate])
+
     if(!destinationPreDate){
         errorMessages.destinationPreDate ='配達希望日を入力してください'
     }else{
@@ -172,16 +203,6 @@ const OrderConfirm =()=>{
         DateTime();
     }
 
-    const destinationPayMethodChange = useCallback((e)=>{
-        setDestinationPayMethod(e.target.value);
-    },[setDestinationPayMethod])
-
-    const creaditCardChange = useCallback((e)=>{
-        setCreditCard(e.target.value);
-    },[setCreditCard]);
-
-
-    
     if(!credit){
         errorMessages.errorCredit='カード番号を入力してください'
     }else{
@@ -207,13 +228,6 @@ const OrderConfirm =()=>{
     }
     
 
-
-    const destinationPreTimeChange = useCallback((e)=>{
-        setDestinationPreTime(e.target.value);
-    },[setDestinationPreTime])
-
-
-    
     const getState = (state) => state.userIdState.login_user;
 
     // MaterialUIのスタイル
@@ -336,6 +350,48 @@ const OrderConfirm =()=>{
         }
     })
 
+    const orderUniqueIdState = useSelector((state)=>state.orderUniqueIdState)
+    const addDestination = ()=>{
+        alert('宛先情報を追加')
+        const DestinationInfo = {
+            destinationName: destinationName,
+            destinationEmail: destinationEmail,
+            destinationZipcode: destinationZipcode,
+            destinationAddress: destinationAddress,
+            destinationTel: destinationTel,
+            destinationPreDate: destinationPreDate,
+            destinationPreTime: destinationPreTime,
+            destinationPayMethod: destinationPayMethod,
+            creditcardNum: credit
+
+        } 
+        firebase
+            .firestore()
+            .collection(`users/${userIdState.uid}/orders/`)
+            .doc(orderUniqueIdState)
+            .update({
+              destinationName: destinationName,
+              destinationEmail: destinationEmail,
+              destinationZipcode: destinationZipcode,
+              destinationAddress: destinationAddress,
+              destinationTel: destinationTel,
+              destinationPreDate: destinationPreDate,
+              destinationPreTime: destinationPreTime,
+              destinationPayMethod: destinationPayMethod,
+              creditcardNum: credit,
+              status:2
+            })
+            .then(() => {
+              console.log('成功しました。')
+              // console.log(doc.id)
+
+              // setOrderInfo(orderInfo.uniqueId = doc.id)
+            })
+            .catch((error) => {
+              console.log('失敗しました。')
+              console.log(error)
+            })
+    }
 
   // 金額関連処理
   let everyToppingTotalPrice = 0
@@ -568,6 +624,7 @@ const OrderConfirm =()=>{
                                 () => history.push('/ordercomplete')}disabled={errorMessages.errorName !==''||errorMessages.errorEmail !=='' || errorMessages.errorZipcode !==''||errorMessages.errorAddress !=''|| errorMessages.errorTel !=''|| errorMessages.errorPreTime !=''|| errorMessages.errorPayMethod !=''||errorMessages.errorCredit !==''}>
                                 この内容で注文する</Button>
                             <Button variant="outlined" color="inherit" onClick={clear}>クリア</Button>
+                            <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button>
                         </Grid>
                     </Grid>
                 </div>

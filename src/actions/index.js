@@ -17,6 +17,7 @@ export const JUDGE_SCREEN_STATUS = 'JUDGE_SCREEN_STATUS';
 export const UPDATE_ORDER_ITEMS = 'UPDATE_ORDER_ITEMS';
 export const ORDER_UNIQUE_ID = 'ORDER_UNIQUE_ID';
 export const SET_ORDER_FOR_CART = 'SET_ORDER_FOR_CART';
+export const SET_ORDER_ITEMS = 'SET_ORDER_ITEMS';
 
 
 export const CANCEL = 'cancel'
@@ -131,6 +132,15 @@ export const changeZeroRoutingStatus = () => {
     {
       type: CHANGE_ZERO_ROUTING_STATUS,
       routingJudge: 0
+    }
+  )
+}
+
+export const setOrderItems = (orderItems) => {
+  return (
+    {
+      type: SET_ORDER_ITEMS,
+      orderItems: orderItems
     }
   )
 }

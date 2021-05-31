@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom'
 
 
 import firebase from '../firebase/firebase'
-import { deleteOrderInfomation, deleteOrderInfomationIdNum, changeRoutingStatus } from '../actions/index'
+import { deleteOrderInfomation, deleteOrderInfomationIdNum, changeRoutingStatus, setOrderItems } from '../actions/index'
 
 // デリートアイコン
 import IconButton from '@material-ui/core/IconButton';
@@ -176,7 +176,11 @@ export const CartList = () => {
           .then((snapshot) => {
             snapshot.forEach((doc) => {
               console.log(doc.id);
-              console.log(doc.data().orderItems);
+              if (Number(doc.data().status) === 0 && doc.data().orderItems.length > 0) {
+                // Firestoreから取得した「カートに入った状態のorderItems」をstoreのstateに保存(ただし、orderItemが空ではない時)
+                const orderItems = doc.data().orderItems;
+                dispatch(setOrderItems(orderItems));
+              }
             });
           });
       }
