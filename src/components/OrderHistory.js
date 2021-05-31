@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 //ボタン
 import { Button } from "@material-ui/core";
 //テーブル
@@ -9,39 +9,105 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 import { cancel } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { useState, useEffect } from "react";
+// import { useHistory } from "react-router-dom";
 import firebase from "../firebase/firebase";
+import { setOrderedItems } from '../actions/index'
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import { useHistory } from 'react-router-dom'
 
-// const rows = [];
-
-// historyState.forEach((history) => {
-//   console.log(history.status);
-//   // statusが1（未入金）の商品を取ってくる
-//   if (history.status === 1) {
-//     const fetchData = createData(
-//       { itemPath: history.imagePath, itemName: history.itemName },
-//       { itemPrice: history.itemPrice, itemCount: history.itemCount },
-//       history.toppingInfo,
-//       history.uniqueId,
-//       history.itemId
-//     );
-//     // selectedToppingId.push(order.toppingInfo)
-//     rows.push(fetchData);
-//   }
-// });
+import {
+  Link
+} from 'react-router-dom';
 
 
+const OrderHistory = () => {
 
-const OrderHistory = (props) => {
-  const unorderhistory = props.unorderhistory;
-  console.log(props.orderHistoryName);
-  // console.log(props.unorderhistory);
+  const history = useHistory();
   const userIdState = useSelector((state) => state.userIdState);
+  const orderForCartItemArray = useSelector((state) => state.orderForCartState) //商品情報取得
+  const orderedItemsArray = useSelector((state) => state.setOrderedItems) //カート情報取得
+  const dispatch = useDispatch();
+
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      width: '100%',
+      overflowX: 'auto',
+    },
+    table: {
+      minWidth: 650,
+    },
+    // カード
+    card: {
+      maxWidth: '600px',
+    },
+    media: {
+      height: 200,
+      'background-size': 'cover',
+    },
+    delete: {
+      cursor: 'pointer',
+      display: 'inline-block'
+    },
+    button: {
+      margin: theme.spacing(1),
+    },
+    fab: {
+      margin: theme.spacing(1),
+    },
+    extendedIcon: {
+      marginRight: theme.spacing(1),
+    },
+    textSet: {
+      'text-align': 'left'
+    },
+    priceItemCenter: {
+      display: 'block',
+      'width': '50%',
+      'margin': '0 auto',
+      'margin-bottom': '30px',
+    },
+    setLeftText: {
+      textAlign: 'left'
+    },
+    cardMediaStyle: {
+      width: '220px',
+    },
+    toppingStyle: {
+      // width: '180px',
+      textAlign: 'left'
+    },
+    itemPriceStyle: {
+      // width: '100px',
+      textAlign: 'left'
+    },
+  }));
+
+  const classes = useStyles();
+
+  // 金額関連処理
+  let everyToppingTotalPrice = 0
+  let totalItemPrice = 0
+
+  const rows = [];
+
+  // 商品の合計金額の処理
+  let totalToppingPrice = 0
+  if (rows.length !== 0) {
+    rows.forEach((totalItem) => {
+      totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
+    })
+  }
+
   useEffect(() => {
+    console.log('orderHistoryの中身')
+    console.log(orderForCartItemArray);
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         firebase
@@ -50,77 +116,130 @@ const OrderHistory = (props) => {
           .get()
           .then((snapshot) => {
             snapshot.forEach((doc) => {
-              console.log(doc.id);
-              console.log(doc.data());
-              // const fetchData = doc.data();
-              // fetchData.uniqueId = doc.id;
-              // console.log(fetchData);
-              // dispatch(orderInfomation(fetchData));
+              if (Number(doc.data().status) !== 0 && doc.data().orderItems.length > 0) {
+                const orderedItems = doc.data().orderItems;
+                dispatch(setOrderedItems(orderedItems));
+                console.log(orderedItemsArray)
+              }
             });
           });
-        }})
+      }
+    })
   }, []);
-  return (
-    <React.Fragment>
-      {/* <div>{unorderhistory.length == 0 && <h1>注文履歴がありません</h1>}
-      </div> */}
-      <h1 align="center">注文履歴</h1>
-      <table>
-        <TableHead>
-          <TableRow>
-            <TableCell>商品画像</TableCell>
-            <TableCell>商品名</TableCell>
-            <TableCell>商品価格</TableCell>
-            <TableCell>トッピング名</TableCell>
-            <TableCell>トッピング価格</TableCell>
-            <TableCell>小計</TableCell>
-            <TableCell>小計の消費税</TableCell>
-            <TableCell>商品個数</TableCell>
-            <TableCell>配達指定日</TableCell>
-          </TableRow>
-        </TableHead>
 
-        <TableBody >
-          <TableCell>{props.orderHistoryImagePath}</TableCell>
-          <TableCell>{props.orderHistoryName}</TableCell>
-          <TableCell>{props.orderHistoryPrice}</TableCell>
-          <TableCell>{props.orderHistoryTopping}</TableCell>
-          <TableCell>{props.orderHistoryToppingPrice}</TableCell>
-          <TableCell>{props.orderHistorySmallTotalPrice}</TableCell>
-          <TableCell>{props.orderHistorySmallTotalTax}</TableCell>
-          <TableCell>{props.orderHistoryItemCount}</TableCell>
-          <TableCell>{props.orderHistoryDestinationTime}</TableCell>
-        </TableBody>
-      </table>
-      <a href="/detail/:id">
-        <button>この商品をもう一度注文</button>
-      </a>
-      <button onClick={props.cancel}>キャンセル</button>
-      <div align="center">
-        <a href="/" style={{ textDecoration: "none" }}>
-          <Button variant="contained" color="primary">
-            メニューの一覧に戻る
-          </Button>
-        </a>
-      </div>
-    </React.Fragment>
-  );
+  function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId) {
+    return { itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId };
+  }
+
+  orderedItemsArray.forEach((order) => {
+    const filterObject = orderForCartItemArray.find(element => element.id === order.itemId)
+    console.log(filterObject);
+    const fetchData = createData(
+      { itemPath: filterObject.imagePath, itemName: filterObject.name },
+      { itemPrice: order.itemPrice, itemCount: order.itemCount },
+      order.toppingInfo,
+      order.uniqueId,
+      order.itemId,
+    )
+    rows.push(fetchData)
+  })
+
+  const changeToDetail = path => history.push(path)
+
+  return (
+    <>
+      {!rows.length ? <h2>注文した商品はありません</h2> :
+        <Paper className={classes.root}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>商品名</TableCell>
+                <TableCell>商品価格</TableCell>
+                <TableCell>トッピング価格</TableCell>
+                <TableCell>小計</TableCell>
+                <TableCell>配達指定日</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, index) => (
+                <TableRow key={index} style={{ alignItems: 'flex-start' }}>
+
+                  <TableCell className={classes.cardMediaStyle} component="th" scope="row">
+
+                    <Card className={classes.card}>
+                      <CardContent>
+                        <Typography variant="body2" color="textSecondary" component="p" style={{ textAlign: 'center' }}>
+                          {row.itemInfo.itemName}
+                        </Typography>
+                      </CardContent>
+                      <CardMedia
+                        className={classes.media}
+                        image={row.itemInfo.itemPath}
+                        title="Contemplative Reptile"
+                      />
+
+                    </Card>
+                  </TableCell>
+                  <TableCell align="right" className={classes.itemPriceStyle}>
+                    <p>金額:{Number(row.itemPriceAndCount.itemPrice).toLocaleString()}円</p>
+                    <p>個数:{row.itemPriceAndCount.itemCount}個</p>
+                  </TableCell>
+
+                  <TableCell align="right" className={classes.toppingStyle}>
+                    {/* everyToppingTotalPriceの初期化 */}
+                    {!row.toppingItem ? <span style={{ display: 'none' }}></span> :
+                      row.toppingItem.map((topping, index) => {
+                        everyToppingTotalPrice = 0
+                        return (
+                          <span key={index} style={{ display: 'none' }}></span>
+                        )
+                      })
+                    }
+                    {!row.toppingItem.length ? <p>0円</p> :
+                      row.toppingItem.map((topping, index) => {
+                        if (topping.toppingPriceM) {
+                          everyToppingTotalPrice += topping.toppingPriceM
+                          totalToppingPrice += topping.toppingPriceM
+                        } else if (topping.toppingPriceL) {
+                          everyToppingTotalPrice += topping.toppingPriceL
+                          totalToppingPrice += topping.toppingPriceL
+                        }
+                        return (
+                          <div key={index}>
+                            <p>
+                              {topping.toppingPriceM === 200 ? topping.toppigName + 'M' : topping.toppigName + 'L'}
+                              <br />：
+                            {topping.toppingPriceM ? Number(topping.toppingPriceM).toLocaleString() : Number(topping.toppingPriceL).toLocaleString()}
+                            円</p>
+                          </div>
+                        )
+                      })
+                    }
+                  </TableCell>
+                  <TableCell align="right">
+                    <div>
+                      <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
+                      <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)).toLocaleString()}円<br />（税抜き）</p>
+                      <p style={{ color: 'red' }} className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円<br />（税込）</p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <p>ここに配達日を入れる(まだ未実装)</p>
+                    <Button>キャンセル</Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button color="primary" onClick={() => { changeToDetail(`/detail/${row.itemId}`) }}>この商品をもう一度購入する</Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      }
+
+    </>
+  )
 };
 
-const mapStateToProps = (state) => ({
-  orderHistoryImagePath: state.orderHistory.orderHistoryImagePath,
-  orderHistoryName: state.orderHistory.orderHistoryName,
-  orderHistoryPrice: state.orderHistory.orderHistoryPrice,
-  orderHistoryTopping: state.orderHistory.orderHistoryTopping,
-  orderHistoryToppingPrice: state.orderHistory.orderHistoryToppingPrice,
-  orderHistorySmallTotalPrice: state.orderHistory.orderHistorySmallTotalPrice,
-  orderHistorySmallTotalTax: state.orderHistory.orderHistorySmallTotalTax,
-  orderHistoryItemCount: state.orderHistory.orderHistoryItemCount,
-  orderHistoryDestinationTime: state.orderHistory.orderHistoryDestinationTime,
-});
-//キャンセルボタン
-const mapDispatchToProps = (dispatch) => ({
-  cancel: () => dispatch(cancel()),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderHistory);
+export default OrderHistory;

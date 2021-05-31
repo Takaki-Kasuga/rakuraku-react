@@ -10,6 +10,7 @@ import updateOrderItemState from './updateOrderItems'
 import orderUniqueIdState from './orderUniqueId'
 import orderForCartState from './orderForCart'
 import setOrderItems from './setOrderItems'
+import setOrderedItems from './setOrderedItems'
 
-export default combineReducers({ itemState, toppingState, userIdState, selectedToppingState, orderState, routingJudge, orderHistory, updateOrderItemState, orderUniqueIdState, orderForCartState, setOrderItems })
+export default combineReducers({ itemState, toppingState, userIdState, selectedToppingState, orderState, routingJudge, orderHistory, updateOrderItemState, orderUniqueIdState, orderForCartState, setOrderItems, setOrderedItems })
 

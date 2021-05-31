@@ -269,9 +269,6 @@ export const CartList = () => {
                 // Firestoreから取得した「カートに入った状態のorderItems」をstoreのstateに保存(ただし、orderItemが空ではない時)
                 const orderItems = doc.data().orderItems;
                 dispatch(setOrderItems(orderItems));
-
-                // カートに入っている商品情報のみが入った新しい配列を作成
-                orderItemsArray.forEach(element => console.log(element))
               }
             });
           });
