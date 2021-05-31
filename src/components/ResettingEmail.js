@@ -27,7 +27,6 @@ export const ResettingEmail = () => {
     const new_value = e.target.value;
     setEmail(new_value)
     if (new_value === "") {
-      console.log('空です')
       errorMessage.emailError = "メールアドレスを入力してください"
       isDisabledCheck();
     } else if (new_value.indexOf("@") == -1) {
@@ -73,7 +72,7 @@ export const ResettingEmail = () => {
         </div>
         <Button variant="contained" color="primary" disabled={isDisabled} onClick={passwordResetting}>再設定メールを送る</Button>
         <div><span>{resetMessage}</span></div>
-        <Button variant="contained" color="primary" onClick={() => console.log('トップページに戻る処理入れる')}>トップページへ</Button>
+        <Button variant="contained" color="primary" onClick={() => history.push('/')}>トップページへ</Button>
       </form>
     </React.Fragment>
   )
