@@ -294,10 +294,10 @@ export const Detail = () => {
               console.log(error)
             })
           // 画面遷移
-          // handleLink('/cartlist')
+          handleLink('/cartlist')
         } else {
           dispatch(orderInfomation(orderInfo))
-          // handleLink('/cartlist')
+          handleLink('/cartlist')
         }
       }
 

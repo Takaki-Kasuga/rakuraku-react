@@ -205,7 +205,17 @@ export const Home = () => {
   const filteringItems = (searchValue) => {
     // 何か１つでも文字が入力されている時
     if (searchValue) {
-      dispatch(seachItems(searchValue))
+      firebase
+        .firestore()
+        .collection(`items/`)
+        .get()
+        .then((snapshot) => {
+          const itemArray = []
+          snapshot.forEach((doc) => {
+            itemArray.push(doc.data())
+          })
+          dispatch(seachItems([searchValue, itemArray]))
+        });
       // dispatch(judgeScreenStatus(searchValue))
       // if (!itemState.length) {
       //   setJudgeScreenStatus(false)
@@ -279,6 +289,38 @@ export const Home = () => {
             : itemState.length === 0 && judgeScreenStatus ?
               <div>
                 <div>
+                  <div className={classes.searchbox}>
+                    <TextField
+                      onKeyPress={e => {
+                        if (e.key == 'Enter') {
+                          e.preventDefault()
+                          filteringItems(searchValue)
+                          changeToStatus()
+                        }
+                      }
+                      }
+                      className={classes.textField}
+                      id="filled-full-width"
+                      label="Label"
+                      placeholder="Search Items"
+                      fullWidth
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      variant="filled"
+                      value={searchValue}
+                      onChange={setSearchValueMethod}
+                    />
+                    <Button variant="contained" color="primary"
+
+                      onClick={() => {
+                        filteringItems(searchValue);
+                        changeToStatus();
+                      }}>
+                      検索
+        </Button>
+
+                  </div>
                   <h1>該当する商品がありません</h1>
                   <Button variant="contained" onClick={() => {
                     allItem();
@@ -287,7 +329,6 @@ export const Home = () => {
               </div>
               :
               <div>
-                <button onClick={test}>クリックテスト</button>
                 <div className={classes.searchbox}>
                   <TextField
                     onKeyPress={e => {
@@ -309,10 +350,8 @@ export const Home = () => {
                     variant="filled"
                     value={searchValue}
                     onChange={setSearchValueMethod}
-                    disabled={!itemState.length ? true : false}
                   />
                   <Button variant="contained" color="primary"
-                    disabled={!itemState.length ? true : false}
                     onClick={() => {
                       filteringItems(searchValue);
                       changeToStatus();
