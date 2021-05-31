@@ -8,9 +8,11 @@ export default (state = [], action) => {
       console.log(action)
       const mostNewCartArray = [...state]
       mostNewCartArray.splice(0)
-      action.updateOrderItemsList.forEach((pushList) => {
-        mostNewCartArray.push(pushList)
-      })
+      if (action.updateOrderItemsList) {
+        action.updateOrderItemsList.forEach((pushList) => {
+          mostNewCartArray.push(pushList)
+        })
+      }
       console.log(mostNewCartArray)
       return mostNewCartArray
     default:

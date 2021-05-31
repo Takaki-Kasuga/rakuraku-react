@@ -218,8 +218,8 @@ export const Detail = () => {
           orderInfo.orderItems.push({
             uniqueItemId: uniqueItemId,
             itemId: Number(id),
-            imagePath: selectedItem.imagePath,
-            itemName: selectedItem.name,
+            // imagePath: selectedItem.imagePath,
+            // itemName: selectedItem.name,
             itemPrice: Number(itemValue),
             itemCount: Number(itemCount),
             toppingInfo: selectedToppingArray
@@ -263,8 +263,8 @@ export const Detail = () => {
           orderInfo.orderItems.push({
             uniqueItemId: uniqueItemId,
             itemId: Number(id),
-            imagePath: selectedItem.imagePath,
-            itemName: selectedItem.name,
+            // imagePath: selectedItem.imagePath,
+            // itemName: selectedItem.name,
             itemPrice: Number(itemValue),
             itemCount: Number(itemCount),
             toppingInfo: selectedToppingArray

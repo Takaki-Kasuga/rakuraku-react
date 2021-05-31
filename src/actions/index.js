@@ -16,6 +16,7 @@ export const CHANGE_ZERO_ROUTING_STATUS = 'CHANGE_ZERO_ROUTING_STATUS';
 export const JUDGE_SCREEN_STATUS = 'JUDGE_SCREEN_STATUS';
 export const UPDATE_ORDER_ITEMS = 'UPDATE_ORDER_ITEMS';
 export const ORDER_UNIQUE_ID = 'ORDER_UNIQUE_ID';
+export const SET_ORDER_FOR_CART = 'SET_ORDER_FOR_CART';
 
 
 export const CANCEL = 'cancel'
@@ -60,6 +61,13 @@ export const orderInfomation = (orderInfomation) => {
   return ({
     type: SET_ORDERS,
     orderInfomationList: orderInfomation
+  })
+}
+
+export const orderForCartInfomation = (orderForCartInfomation) => {
+  return ({
+    type: SET_ORDER_FOR_CART,
+    orderForCartInfomationList: orderForCartInfomation
   })
 }
 
