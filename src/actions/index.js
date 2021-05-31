@@ -18,7 +18,8 @@ export const UPDATE_ORDER_ITEMS = 'UPDATE_ORDER_ITEMS';
 export const ORDER_UNIQUE_ID = 'ORDER_UNIQUE_ID';
 export const SET_ORDER_FOR_CART = 'SET_ORDER_FOR_CART';
 export const SET_ORDER_ITEMS = 'SET_ORDER_ITEMS';
-export const SET_ORDERED_ITEMS = 'SET_ORDERED_ITEMS';
+export const SET_ORDERED = 'SET_ORDERED';
+export const RESET_ORDERED = 'RESET_ORDERED';
 export const DELETE_ORDER_ITEMS = 'DELETE_ORDER_ITEMS';
 
 
@@ -147,11 +148,20 @@ export const setOrderItems = (orderItems) => {
   )
 }
 
-export const setOrderedItems = (orderedItems) => {
+export const setOrdered = (orderedItemsId, orderedItems) => {
   return (
     {
-      type: SET_ORDERED_ITEMS,
+      type: SET_ORDERED,
+      orderedItemsId: orderedItemsId,
       orderedItems: orderedItems
+    }
+  )
+}
+
+export const resetOrdered = () => {
+  return (
+    {
+      type: RESET_ORDERED
     }
   )
 }
