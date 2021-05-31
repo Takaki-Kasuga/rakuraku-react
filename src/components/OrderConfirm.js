@@ -86,17 +86,57 @@ const OrderConfirm =()=>{
 
 
     // //フォームの値が変わったときに発動させる関数を定義
+    //名前
     const destinationNameChange = useCallback((e)=>{
         setDestinationName(e.target.value);
     },[setDestinationName])
+
+    //メールアドレス
+    const destinationEmailChange = useCallback((e)=>{
+        setDestinationEmail(e.target.value);
+    },[setDestinationEmail])
+
+    //郵便番号
+    const destinationZipcodeChange = useCallback((e)=>{
+        setDestinationZipcode(e.target.value);
+    },[setDestinationZipcode])
+
+    //住所
+    const destinationAddressChange = useCallback((e)=>{
+        setDestinationAddress(e.target.value);
+    },[setDestinationAddress])
+
+    //電話番号
+    const destinationTelChange = useCallback((e)=>{
+        setDestinationTel(e.target.value);
+    },[setDestinationTel])
+
+    //配達希望日
+    const destinationPreDateChange = useCallback((e)=>{
+        setDestinationPreDate(e.target.value);
+    },[setDestinationPreDate])
+    
+    //配達希望時間
+    const destinationPreTimeChange = useCallback((e)=>{
+        setDestinationPreTime(e.target.value);
+    },[setDestinationPreTime])
+
+    //支払い方法
+    const destinationPayMethodChange = useCallback((e)=>{
+        setDestinationPayMethod(e.target.value);
+    },[setDestinationPayMethod])
+
+    //クレカ
+    const creaditCardChange = useCallback((e)=>{
+        setCreditCard(e.target.value);
+    },[setCreditCard]);
+
     if(!destinationName){
         errorMessages.errorName ='名前を入力してください'
     }else{
         errorMessages.errorName =''
     }
-    const destinationEmailChange = useCallback((e)=>{
-        setDestinationEmail(e.target.value);
-    },[setDestinationEmail])
+
     if(!destinationEmail){
         errorMessages.errorEmail ='メールアドレスを入力してください'
     //     //indexOfは文字列から引数が見つからなかったら-1を返す
@@ -105,9 +145,7 @@ const OrderConfirm =()=>{
     }else{
         errorMessages.errorEmail =''
     }
-    const destinationZipcodeChange = useCallback((e)=>{
-        setDestinationZipcode(e.target.value);
-    },[setDestinationZipcode])
+
 
     if(!destinationZipcode){
         errorMessages.errorZipcode ='郵便番号を入力してください'
@@ -117,9 +155,7 @@ const OrderConfirm =()=>{
         errorMessages.errorZipcode =''
     }
 
-    const destinationAddressChange = useCallback((e)=>{
-        setDestinationAddress(e.target.value);
-    },[setDestinationAddress])
+
     if(!destinationAddress){
         errorMessages.errorAddress ='住所を入力してください'
     }else{
@@ -127,9 +163,7 @@ const OrderConfirm =()=>{
     }
 
 
-    const destinationTelChange = useCallback((e)=>{
-        setDestinationTel(e.target.value);
-    },[setDestinationTel])
+
     if(!destinationTel){
         errorMessages.errorTel ='電話番号を入力してください'
     }else if(!destinationTel.match(/^0\d{1,4}-\d{1,4}-\d{3,4}$/)){
@@ -162,9 +196,7 @@ const OrderConfirm =()=>{
     if (!(destinationPreDate && destinationPreTime)) {
         errorMessages.errorPreTime = '配達日時を入力して下さい'
     }
-    const destinationPreDateChange = useCallback((e)=>{
-        setDestinationPreDate(e.target.value);
-    },[setDestinationPreDate])
+
     if(!destinationPreDate){
         errorMessages.destinationPreDate ='配達希望日を入力してください'
     }else{
@@ -172,13 +204,7 @@ const OrderConfirm =()=>{
         DateTime();
     }
 
-    const destinationPayMethodChange = useCallback((e)=>{
-        setDestinationPayMethod(e.target.value);
-    },[setDestinationPayMethod])
 
-    const creaditCardChange = useCallback((e)=>{
-        setCreditCard(e.target.value);
-    },[setCreditCard]);
 
 
     
@@ -208,9 +234,7 @@ const OrderConfirm =()=>{
     
 
 
-    const destinationPreTimeChange = useCallback((e)=>{
-        setDestinationPreTime(e.target.value);
-    },[setDestinationPreTime])
+
 
 
     
