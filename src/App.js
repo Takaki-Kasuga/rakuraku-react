@@ -39,6 +39,7 @@ function App() {
     console.log('App.jsのonAuthStateChangedが発火')
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        console.log(user)
         const user_name = firebase.auth().currentUser.displayName;
         const user_email = firebase.auth().currentUser.email;
         const user_id = firebase.auth().currentUser.uid;
