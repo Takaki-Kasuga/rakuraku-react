@@ -59,21 +59,47 @@ export const ResettingEmail = () => {
 
   return (
     <React.Fragment>
-      <h2>パスワード再設定</h2>
-      <p>パスワードの再設定メールを送信するメールアドレスを入力してください。</p>
+      <h2 align="center">パスワード再設定</h2>
+      <p align="center">
+        パスワードの再設定メールを送信するメールアドレスを入力してください。
+      </p>
 
       <form>
         <div>
-          <label>
-            Email:
-          </label>
-          <TextField fullWidth={true} value={email} type={"email"} onChange={inputEmail} />
-          <div><span>{errorMessage.emailError}</span></div>
+          <label>Email:</label>
+          <TextField
+            fullWidth={true}
+            value={email}
+            type={"email"}
+            onChange={inputEmail}
+          />
+          <div>
+            <span>{errorMessage.emailError}</span>
+          </div>
         </div>
-        <Button variant="contained" color="primary" disabled={isDisabled} onClick={passwordResetting}>再設定メールを送る</Button>
-        <div><span>{resetMessage}</span></div>
-        <Button variant="contained" color="primary" onClick={() => history.push('/')}>トップページへ</Button>
+        <div align="center">
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={isDisabled}
+            onClick={passwordResetting}
+          >
+            再設定メールを送る
+          </Button>
+        </div>
+        <div>
+          <span>{resetMessage}</span>
+        </div>
+        <div align="center">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => history.push("/")}
+          >
+            トップページへ
+          </Button>
+        </div>
       </form>
     </React.Fragment>
-  )
+  );
 }

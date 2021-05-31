@@ -37,11 +37,7 @@ import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 
 
-//イメージ
-import image from '../img/2.jpg'
-
-const OrderConfirm = () => {
-
+const OrderConfirm =()=>{
     // console.log('OrderConfirmが発火')
     const dispatch = useDispatch();
     const orderState = useSelector((state) => state.orderState);
@@ -49,6 +45,7 @@ const OrderConfirm = () => {
     const orderForCartItemArray = useSelector((state) => state.orderForCartState) //商品情報取得
     const orderItemsArray = useSelector((state) => state.setOrderItems) //カート情報取得
     const history = useHistory();
+    const handleLink= path => history.push(path);
 
     const errors = {
         errorName: ' ',
@@ -70,8 +67,8 @@ const OrderConfirm = () => {
     const [destinationPreTime, setDestinationPreTime] = useState('');
     const [destinationPayMethod, setDestinationPayMethod] = useState('');
     const [credit, setCreditCard] = useState('');
-    const [errorMessages, setErrorMessages] = useState(errors);
-    const [isDisabled, setIsDisabled] = useState(true);
+    const [errorMessages,setErrorMessages] =useState(errors);
+
 
 
     const clear = () => {
@@ -215,8 +212,7 @@ const OrderConfirm = () => {
     if (!destinationPayMethod) {
         errorMessages.errorPayMethod = 'お支払い方法を選択してください'
     } else if (destinationPayMethod === '2') {
-        errorMessages.errorPayMethod = ''
-        creditCard = (<div style={{ padding: 10 }}>
+        creditCard = (<div style={{ padding: 10 }}>);
             <TextField
                 id="credit"
                 label="クレジットカード番号"
@@ -227,8 +223,9 @@ const OrderConfirm = () => {
             />
             <div style={{ color: 'red' }}>{errorMessages.errorCredit}</div>
         </div>)
+    }else if(destinationPayMethod === '1') {
+        errorMessages.errorPayMethod = ''
     }
-
 
     const getState = (state) => state.userIdState.login_user;
 
@@ -286,7 +283,14 @@ const OrderConfirm = () => {
             },
             error: {
                 color: 'red',
-            }
+            },
+            title: {
+                textAlign: 'center',
+            },
+            form: {
+                textAlign: 'center',
+                // width: 300
+            },
         })
     );
     const classes = useStyles();
@@ -358,33 +362,21 @@ const OrderConfirm = () => {
     const orderUniqueIdState = useSelector((state) => state.orderUniqueIdState)
     const addDestination = () => {
         alert('宛先情報を追加')
-        const DestinationInfo = {
-            destinationName: destinationName,
-            destinationEmail: destinationEmail,
-            destinationZipcode: destinationZipcode,
-            destinationAddress: destinationAddress,
-            destinationTel: destinationTel,
-            destinationPreDate: destinationPreDate,
-            destinationPreTime: destinationPreTime,
-            destinationPayMethod: destinationPayMethod,
-            creditcardNum: credit
-
-        }
         firebase
             .firestore()
             .collection(`users/${userIdState.uid}/orders/`)
             .doc(orderUniqueIdState)
             .update({
-                destinationName: destinationName,
-                destinationEmail: destinationEmail,
-                destinationZipcode: destinationZipcode,
-                destinationAddress: destinationAddress,
-                destinationTel: destinationTel,
-                destinationPreDate: destinationPreDate,
-                destinationPreTime: destinationPreTime,
-                destinationPayMethod: destinationPayMethod,
-                creditcardNum: credit,
-                status: 2
+              destinationName: destinationName,
+              destinationEmail: destinationEmail,
+              destinationZipcode: destinationZipcode,
+              destinationAddress: destinationAddress,
+              destinationTel: destinationTel,
+              destinationPreDate: destinationPreDate,
+              destinationPreTime: destinationPreTime,
+              destinationPayMethod: destinationPayMethod,
+              creditcardNum: credit,
+              status: destinationPayMethod,
             })
             .then(() => {
                 console.log('成功しました。')
@@ -398,26 +390,31 @@ const OrderConfirm = () => {
             })
     }
 
-    // 金額関連処理
-    let everyToppingTotalPrice = 0
-    let totalItemPrice = 0
-
-    // 商品の合計金額の処理
-    let totalToppingPrice = 0
-    //rowsの中のオブジェクト（row）が0以外なら
-    //rowsはordersの中のstatus:0のオブジェクトをつつむ配列
-    //ordersのstatus:0のアイテム（注文確認画面に表示されているアイテム）
-    //の合計金額を1つずつ取得しforEachで足していく
-    if (rows.length !== 0) {
-        rows.forEach((totalItem) => {
-            totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
-        })
+    const toComplete = ()=>{
+        addDestination();
+        handleLink('/ordercomplete')
     }
+
+  // 金額関連処理
+  let everyToppingTotalPrice = 0
+  let totalItemPrice = 0
+
+  // 商品の合計金額の処理
+  let totalToppingPrice = 0
+  //rowsの中のオブジェクト（row）が0以外なら
+  //rowsはordersの中のstatus:0のオブジェクトをつつむ配列
+  //ordersのstatus:0のアイテム（注文確認画面に表示されているアイテム）
+  //の合計金額を1つずつ取得しforEachで足していく
+  if (rows.length !== 0) {
+    rows.forEach((totalItem) => {
+      totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
+    })
+  }
     return (
         <React.Fragment>
             {!rows.length ? <h2>カートに商品がありません</h2> :
                 <div>
-                    <h2>注文確認</h2>
+                    <h2 className={classes.title}>注文内容確認</h2>
                     <Paper className={classes.root}>
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead>
@@ -510,13 +507,13 @@ const OrderConfirm = () => {
                     </Paper>
                 </div>
             }
-            <div>
+            <div class={classes.form}>
                 <h2>お届け先情報</h2>
                 <div style={{ padding: 10 }}>
                     <TextField
                         id="name"
                         label="お名前"
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         variant="outlined"
                         placeholder="楽々　楽子"
                         value={destinationName}
@@ -528,7 +525,7 @@ const OrderConfirm = () => {
                     <TextField
                         id="destinationEmail"
                         label="メールアドレス"
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         variant="outlined"
                         placeholder="XXX@XXXX"
                         value={destinationEmail}
@@ -540,7 +537,7 @@ const OrderConfirm = () => {
                     <TextField
                         id="destinationZipcode"
                         label="郵便番号"
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         variant="outlined"
                         placeholder="XXX-XXXX"
                         value={destinationZipcode}
@@ -552,7 +549,7 @@ const OrderConfirm = () => {
                     <TextField
                         id="destinationAddress"
                         label="住所"
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         variant="outlined"
                         value={destinationAddress}
                         onChange={destinationAddressChange}
@@ -563,7 +560,7 @@ const OrderConfirm = () => {
                     <TextField
                         id="destinationTel"
                         label="電話番号"
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         variant="outlined"
                         placeholder="XXX-XXXX-XXXX"
                         value={destinationTel}
@@ -571,12 +568,12 @@ const OrderConfirm = () => {
                     />
                     <div className={classes.error}>{errorMessages.errorTel}</div>
                 </div>
-                <div style={{ padding: 10 }}>
-                    <form className={classes.container} noValidate>
+                <div>
+                    <form className={classes.form} noValidate>
                         <TextField
                             id="date"
                             label="配達希望日"
-                            style={{ width: 250 }}
+                            style={{ width: 300 }}
                             type="date"
                             // defaultValue={new Date()}
                             className={classes.textField}
@@ -594,7 +591,7 @@ const OrderConfirm = () => {
                 <FormControl>
                     <FormLabel component="legend">配達希望時間</FormLabel>
                     <Select
-                        style={{ width: 250 }}
+                        style={{ width: 300 }}
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={destinationPreTime}
@@ -635,13 +632,14 @@ const OrderConfirm = () => {
                 {creditCard}
 
                 <div>
-                    <Grid container alignItems="center" justify="center" style={{ padding: 10 }}>
+                    <Grid container alignItems="center" justify="center" style={{ margin :10 }}>
                         <Grid>
-                            <Button variant="outlined" color="primary" onClick={
-                                () => history.push('/ordercomplete')} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress != '' || errorMessages.errorTel != '' || errorMessages.errorPreTime != '' || errorMessages.errorPayMethod != '' || errorMessages.errorCredit !== ''}>
+                            <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
+                            onClick={ toComplete }disabled={errorMessages.errorName !==''||errorMessages.errorEmail !=='' || errorMessages.errorZipcode !==''||errorMessages.errorAddress !=''|| errorMessages.errorTel !=''|| errorMessages.errorPreTime !=''|| errorMessages.errorPayMethod !=''}>
+
                                 この内容で注文する</Button>
-                            <Button variant="outlined" color="inherit" onClick={clear}>クリア</Button>
-                            <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button>
+                            <Button style={{ marginLeft: '10px' }} variant="outlined" color="inherit" onClick={clear}>クリア</Button>
+                            {/* <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button> */}
                         </Grid>
                     </Grid>
                 </div>
