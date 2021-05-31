@@ -247,6 +247,25 @@ export const Home = () => {
     console.log(judgeScreenStatus)
   }
 
+  const userIdState = useSelector((state) => state.userIdState)
+  const test = () => {
+    console.log('testが発火')
+    firebase
+      .firestore()
+      .collection(`users/${userIdState.uid}/orders`)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          // doc.data() is never undefined for query doc snapshots
+          console.log(doc.id, " => ", doc.data());
+        });
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      });
+  }
+
+  console.log(new Date())
   return (
     <>
 
@@ -268,6 +287,7 @@ export const Home = () => {
               </div>
               :
               <div>
+                <button onClick={test}>クリックテスト</button>
                 <div className={classes.searchbox}>
                   <TextField
                     onKeyPress={e => {

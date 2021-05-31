@@ -42,12 +42,22 @@ import image from '../img/2.jpg'
 
 const OrderConfirm =()=>{
     
-    console.log('OrderConfirmが発火')
+    // console.log('OrderConfirmが発火')
     const dispatch = useDispatch();
     const orderState = useSelector((state)=>state.orderState);
-    const selectedToppingState = useSelector((state)=>state.selectedToppingState)
     const toppingState = useSelector((state) => state.toppingState)
     const history = useHistory();
+
+    const errors={
+        errorName:' ',
+        errorEmail:' ',
+        errorZipcode:' ',
+        errorAddress:' ',
+        errorTel:' ',
+        errorPreTime:' ',
+        errorPayMethod:' ',
+        errorCredit:' '
+    }
 
     const [destinationName, setDestinationName] = useState(''); 
     const [destinationEmail, setDestinationEmail] = useState(''); 
@@ -58,64 +68,109 @@ const OrderConfirm =()=>{
     const [destinationPreTime, setDestinationPreTime] = useState('');
     const [destinationPayMethod, setDestinationPayMethod] = useState('');
     const [credit, setCreditCard] = useState('');
+    const [errorMessages,setErrorMessages] =useState(errors);
+    const [isDisabled, setIsDisabled] = useState(true);
 
-    const errorMessages = {
-        destinationName:'',
-        destinationEmail:'',
-        destinationZipcode:'',
-        destinationAddress:'',
-        destinationTel:'',
-        // destinationPreDate:'',
-        destinationPreTime:'',
-        destinationPayMethod:''
-        
+
+    const clear = ()=>{
+        setDestinationName('');
+        setDestinationEmail('');
+        setDestinationZipcode('');
+        setDestinationAddress('');
+        setDestinationTel('');
+        setDestinationPreDate('');
+        setDestinationPreTime('');
+        setDestinationPayMethod('');
+        setDestinationPayMethod('')
     }
-    //フォームの値が変わったときに発動させる関数を定義
+
+
+    // //フォームの値が変わったときに発動させる関数を定義
     const destinationNameChange = useCallback((e)=>{
         setDestinationName(e.target.value);
     },[setDestinationName])
     if(!destinationName){
-        errorMessages.destinationName ='名前を入力してください'
+        errorMessages.errorName ='名前を入力してください'
+    }else{
+        errorMessages.errorName =''
     }
     const destinationEmailChange = useCallback((e)=>{
         setDestinationEmail(e.target.value);
     },[setDestinationEmail])
     if(!destinationEmail){
-        errorMessages.destinationEmail ='メールアドレスを入力してください'
-        //indexOfは文字列から引数が見つからなかったら-1を返す
+        errorMessages.errorEmail ='メールアドレスを入力してください'
+    //     //indexOfは文字列から引数が見つからなかったら-1を返す
     }else if(destinationEmail.indexOf('@') === -1){
-        errorMessages.destinationEmail='メールアドレスの形式が不正です'
+        errorMessages.errorEmail='メールアドレスの形式が不正です'
+    }else{
+        errorMessages.errorEmail =''
     }
     const destinationZipcodeChange = useCallback((e)=>{
         setDestinationZipcode(e.target.value);
     },[setDestinationZipcode])
 
     if(!destinationZipcode){
-        errorMessages.destinationZipcode ='郵便番号を入力してください'
+        errorMessages.errorZipcode ='郵便番号を入力してください'
     }else if(!destinationZipcode.match(/^[0-9]{3}-[0-9]{4}$/)){
-        errorMessages.destinationZipcode='郵便番号の形式が不正です'
+        errorMessages.errorZipcode='郵便番号の形式が不正です'
+    }else{
+        errorMessages.errorZipcode =''
     }
 
     const destinationAddressChange = useCallback((e)=>{
         setDestinationAddress(e.target.value);
     },[setDestinationAddress])
     if(!destinationAddress){
-        errorMessages.destinationAddress ='住所を入力してください'
+        errorMessages.errorAddress ='住所を入力してください'
+    }else{
+        errorMessages.errorAddress =''
     }
+
+
     const destinationTelChange = useCallback((e)=>{
         setDestinationTel(e.target.value);
     },[setDestinationTel])
     if(!destinationTel){
-        errorMessages.destinationTel ='電話番号を入力してください'
+        errorMessages.errorTel ='電話番号を入力してください'
     }else if(!destinationTel.match(/^0\d{1,4}-\d{1,4}-\d{3,4}$/)){
-        errorMessages.destinationTel='電話番号の形式が不正です'
+        errorMessages.errorTel='電話番号の形式が不正です'
+    }else{
+        errorMessages.errorTel=''
+    }
+
+    const DateTime =()=>{
+        let datedate = new Date(destinationPreDate);
+        console.log(datedate);
+        let plusHour = destinationPreTime*60*60*1000; //des〜が1なら＋1時間のミリ秒＝10時のミリ秒
+    
+        let makeDateTime = datedate.getTime()+plusHour
+        let dateTime = new Date(makeDateTime)
+    
+        let date = new Date();//今日
+        console.log(dateTime - date);
+
+        if (!(destinationPreDate && destinationPreTime)) {
+            errorMessages.errorPreTime = '配達日時を入力して下さい'
+        } else if (dateTime < date) {
+            errorMessages.errorPreTime = '指定日時を既に過ぎています'
+        } else if (dateTime - date < 3 * 60 * 60 * 1000) {
+            errorMessages.errorPreTime = '今から3時間以上後の日時をご入力ください'
+        }else {
+            errorMessages.errorPreTime = ''
+        }
+    }
+    if (!(destinationPreDate && destinationPreTime)) {
+        errorMessages.errorPreTime = '配達日時を入力して下さい'
     }
     const destinationPreDateChange = useCallback((e)=>{
         setDestinationPreDate(e.target.value);
     },[setDestinationPreDate])
-    // if(!destinationPreDate){
-    //     errorMessages.destinationPreDate ='配達希望日を入力してください'
-    // }
+    if(!destinationPreDate){
+        errorMessages.destinationPreDate ='配達希望日を入力してください'
+    }else{
+        errorMessages.destinationPreDate =''
+        DateTime();
+    }
 
     const destinationPayMethodChange = useCallback((e)=>{
         setDestinationPayMethod(e.target.value);
@@ -123,31 +178,21 @@ const OrderConfirm =()=>{
 
     const creaditCardChange = useCallback((e)=>{
         setCreditCard(e.target.value);
-    },[setCreditCard])
+    },[setCreditCard]);
 
 
-    let datedate = new Date(destinationPreDate);
-    console.log(datedate);
-    let plusHour = destinationPreTime*60*60*1000; //desi〜が1なら＋1時間のミリ秒＝10時のミリ秒
-
-    let makeDateTime = datedate.getTime()+plusHour
-    let dateTime = new Date(makeDateTime)
-
-    let date = new Date();//今日
-    console.log(dateTime - date);//選択日時-今日の日時がミリ秒で出ている
-
-    if (!(destinationPreDate && destinationPreTime)) {
-        errorMessages.destinationPreTime = '配達日時を入力して下さい'
-    } else if (dateTime < date) {
-        errorMessages.destinationPreTime = '指定日時を既に過ぎています'
-    } else if (dateTime - date < 3 * 60 * 60 * 1000) {
-        errorMessages.destinationPreTime = '今から3時間以上後の日時をご入力ください'
+    
+    if(!credit){
+        errorMessages.errorCredit='カード番号を入力してください'
+    }else{
+        errorMessages.errorCredit=''
     }
 
     let creditCard 
     if(!destinationPayMethod){
-        errorMessages.destinationPayMethod='お支払い方法を選択してください'
+        errorMessages.errorPayMethod='お支払い方法を選択してください'
     }else if(destinationPayMethod === '2'){
+        errorMessages.errorPayMethod=''
         creditCard = (<div style={{ padding: 10 }}>
             <TextField
             id="credit"
@@ -157,13 +202,10 @@ const OrderConfirm =()=>{
             value={credit}
             onChange={creaditCardChange}
             />
+            <div style={{color:'red'}}>{errorMessages.errorCredit}</div>
         </div>)
     }
     
-
-    
-    // let after3hoursTime = date.getTime()+after1hours
-    // console.log(after3hoursTime);
 
 
     const destinationPreTimeChange = useCallback((e)=>{
@@ -295,8 +337,6 @@ const OrderConfirm =()=>{
     })
 
 
-  
-
   // 金額関連処理
   let everyToppingTotalPrice = 0
   let totalItemPrice = 0
@@ -409,7 +449,7 @@ const OrderConfirm =()=>{
                     value={destinationName}
                     onChange={ destinationNameChange }
                     />
-                    <div className={classes.error}>{errorMessages.destinationName}</div>
+                    <div className={classes.error}>{errorMessages.errorName}</div>
                 </div>
                 <div style={{ padding: 10 }}>
                     <TextField
@@ -421,7 +461,7 @@ const OrderConfirm =()=>{
                     value={destinationEmail}
                     onChange={ destinationEmailChange }
                     />
-                    <div className={classes.error}>{errorMessages.destinationEmail}</div>
+                    <div className={classes.error}>{errorMessages.errorEmail}</div>
                 </div>
                 <div style={{ padding: 10 }}>
                     <TextField
@@ -433,7 +473,7 @@ const OrderConfirm =()=>{
                     value={destinationZipcode}
                     onChange={ destinationZipcodeChange }
                     />
-                    <div className={classes.error}>{errorMessages.destinationZipcode}</div>
+                    <div className={classes.error}>{errorMessages.errorZipcode}</div>
                 </div>
                 <div style={{ padding: 10 }}>
                     <TextField
@@ -444,7 +484,7 @@ const OrderConfirm =()=>{
                     value={destinationAddress}
                     onChange={ destinationAddressChange }
                     />
-                    <div className={classes.error}>{errorMessages.destinationAddress}</div>
+                    <div className={classes.error}>{errorMessages.errorAddress}</div>
                 </div>
                 <div style={{ padding: 10 }}>
                     <TextField
@@ -456,7 +496,7 @@ const OrderConfirm =()=>{
                     value={destinationTel}
                     onChange={ destinationTelChange }
                     />
-                    <div className={classes.error}>{errorMessages.destinationTel}</div>
+                    <div className={classes.error}>{errorMessages.errorTel}</div>
                 </div>
                 <div style={{padding: 10}}>
                     <form className={classes.container} noValidate>
@@ -473,12 +513,11 @@ const OrderConfirm =()=>{
                             shrink: true,
                             }}
                         /><br/>
-                        <div className={classes.error}>{errorMessages.destinationPreDate}</div>
+                        <div className={classes.error}>{errorMessages.errorPreDate}</div>
                      </form>
                 </div>
                 
-
-                {/* <RadioGroup row aria-label="destinationPreTime" name="destinationPreTime" onChange={ destinationPreTimeChange } value={destinationPreTime}> */}
+                
                 <FormControl>
                     <FormLabel component="legend">配達希望時間</FormLabel>
                     <Select
@@ -499,7 +538,7 @@ const OrderConfirm =()=>{
                     <MenuItem value={9}>18時</MenuItem>
                     </Select>
                 </FormControl>
-                <div className={classes.error}>{errorMessages.destinationPreTime}</div>
+                <div className={classes.error}>{errorMessages.errorPreTime}</div>
 
                 <div style={{padding:10}}>
                     <FormControl component="fieldset">
@@ -519,13 +558,16 @@ const OrderConfirm =()=>{
                         </RadioGroup>
                     </FormControl>
                 </div>
-                <div className={classes.error}>{errorMessages.destinationPayMethod}</div>
+                <div className={classes.error}>{errorMessages.errorPayMethod}</div>
                 { creditCard }
                 
                 <div> 
-                    <Grid container alignItems="center" justify="center">
+                    <Grid container alignItems="center" justify="center" style={{padding:10}}>
                         <Grid>
-                            <Button variant="outlined" color="primary" onClick={() => history.push('/ordercomplete')}>この内容で注文する</Button>
+                            <Button variant="outlined" color="primary" onClick={
+                                () => history.push('/ordercomplete')}disabled={errorMessages.errorName !==''||errorMessages.errorEmail !=='' || errorMessages.errorZipcode !==''||errorMessages.errorAddress !=''|| errorMessages.errorTel !=''|| errorMessages.errorPreTime !=''|| errorMessages.errorPayMethod !=''||errorMessages.errorCredit !==''}>
+                                この内容で注文する</Button>
+                            <Button variant="outlined" color="inherit" onClick={clear}>クリア</Button>
                         </Grid>
                     </Grid>
                 </div>
