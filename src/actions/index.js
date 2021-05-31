@@ -21,6 +21,7 @@ export const SET_ORDER_ITEMS = 'SET_ORDER_ITEMS';
 export const SET_ORDERED = 'SET_ORDERED';
 export const RESET_ORDERED = 'RESET_ORDERED';
 export const DELETE_ORDER_ITEMS = 'DELETE_ORDER_ITEMS';
+export const CHANGE_ORDERED_STATUS = 'CHANGE_ORDERED_STATUS';
 
 
 export const CANCEL = 'cancel'
@@ -164,6 +165,14 @@ export const resetOrdered = () => {
       type: RESET_ORDERED
     }
   )
+}
+
+export const changeOrderedStatus = (index) => {
+  return {
+    type: CHANGE_ORDERED_STATUS,
+    status: 9,
+    index: index
+  }
 }
 
 export const loginWithGoogle = () =>

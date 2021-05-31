@@ -14,7 +14,7 @@ import { cancel } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router-dom";
 import firebase from "../firebase/firebase";
-import { setOrdered, resetOrdered } from '../actions/index'
+import { setOrdered, resetOrdered, changeOrderedStatus } from '../actions/index'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -160,8 +160,25 @@ const OrderHistory = () => {
 
   const changeToDetail = path => history.push(path)
 
-  const cancel = () => {
+  const cancel = (index) => {
     console.log('キャンセルしました')
+    console.log(index);
+    console.log(orderedItemsArray[index]);
+    console.log(orderedItemsArray[index].orderedItems.status);
+    if (orderedItemsArray[index].orderedItems.status === 1 || orderedItemsArray[index].orderedItems.status === 2) {
+      firebase.firestore().collection(`users/${userIdState.uid}/orders`).doc(orderedItemsArray[index].orderedItemsId).get()
+        .then(async (doc) => {
+          console.log(doc.data());
+          const order = doc.data();
+          order.status = 9;
+          console.log(order);
+          firebase.firestore().collection(`users/${userIdState.uid}/orders`).doc(orderedItemsArray[index].orderedItemsId).update(order)
+            .then(async () => {
+              await console.log('成功！');
+              dispatch(changeOrderedStatus(index));
+            });
+        });
+    }
   }
 
   return (
@@ -172,7 +189,7 @@ const OrderHistory = () => {
             <Table className={classes.table} aria-label="simple table">
 
               {parentRows.map((childRows, index) => (
-                <div style={{ "margin-bottom": "40px" }}>
+                <div style={{ "margin-bottom": "100px" }}>
                   <TableHead>
                     <TableRow>
                       <TableCell>商品名</TableCell>
@@ -253,7 +270,7 @@ const OrderHistory = () => {
                       </TableRow>
                     </TableBody>
                   ))}
-                  <Button onClick={cancel}>キャンセル</Button>
+                  <Button onClick={() => cancel(index)}>キャンセル</Button>
                 </div>
               ))}
             </Table>
