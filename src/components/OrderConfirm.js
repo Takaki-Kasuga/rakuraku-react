@@ -140,14 +140,14 @@ const OrderConfirm =()=>{
 
     const DateTime =()=>{
         let datedate = new Date(destinationPreDate);
-        console.log(datedate);
+        // console.log(datedate);
         let plusHour = destinationPreTime*60*60*1000; //des〜が1なら＋1時間のミリ秒＝10時のミリ秒
     
         let makeDateTime = datedate.getTime()+plusHour
         let dateTime = new Date(makeDateTime)
     
         let date = new Date();//今日
-        console.log(dateTime - date);
+        // console.log(dateTime - date);
 
         if (!(destinationPreDate && destinationPreTime)) {
             errorMessages.errorPreTime = '配達日時を入力して下さい'
