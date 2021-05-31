@@ -166,6 +166,23 @@ export const CartList = () => {
     })
   }
 
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        firebase
+          .firestore()
+          .collection(`users/${userIdState.uid}/orders`)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              console.log(doc.id);
+              console.log(doc.data().orderItems);
+            });
+          });
+      }
+    })
+  }, []);
+
   return (
     <>
       {!rows.length ? <h2>カートに商品がありません</h2> :
