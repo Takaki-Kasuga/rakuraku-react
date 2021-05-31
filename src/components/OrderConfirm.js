@@ -131,6 +131,8 @@ const OrderConfirm =()=>{
         setCreditCard(e.target.value);
     },[setCreditCard]);
 
+
+    //エラーメッセージ
     if(!destinationName){
         errorMessages.errorName ='名前を入力してください'
     }else{
@@ -146,7 +148,6 @@ const OrderConfirm =()=>{
         errorMessages.errorEmail =''
     }
 
-
     if(!destinationZipcode){
         errorMessages.errorZipcode ='郵便番号を入力してください'
     }else if(!destinationZipcode.match(/^[0-9]{3}-[0-9]{4}$/)){
@@ -155,14 +156,11 @@ const OrderConfirm =()=>{
         errorMessages.errorZipcode =''
     }
 
-
     if(!destinationAddress){
         errorMessages.errorAddress ='住所を入力してください'
     }else{
         errorMessages.errorAddress =''
     }
-
-
 
     if(!destinationTel){
         errorMessages.errorTel ='電話番号を入力してください'
@@ -193,6 +191,7 @@ const OrderConfirm =()=>{
             errorMessages.errorPreTime = ''
         }
     }
+
     if (!(destinationPreDate && destinationPreTime)) {
         errorMessages.errorPreTime = '配達日時を入力して下さい'
     }
@@ -204,10 +203,6 @@ const OrderConfirm =()=>{
         DateTime();
     }
 
-
-
-
-    
     if(!credit){
         errorMessages.errorCredit='カード番号を入力してください'
     }else{
@@ -233,11 +228,6 @@ const OrderConfirm =()=>{
     }
     
 
-
-
-
-
-    
     const getState = (state) => state.userIdState.login_user;
 
     // MaterialUIのスタイル
@@ -360,6 +350,48 @@ const OrderConfirm =()=>{
         }
     })
 
+    const orderUniqueIdState = useSelector((state)=>state.orderUniqueIdState)
+    const addDestination = ()=>{
+        alert('宛先情報を追加')
+        const DestinationInfo = {
+            destinationName: destinationName,
+            destinationEmail: destinationEmail,
+            destinationZipcode: destinationZipcode,
+            destinationAddress: destinationAddress,
+            destinationTel: destinationTel,
+            destinationPreDate: destinationPreDate,
+            destinationPreTime: destinationPreTime,
+            destinationPayMethod: destinationPayMethod,
+            creditcardNum: credit
+
+        } 
+        firebase
+            .firestore()
+            .collection(`users/${userIdState.uid}/orders/`)
+            .doc(orderUniqueIdState)
+            .update({
+              destinationName: destinationName,
+              destinationEmail: destinationEmail,
+              destinationZipcode: destinationZipcode,
+              destinationAddress: destinationAddress,
+              destinationTel: destinationTel,
+              destinationPreDate: destinationPreDate,
+              destinationPreTime: destinationPreTime,
+              destinationPayMethod: destinationPayMethod,
+              creditcardNum: credit,
+              status:2
+            })
+            .then(() => {
+              console.log('成功しました。')
+              // console.log(doc.id)
+
+              // setOrderInfo(orderInfo.uniqueId = doc.id)
+            })
+            .catch((error) => {
+              console.log('失敗しました。')
+              console.log(error)
+            })
+    }
 
   // 金額関連処理
   let everyToppingTotalPrice = 0
@@ -592,6 +624,7 @@ const OrderConfirm =()=>{
                                 () => history.push('/ordercomplete')}disabled={errorMessages.errorName !==''||errorMessages.errorEmail !=='' || errorMessages.errorZipcode !==''||errorMessages.errorAddress !=''|| errorMessages.errorTel !=''|| errorMessages.errorPreTime !=''|| errorMessages.errorPayMethod !=''||errorMessages.errorCredit !==''}>
                                 この内容で注文する</Button>
                             <Button variant="outlined" color="inherit" onClick={clear}>クリア</Button>
+                            <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button>
                         </Grid>
                     </Grid>
                 </div>
