@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
+import firebase from '../firebase/firebase';
 
 export const ResettingEmail = () => {
   const errors = {
@@ -34,6 +35,11 @@ export const ResettingEmail = () => {
     }
   };
 
+  const passwordResetting = () => {
+    console.log(email);
+    firebase.auth().sendPasswordResetEmail(email);
+  }
+
   return (
     <React.Fragment>
       <h2>パスワード再設定</h2>
@@ -47,7 +53,7 @@ export const ResettingEmail = () => {
           <TextField fullWidth={true} value={email} type={"email"} onChange={inputEmail} />
           <div><span>{errorMessage.emailError}</span></div>
         </div>
-        <Button variant="contained" color="primary" disabled={isDisabled} >再設定メールを送る</Button>
+        <Button variant="contained" color="primary" disabled={isDisabled} onClick={passwordResetting}>再設定メールを送る</Button>
       </form>
     </React.Fragment>
   )
