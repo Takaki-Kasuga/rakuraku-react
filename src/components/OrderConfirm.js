@@ -29,6 +29,9 @@ import FormLabel from '@material-ui/core/FormLabel';
 //郵便番号から住所をサジェスト・カレンダー
 import { TextField } from '@material-ui/core';
 
+//セレクト
+import { Select, MenuItem } from '@material-ui/core';
+
 //ボタン
 import { Grid } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -52,7 +55,8 @@ const OrderConfirm =()=>{
     const [destinationAddress, setDestinationAddress] = useState('');
     const [destinationTel, setDestinationTel] = useState('');
     const [destinationPreDate, setDestinationPreDate] = useState('');
-    const [destinationPreTime, setDestinationPreTime] = useState('')
+    const [destinationPreTime, setDestinationPreTime] = useState('');
+    const [destinationPayMethod, setDestinationPayMethod] = useState('');
     const [credit, setCreditCard] = useState('');
 
     const errorMessages = {
@@ -61,8 +65,10 @@ const OrderConfirm =()=>{
         destinationZipcode:'',
         destinationAddress:'',
         destinationTel:'',
-        destinationPreDate:'',
+        // destinationPreDate:'',
         destinationPreTime:'',
+        destinationPayMethod:''
+        
     }
     //フォームの値が変わったときに発動させる関数を定義
     const destinationNameChange = useCallback((e)=>{
@@ -107,20 +113,63 @@ const OrderConfirm =()=>{
     const destinationPreDateChange = useCallback((e)=>{
         setDestinationPreDate(e.target.value);
     },[setDestinationPreDate])
-    if(!destinationPreDate){
-        errorMessages.destinationPreDate ='配達希望日を入力してください'
+    // if(!destinationPreDate){
+    //     errorMessages.destinationPreDate ='配達希望日を入力してください'
+    // }
+
+    const destinationPayMethodChange = useCallback((e)=>{
+        setDestinationPayMethod(e.target.value);
+    },[setDestinationPayMethod])
+
+    const creaditCardChange = useCallback((e)=>{
+        setCreditCard(e.target.value);
+    },[setCreditCard])
+
+
+    let datedate = new Date(destinationPreDate);
+    console.log(datedate);
+    let plusHour = destinationPreTime*60*60*1000; //desi〜が1なら＋1時間のミリ秒＝10時のミリ秒
+
+    let makeDateTime = datedate.getTime()+plusHour
+    let dateTime = new Date(makeDateTime)
+
+    let date = new Date();//今日
+    console.log(dateTime - date);//選択日時-今日の日時がミリ秒で出ている
+
+    if (!(destinationPreDate && destinationPreTime)) {
+        errorMessages.destinationPreTime = '配達日時を入力して下さい'
+    } else if (dateTime < date) {
+        errorMessages.destinationPreTime = '指定日時を既に過ぎています'
+    } else if (dateTime - date < 3 * 60 * 60 * 1000) {
+        errorMessages.destinationPreTime = '今から3時間以上後の日時をご入力ください'
     }
+
+    let creditCard 
+    if(!destinationPayMethod){
+        errorMessages.destinationPayMethod='お支払い方法を選択してください'
+    }else if(destinationPayMethod === '2'){
+        creditCard = (<div style={{ padding: 10 }}>
+            <TextField
+            id="credit"
+            label="クレジットカード番号"
+            variant="outlined"
+            placeholder="XXXX-XXXX-XXXX"
+            value={credit}
+            onChange={creaditCardChange}
+            />
+        </div>)
+    }
+    
+
+    
+    // let after3hoursTime = date.getTime()+after1hours
+    // console.log(after3hoursTime);
+
 
     const destinationPreTimeChange = useCallback((e)=>{
         setDestinationPreTime(e.target.value);
     },[setDestinationPreTime])
-    if(!destinationPreTime){
-        errorMessages.destinationPreTime ='配達希望時間を入力してください'
-    }
 
-    // const handleDateChange = (date) => {
-    //     setSelectedDate(date);
-    // };
 
     
     const getState = (state) => state.userIdState.login_user;
@@ -409,7 +458,7 @@ const OrderConfirm =()=>{
                     />
                     <div className={classes.error}>{errorMessages.destinationTel}</div>
                 </div>
-                <div>
+                <div style={{padding: 10}}>
                     <form className={classes.container} noValidate>
                         <TextField
                             id="date"
@@ -427,48 +476,52 @@ const OrderConfirm =()=>{
                         <div className={classes.error}>{errorMessages.destinationPreDate}</div>
                      </form>
                 </div>
-                <div style={{padding: 10}}>
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">配達希望時間</FormLabel>
-                        <RadioGroup row aria-label="destinationPreTime" name="" onChange={ destinationPreTimeChange }>
-                            <FormControlLabel value="10" control={<Radio />} label="10時" labelPlacement="end"/>
-                            <FormControlLabel value="11" control={<Radio />} label="11時" labelPlacement="end"/>
-                            <FormControlLabel value="12" control={<Radio />} label="12時" labelPlacement="end"/>
-                            <FormControlLabel value="13" control={<Radio />} label="13時" labelPlacement="end"/>
-                            <FormControlLabel value="14" control={<Radio />} label="14時" labelPlacement="end"/>
-                            <FormControlLabel value="15" control={<Radio />} label="15時" labelPlacement="end"/>
-                            <FormControlLabel value="16" control={<Radio />} label="16時" labelPlacement="end"/>
-                            <FormControlLabel value="17" control={<Radio />} label="17時" labelPlacement="end"/>
-                            <FormControlLabel value="18" control={<Radio />} label="18時" labelPlacement="end"/>
-                        </RadioGroup>
-                        <div className={classes.error}>{errorMessages.setDestinationPreTime}</div>
-                    </FormControl>
-                </div>    
-                <div style={{padding: 10}}>
+                
+
+                {/* <RadioGroup row aria-label="destinationPreTime" name="destinationPreTime" onChange={ destinationPreTimeChange } value={destinationPreTime}> */}
+                <FormControl>
+                    <FormLabel component="legend">配達希望時間</FormLabel>
+                    <Select
+                    style={{width:250}}
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={ destinationPreTime }
+                    onChange={ destinationPreTimeChange }
+                    >
+                    <MenuItem value={1}>10時</MenuItem>
+                    <MenuItem value={2}>11時</MenuItem>
+                    <MenuItem value={3}>12時</MenuItem>
+                    <MenuItem value={4}>13時</MenuItem>
+                    <MenuItem value={5}>14時</MenuItem>
+                    <MenuItem value={6}>15時</MenuItem>
+                    <MenuItem value={7}>16時</MenuItem>
+                    <MenuItem value={8}>17時</MenuItem>
+                    <MenuItem value={9}>18時</MenuItem>
+                    </Select>
+                </FormControl>
+                <div className={classes.error}>{errorMessages.destinationPreTime}</div>
+
+                <div style={{padding:10}}>
                     <FormControl component="fieldset">
                         <FormLabel component="legend">お支払い方法</FormLabel>
                         <RadioGroup
-                            aria-label="paymentMethod"
+                            SelectedItem
+                            row
+                            aria-label="payMethod"
                             // defaultValue="credit"
-                            name="radio-buttons-group"
+                            name="destinationPayMethod"
+                            value={ destinationPayMethod }
+                            onChange={destinationPayMethodChange}
+                            style={{padding:10}}
                         >
-                            <FormControlLabel value="daibiki" control={<Radio />} label="代金引換" />
-                            <FormControlLabel value="credit" control={<Radio />} label="クレジットカード" />
+                            <FormControlLabel value="1" control={<Radio />} label="代金引換" />
+                            <FormControlLabel value="2" control={<Radio />} label="クレジットカード" />
                         </RadioGroup>
                     </FormControl>
                 </div>
-                <div style={{ padding: 10 }}>
-                    <TextField
-                    id="credit"
-                    label="クレジットカード番号"
-                    variant="outlined"
-                    placeholder="XXXX-XXXX-XXXX"
-                    value={credit}
-                    onChange={(e) => {
-                        setCreditCard(e.target.value);
-                    }}
-                    />
-                </div>
+                <div className={classes.error}>{errorMessages.destinationPayMethod}</div>
+                { creditCard }
+                
                 <div> 
                     <Grid container alignItems="center" justify="center">
                         <Grid>
