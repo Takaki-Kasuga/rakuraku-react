@@ -53,12 +53,17 @@ const Header = () => {
 
 
     const LoginOrLogout = (props) => {
+        const clickLogout = () => {
+            dispatch(logout());
+            dispatch(deleteAllOrder());
+            history.push("/");
+        };
         console.log(props);
         if (props.user === true) {
             return (
                 <React.Fragment>
                     <Button color="secondary" onClick={() => history.push('/useraccount')}>アカウント</Button>
-                    <Button color="secondary" onClick={() => { dispatch(logout()); dispatch(deleteAllOrder()); }}>ログアウト</Button>
+                    <Button color="secondary" onClick={clickLogout}>ログアウト</Button>
                 </React.Fragment>
             )
         } else {
