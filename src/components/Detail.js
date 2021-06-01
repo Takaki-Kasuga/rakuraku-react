@@ -207,7 +207,12 @@ export const Detail = () => {
       console.log(updateOrderItemState)
 
 
-
+      // 商品に紐づくIDを取得
+      const ordersRef = firebase
+        .firestore().collection('users')
+      const ref = ordersRef.doc();
+      const uniqueItemId = ref.id;
+      console.log(uniqueItemId)
       // 初回の値を入れるときstateの[]配列が0の時
       // // トッピングの有無により値が変わる
       if (updateOrderItemState.length === 0) {
