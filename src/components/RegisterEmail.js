@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../actions/index.js";
+import { makeStyles } from "@material-ui/core/styles";
 
-
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    width: 200,
+  },
+}));
 export const RegisterEmail = () => {
+  const classes = useStyles();
   const errors = {
     nameError: " ",
     emailError: " ",
@@ -144,6 +150,7 @@ export const RegisterEmail = () => {
           <label>パスワード(6文字以上):</label>
           <TextField
             fullWidth={true}
+            className={classes.textField}
             value={password}
             type={"password"}
             onChange={inputPassword}

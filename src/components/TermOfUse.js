@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from "@material-ui/core";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 
 //CSSで中央揃えにしたい。
 const useStyles = makeStyles(() => ({
@@ -10,6 +11,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const TermOfUse = () => {
+  const history = useHistory();
    const classes = useStyles();
     return (
       <React.Fragment>
@@ -176,11 +178,9 @@ export const TermOfUse = () => {
             <p>以上</p>
           </div>
           <div align="center">
-            <a href="./registeremail" style={{ textDecoration: "none" }}>
-              <Button variant="contained" color="primary">
-                登録画面へ戻る
-              </Button>
-            </a>
+            
+              <Button variant="contained" color="primary" onClick={() => history.push('./registeremail')}>
+                登録画面へ戻る</Button>
           </div>
         </div>
       </React.Fragment>

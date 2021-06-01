@@ -16,25 +16,6 @@ import { useHistory } from "react-router-dom";
 import { useState, useEffect } from "react";
 import firebase from "../firebase/firebase";
 
-// const rows = [];
-
-// historyState.forEach((history) => {
-//   console.log(history.status);
-//   // statusが1（未入金）の商品を取ってくる
-//   if (history.status === 1) {
-//     const fetchData = createData(
-//       { itemPath: history.imagePath, itemName: history.itemName },
-//       { itemPrice: history.itemPrice, itemCount: history.itemCount },
-//       history.toppingInfo,
-//       history.uniqueId,
-//       history.itemId
-//     );
-//     // selectedToppingId.push(order.toppingInfo)
-//     rows.push(fetchData);
-//   }
-// });
-
-
 
 const OrderHistory = (props) => {
   const unorderhistory = props.unorderhistory;

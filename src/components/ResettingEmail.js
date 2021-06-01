@@ -2,8 +2,16 @@ import React, { useState } from 'react';
 import { Button, TextField } from '@material-ui/core';
 import firebase from '../firebase/firebase';
 import { useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  textField: {
+    width: 200,
+  },
+}));
 
 export const ResettingEmail = () => {
+  const classes = useStyles();
   const history = useHistory();
 
   const errors = {
@@ -65,10 +73,11 @@ export const ResettingEmail = () => {
       </p>
 
       <form>
-        <div>
+        <div align="center">
           <label>Email:</label>
           <TextField
-            fullWidth={true}
+            className={classes.textField}
+            style={{ margin: 8 }}
             value={email}
             type={"email"}
             onChange={inputEmail}
