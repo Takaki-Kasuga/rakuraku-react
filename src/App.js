@@ -22,7 +22,7 @@ import OrderHistory from './components/OrderHistory.js';
 import { RegisterEmail } from './components/RegisterEmail.js';
 import { TermOfUse } from './components/TermOfUse.js';
 import UserAccount from './components/UserAccount.js';
-import { orderInfomation, setUserInfo, deleteUserInfo, deleteAllOrder, updateOrderItems, orderUniqueId, orderForCartInfomation } from './actions/index'
+import { orderInfomation, setUserInfo, deleteUserInfo, deleteAllOrder, updateOrderItems, orderUniqueId, orderForCartInfomation, toppings, items } from './actions/index'
 import { ReorderRounded } from "@material-ui/icons";
 
 const getState = (state) => state.userIdState.login_user;
@@ -73,6 +73,35 @@ function App() {
       }
     })
   }, [])
+
+
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection(`topping/`)
+      .get()
+      .then((snapshot) => {
+        const toppingArray = []
+        snapshot.forEach((doc) => {
+          toppingArray.push(doc.data())
+        })
+        dispatch(toppings(toppingArray[0].array))
+      });
+
+    firebase
+      .firestore()
+      .collection(`items/`)
+      .get()
+      .then((snapshot) => {
+        const itemArray = []
+        snapshot.forEach((doc) => {
+          itemArray.push(doc.data())
+        })
+        dispatch(items(itemArray))
+        dispatch(orderForCartInfomation(itemArray))
+      });
+  }, [])
+
 
   const stateContent = useSelector(getState);
   const [loginUser, setLoginUser] = useState(false);
