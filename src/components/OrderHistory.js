@@ -10,7 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
 // import { connect } from "react-redux";
-import { cancel } from "../actions";
+// import { cancel } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router-dom";
 import firebase from "../firebase/firebase";
@@ -104,8 +104,6 @@ const OrderHistory = () => {
   }
 
   useEffect(() => {
-    console.log('orderHistoryの中身')
-    console.log(orderForCartItemArray);
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         dispatch(resetOrdered());
@@ -118,11 +116,8 @@ const OrderHistory = () => {
               if (Number(doc.data().status) !== 0) {
                 const orderedItemsId = doc.id;
                 const orderedItems = doc.data();
-                console.log(orderedItemsId)
-                console.log(orderedItems);
                 // const orderedItems = doc.data().orderItems;
                 dispatch(setOrdered(orderedItemsId, orderedItems));
-                console.log(orderedItemsArray)
               }
             });
           });
@@ -130,51 +125,104 @@ const OrderHistory = () => {
     })
   }, []);
 
-  function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId) {
-    return { itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId };
+  function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId, destinationPreDate, destinationPreTime) {
+    return { itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId, destinationPreDate, destinationPreTime };
   }
 
   orderedItemsArray.forEach((order) => {
-    console.log(order)
-    console.log(order.orderedItems.orderItems);
     order.orderedItems.orderItems.forEach((order2) => {
       const filterObject = orderForCartItemArray.find(element => element.id === order2.itemId)
-      console.log(filterObject);
       const fetchData = createData(
         { itemPath: filterObject.imagePath, itemName: filterObject.name },
         { itemPrice: order2.itemPrice, itemCount: order2.itemCount },
         order2.toppingInfo,
         order2.uniqueId,
         order2.itemId,
+        order.orderedItems.destinationPreDate,
+        order.orderedItems.destinationPreTime
       )
       rows.push(fetchData)
     })
     parentRows.push(rows);
-    console.log(rows);
     rows = [];
-    console.log(parentRows);
   })
 
   const changeToDetail = path => history.push(path)
 
-  const cancel = (index) => {
-    console.log('キャンセルしました')
-    console.log(index);
-    console.log(orderedItemsArray[index]);
-    console.log(orderedItemsArray[index].orderedItems.status);
-    if (orderedItemsArray[index].orderedItems.status === 1 || orderedItemsArray[index].orderedItems.status === 2) {
+  const cancel = (index, statusJudge) => {
+    if (statusJudge === 1 || statusJudge === 2) {
       firebase.firestore().collection(`users/${userIdState.uid}/orders`).doc(orderedItemsArray[index].orderedItemsId).get()
         .then(async (doc) => {
-          console.log(doc.data());
           const order = doc.data();
           order.status = 9;
-          console.log(order);
           firebase.firestore().collection(`users/${userIdState.uid}/orders`).doc(orderedItemsArray[index].orderedItemsId).update(order)
             .then(async () => {
               await console.log('成功！');
               dispatch(changeOrderedStatus(index));
             });
         });
+    }
+  }
+
+  const StatusJudge = (props) => {
+    const statusJudge = Number(useSelector((state) => state.setOrderedItems[props.index].orderedItems.status))
+
+    if (statusJudge === 9) {
+      return (
+        <p>キャンセル済</p>
+      )
+    } else if (statusJudge === 3) {
+      return (
+        <p>発送済み</p>
+      )
+    } else if (statusJudge === 1 || statusJudge === 2) {
+      return (
+        <Button onClick={() => cancel(props.index, statusJudge)}>キャンセル</Button>
+      )
+    } else {
+      return (
+        <p>エラーが発生しました</p>
+      )
+    }
+  }
+
+  const DestinationTime = (props) => {
+    if (props.destinationPreTime === 1) {
+      return (
+        <p>10時</p>
+      )
+    } else if (props.destinationPreTime === 2) {
+      return (
+        <p>11時</p>
+      )
+    } else if (props.destinationPreTime === 3) {
+      return (
+        <p>12時</p>
+      )
+    } else if (props.destinationPreTime === 4) {
+      return (
+        <p>13時</p>
+      )
+    } else if (props.destinationPreTime === 5) {
+      return (
+        <p>14時</p>
+      )
+    } else if (props.destinationPreTime === 6) {
+      return (
+        <p>15時</p>
+      )
+    } else if (props.destinationPreTime === 7) {
+      return (
+        <p>16時</p>
+      )
+    } else if (props.destinationPreTime === 8) {
+      return (
+        <p>17時</p>
+      )
+    } else if (props.destinationPreTime === 9) {
+      return (
+        <p>18時</p>
+      )
     }
   }
 
@@ -186,7 +234,7 @@ const OrderHistory = () => {
             <Table className={classes.table} aria-label="simple table">
 
               {parentRows.map((childRows, index) => (
-                <div style={{ "margin-bottom": "100px" }}>
+                <div style={{ "margin-bottom": "100px" }} key={index}>
                   <TableHead>
                     <TableRow>
                       <TableCell>商品名</TableCell>
@@ -259,7 +307,8 @@ const OrderHistory = () => {
                           </div>
                         </TableCell>
                         <TableCell>
-                          <p>ここに配達日を入れる(まだ未実装)</p>
+                          <p>{row.destinationPreDate}</p>
+                          <DestinationTime destinationPreTime={row.destinationPreTime} />
                         </TableCell>
                         <TableCell>
                           <Button color="primary" onClick={() => { changeToDetail(`/detail/${row.itemId}`) }}>この商品をもう一度購入する</Button>
@@ -267,7 +316,7 @@ const OrderHistory = () => {
                       </TableRow>
                     </TableBody>
                   ))}
-                  <Button onClick={() => cancel(index)}>キャンセル</Button>
+                  <StatusJudge index={index} />
                 </div>
               ))}
             </Table>

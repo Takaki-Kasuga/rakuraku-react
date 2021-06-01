@@ -202,7 +202,7 @@ export const Home = () => {
   const setSearchValueMethod = (event) => {
     setSearchValue(event.target.value)
   }
-  const filteringItems = (searchValue) => {
+  const searchItem = (searchValue) => {
     // 何か１つでも文字が入力されている時
     if (searchValue) {
       firebase
@@ -294,7 +294,7 @@ export const Home = () => {
                       onKeyPress={e => {
                         if (e.key == 'Enter') {
                           e.preventDefault()
-                          filteringItems(searchValue)
+                          searchItem(searchValue)
                           changeToStatus()
                         }
                       }
@@ -314,7 +314,7 @@ export const Home = () => {
                     <Button variant="contained" color="primary"
 
                       onClick={() => {
-                        filteringItems(searchValue);
+                        searchItem(searchValue);
                         changeToStatus();
                       }}>
                       検索
@@ -334,7 +334,7 @@ export const Home = () => {
                     onKeyPress={e => {
                       if (e.key == 'Enter') {
                         e.preventDefault()
-                        filteringItems(searchValue)
+                        searchItem(searchValue)
                         changeToStatus()
                       }
                     }
@@ -353,7 +353,7 @@ export const Home = () => {
                   />
                   <Button variant="contained" color="primary"
                     onClick={() => {
-                      filteringItems(searchValue);
+                      searchItem(searchValue);
                       changeToStatus();
                     }}>
                     検索

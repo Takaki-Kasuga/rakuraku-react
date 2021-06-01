@@ -6,11 +6,15 @@ import {
 } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
 import { loginWithGoogle, signIn } from "../actions/index.js";
+import firebase from "../firebase/firebase"
 
 
 export const Login = () => {
   const dispatch = useDispatch();
   const getRoutingJudge = useSelector((state) => state.routingJudge.routingJudge)
+  const setOrderItemsState = useSelector((state) => state.setOrderItems)
+
+
 
   const errors = {
     emailError: " ",
@@ -67,8 +71,24 @@ export const Login = () => {
   }
 
   const googleLogin = () => {
-    localStorage.setItem('routingJudge', Number(getRoutingJudge));
-    dispatch(loginWithGoogle());
+    // 一意のid作成
+    const ordersRef = firebase
+      .firestore().collection('cache')
+    setOrderItemsState.forEach((obj) => {
+      const ref = ordersRef.doc();
+      const uniqueItemId = ref.id;
+      obj.uniqueItemId = uniqueItemId
+    })
+    firebase
+      .firestore()
+      .collection(`cache/`)
+      .add({ orderItems: setOrderItemsState, status: 0 })
+      .then((snapshot) => {
+        console.log('成功しました。')
+        localStorage.setItem('routingJudge', Number(getRoutingJudge));
+        dispatch(loginWithGoogle());
+      });
+
   }
 
   return (
