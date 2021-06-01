@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom'
 
 
 import firebase from '../firebase/firebase'
-import { deleteOrderInfomation, deleteOrderInfomationIdNum, changeRoutingStatus, setOrderItems, deleteOrderItems } from '../actions/index'
+import { deleteOrderInfomation, deleteOrderInfomationIdNum, changeRoutingStatus, setOrderItems, deleteOrderItems, orderForCartInfomation, toppings, items } from '../actions/index'
 
 // デリートアイコン
 import IconButton from '@material-ui/core/IconButton';
@@ -105,7 +105,7 @@ export const CartList = () => {
   // カートリスト削除機能
   const orderUniqueIdState = useSelector((state) => state.orderUniqueIdState)
   const userIdState = useSelector((state) => state.userIdState)
-  const deleteItem = (index) => {
+  const deleteOrder = (index) => {
     console.log(index)
     console.log(orderItemsArray)
     if (window.confirm('本当に削除しますか？')) {
@@ -161,7 +161,7 @@ export const CartList = () => {
     }
   }
 
-  const confirmOrder = () => {
+  const addOrder = () => {
     if (userIdState.login_user) {
       handleLink('/orderconfirm')
     } else {
@@ -173,28 +173,40 @@ export const CartList = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log('orderForCartItemArrayの中身')
-    console.log(orderForCartItemArray);
-    console.log(orderItemsArray)
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        firebase
-          .firestore()
-          .collection(`users/${userIdState.uid}/orders`)
-          .get()
-          .then((snapshot) => {
-            snapshot.forEach((doc) => {
-              console.log(doc.id);
-              if (Number(doc.data().status) === 0 && doc.data().orderItems.length > 0) {
-                // Firestoreから取得した「カートに入った状態のorderItems」をstoreのstateに保存(ただし、orderItemが空ではない時)
-                const orderItems = doc.data().orderItems;
-                console.log('setOrderItems(orderItems)')
-                dispatch(setOrderItems(orderItems));
-              }
-            })
-          });
-      }
-    })
+    firebase
+      .firestore()
+      .collection(`items/`)
+      .get()
+      .then((snapshot) => {
+        const itemArray = []
+        snapshot.forEach((doc) => {
+          itemArray.push(doc.data())
+        })
+        dispatch(items(itemArray))
+        dispatch(orderForCartInfomation(itemArray))
+        console.log('orderForCartItemArrayの中身')
+        console.log(orderForCartItemArray);
+        console.log(orderItemsArray)
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            firebase
+              .firestore()
+              .collection(`users/${userIdState.uid}/orders`)
+              .get()
+              .then((snapshot) => {
+                snapshot.forEach((doc) => {
+                  console.log(doc.id);
+                  if (Number(doc.data().status) === 0 && doc.data().orderItems.length > 0) {
+                    // Firestoreから取得した「カートに入った状態のorderItems」をstoreのstateに保存(ただし、orderItemが空ではない時)
+                    const orderItems = doc.data().orderItems;
+                    console.log('setOrderItems(orderItems)')
+                    dispatch(setOrderItems(orderItems));
+                  }
+                })
+              });
+          }
+        })
+      });
   }, []);
 
   console.log(orderItemsArray)
@@ -324,7 +336,7 @@ export const CartList = () => {
                   </TableCell>
                   <TableCell align="right" style={{ width: '120px' }}>
                     <div className={classes.delete} onClick={() => {
-                      deleteItem(index)
+                      deleteOrder(index)
                     }}>
                       <Button
                         variant="contained"
@@ -346,7 +358,7 @@ export const CartList = () => {
             <p className={classes.setLeftText}>消費税合計：{((totalItemPrice + totalToppingPrice) * 0.1).toLocaleString()}円</p>
             <h3 style={{ color: 'red', textAlign: 'center' }} className={classes.setLeftText}>合計金額：{Number(Number((totalItemPrice + totalToppingPrice)) + Number(((totalItemPrice + totalToppingPrice) * 0.1))).toLocaleString()}円（税込）</h3>
           </div>
-          <Fab variant="extended" aria-label="like" className={classes.fab} onClick={() => { confirmOrder() }} className={classes.priceItemCenter}>
+          <Fab variant="extended" aria-label="like" className={classes.fab} onClick={() => { addOrder() }} className={classes.priceItemCenter}>
             <NavigationIcon className={classes.extendedIcon}
             />
               注文に進む
