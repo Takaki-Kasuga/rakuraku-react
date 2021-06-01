@@ -125,20 +125,37 @@ export const Detail = () => {
   const history = useHistory()
   const handleLink = (path) => history.push(path)
 
-  // トッピングリストの合計金額
+  let totleToppingPrice = 0
   useEffect(() => {
+    console.log('トッピングプライスの初期化')
     dispatch(defaultSelectedToppings())
     selectedToppingState.forEach((price) => {
-      if (price.toppingPrice) {
+      if (price.toppingPriceL) {
+        totleToppingPrice += price.toppingPriceL
+      } else if (price.toppingPriceM) {
+        totleToppingPrice += price.toppingPriceM
       }
+      console.log('回転数')
+
     })
+    console.log('発火')
+    console.log(totleToppingPrice)
   }, [])
-  let totleToppingPrice = 0
+  // トッピングリストの合計金額
+  console.log(selectedToppingState)
   selectedToppingState.forEach((price) => {
-    if (price.toppingPrice) {
-      totleToppingPrice += price.toppingPrice
+    if (price.toppingPriceL) {
+      totleToppingPrice += price.toppingPriceL
+    } else if (price.toppingPriceM) {
+      totleToppingPrice += price.toppingPriceM
     }
+    console.log('回転数')
+
   })
+  console.log('発火')
+  console.log(totleToppingPrice)
+
+
 
 
   // トッピングリストの開閉
@@ -434,7 +451,7 @@ export const Detail = () => {
 
 
 
-                <p>合計金額：{(Number(itemValue) * Number(itemCount) + Number(totleToppingPrice)).toLocaleString()}円（税抜き）</p>
+                <p>合計金額：{((Number(itemValue) + Number(totleToppingPrice)) * Number(itemCount)).toLocaleString()}円（税抜き）</p>
                 <Button variant="contained" onClick={() => { addCart() }}>カートに入れる</Button>
 
               </Grid>
