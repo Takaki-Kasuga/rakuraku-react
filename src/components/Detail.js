@@ -208,7 +208,7 @@ export const Detail = () => {
 
       // 商品に紐づくIDを取得
       const ordersRef = firebase
-        .firestore().collection('users').doc(userIdState.uid).collection('orders');
+        .firestore().collection('users')
       const ref = ordersRef.doc();
       const uniqueItemId = ref.id;
       console.log(uniqueItemId)
