@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import firebase from '../firebase/firebase';
-import { orderInfomation,setOrderItems, orderForCartInfomation, items, toppings } from '../actions/index'
+import { orderInfomation,setOrderItems, orderForCartInfomation, items, toppings, deleteAllOrder } from '../actions/index'
 
 //テーブル
 import { makeStyles } from '@material-ui/core/styles';
@@ -43,7 +43,7 @@ const OrderConfirm = () => {
     const orderState = useSelector((state) => state.orderState);
     const toppingState = useSelector((state) => state.toppingState)
     const orderForCartItemArray = useSelector((state) => state.orderForCartState) //商品情報取得
-    const orderItemsArray = useSelector((state) => state.setOrderItems) //カート情報取得
+    const orderItemsArray = useSelector((state) => state.setOrderItems) //カート情報取得。注文確定後空にする。
     const history = useHistory();
     const handleLink = path => history.push(path);
 
@@ -580,6 +580,7 @@ const OrderConfirm = () => {
     const orderFinish = ()=>{
         addDestination();
         handleLink('/ordercomplete')
+        dispatch(deleteAllOrder())//カートの中身を0にする。
     }
 
     // 金額関連処理
