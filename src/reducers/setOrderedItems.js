@@ -3,6 +3,7 @@ import { SET_ORDERED, RESET_ORDERED, CHANGE_ORDERED_STATUS } from '../actions/in
 export default (state = [], action) => {
   switch (action.type) {
     case SET_ORDERED:
+      console.log(action)
       const ob = [...state, action];
       return ob;
     case RESET_ORDERED:
