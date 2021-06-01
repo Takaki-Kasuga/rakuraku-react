@@ -20,7 +20,7 @@ import { useHistory } from 'react-router-dom'
 
 
 import firebase from '../firebase/firebase'
-import { deleteOrderInfomation, deleteOrderInfomationIdNum, changeRoutingStatus, setOrderItems, deleteOrderItems } from '../actions/index'
+import { deleteOrderInfomation, deleteOrderInfomationIdNum, changeRoutingStatus, setOrderItems, deleteOrderItems, orderForCartInfomation, toppings, items } from '../actions/index'
 
 // デリートアイコン
 import IconButton from '@material-ui/core/IconButton';
@@ -173,28 +173,40 @@ export const CartList = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log('orderForCartItemArrayの中身')
-    console.log(orderForCartItemArray);
-    console.log(orderItemsArray)
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        firebase
-          .firestore()
-          .collection(`users/${userIdState.uid}/orders`)
-          .get()
-          .then((snapshot) => {
-            snapshot.forEach((doc) => {
-              console.log(doc.id);
-              if (Number(doc.data().status) === 0 && doc.data().orderItems.length > 0) {
-                // Firestoreから取得した「カートに入った状態のorderItems」をstoreのstateに保存(ただし、orderItemが空ではない時)
-                const orderItems = doc.data().orderItems;
-                console.log('setOrderItems(orderItems)')
-                dispatch(setOrderItems(orderItems));
-              }
-            })
-          });
-      }
-    })
+    firebase
+      .firestore()
+      .collection(`items/`)
+      .get()
+      .then((snapshot) => {
+        const itemArray = []
+        snapshot.forEach((doc) => {
+          itemArray.push(doc.data())
+        })
+        dispatch(items(itemArray))
+        dispatch(orderForCartInfomation(itemArray))
+        console.log('orderForCartItemArrayの中身')
+        console.log(orderForCartItemArray);
+        console.log(orderItemsArray)
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            firebase
+              .firestore()
+              .collection(`users/${userIdState.uid}/orders`)
+              .get()
+              .then((snapshot) => {
+                snapshot.forEach((doc) => {
+                  console.log(doc.id);
+                  if (Number(doc.data().status) === 0 && doc.data().orderItems.length > 0) {
+                    // Firestoreから取得した「カートに入った状態のorderItems」をstoreのstateに保存(ただし、orderItemが空ではない時)
+                    const orderItems = doc.data().orderItems;
+                    console.log('setOrderItems(orderItems)')
+                    dispatch(setOrderItems(orderItems));
+                  }
+                })
+              });
+          }
+        })
+      });
   }, []);
 
   console.log(orderItemsArray)
