@@ -22,22 +22,11 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import { useHistory } from 'react-router-dom'
 
-<<<<<<< HEAD
 
-const OrderHistory = (props) => {
-  const unorderhistory = props.unorderhistory;
-  console.log(props.orderHistoryName);
-  // console.log(props.unorderhistory);
-=======
-import {
-  Link
-} from 'react-router-dom';
 
 
 const OrderHistory = () => {
-
   const history = useHistory();
->>>>>>> 774770decb4673baad622e1fbe1f0d069a3656ad
   const userIdState = useSelector((state) => state.userIdState);
   const orderForCartItemArray = useSelector((state) => state.orderForCartState) //商品情報取得
   const orderedItemsArray = useSelector((state) => state.setOrderedItems) //注文情報取得
