@@ -181,6 +181,31 @@ const OrderHistory = () => {
     }
   }
 
+
+  const StatusJudge = (props) => {
+    console.log(props)
+    const statusJudge = Number(useSelector((state) => state.setOrderedItems[props.index].orderedItems.status))
+    console.log(statusJudge);
+
+    if (statusJudge === 9) {
+      return (
+        <p>キャンセル済</p>
+      )
+    } else if (statusJudge === 3) {
+      return (
+        <p>発送済み</p>
+      )
+    } else if (statusJudge === 1 || statusJudge === 2) {
+      return (
+        <Button onClick={() => cancel(props.index)}>キャンセル</Button>
+      )
+    } else {
+      return (
+        <p>エラーが発生しました</p>
+      )
+    }
+  }
+
   return (
     <>
       <div>
@@ -189,7 +214,7 @@ const OrderHistory = () => {
             <Table className={classes.table} aria-label="simple table">
 
               {parentRows.map((childRows, index) => (
-                <div style={{ "margin-bottom": "100px" }}>
+                <div style={{ "margin-bottom": "100px" }} key={index}>
                   <TableHead>
                     <TableRow>
                       <TableCell>商品名</TableCell>
@@ -270,7 +295,7 @@ const OrderHistory = () => {
                       </TableRow>
                     </TableBody>
                   ))}
-                  <Button onClick={() => cancel(index)}>キャンセル</Button>
+                  <StatusJudge index={index} />
                 </div>
               ))}
             </Table>
