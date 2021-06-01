@@ -212,7 +212,7 @@ export const Detail = () => {
       // // トッピングの有無により値が変わる
       if (updateOrderItemState.length === 0) {
         // 新規で入力する時
-        if (userIdState.uid) {
+        if (userIdState.login_user) {
           // 商品に紐づくIDを取得
           const ordersRef = firebase
             .firestore().collection('users').doc(userIdState.uid).collection('orders');
@@ -270,7 +270,8 @@ export const Detail = () => {
       } else {
         // 商品に紐づくIDを取得
         const ordersRef = firebase
-          .firestore().collection('users').doc(userIdState.uid).collection('orders');
+          .firestore().collection('users')
+        // .firestore().collection('users').doc(userIdState.uid).collection('orders');
         const ref = ordersRef.doc();
         const uniqueItemId = ref.id;
         console.log(uniqueItemId)
@@ -292,7 +293,7 @@ export const Detail = () => {
         console.log(orderInfo)
         // 更新するとき
         console.log('追加入力')
-        if (userIdState.uid) {
+        if (userIdState.login_user) {
           firebase
             .firestore()
             .collection(`users/${userIdState.uid}/orders`)

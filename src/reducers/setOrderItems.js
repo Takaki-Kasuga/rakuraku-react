@@ -1,4 +1,4 @@
-import { SET_ORDER_ITEMS, DELETE_ORDER_INFO, DELETE_ORDER_INFO_NOLOGIN } from '../actions/index'
+import { SET_ORDER_ITEMS, DELETE_ORDER_INFO, DELETE_ORDER_INFO_NOLOGIN, DELETE_ALL_ORDER } from '../actions/index'
 
 export default (state = [], action) => {
   switch (action.type) {
@@ -37,6 +37,12 @@ export default (state = [], action) => {
       })
       deleteIdArray.splice(deleteIdIndex, 1)
       return deleteIdArray
+    case DELETE_ALL_ORDER:
+      console.log('DELETE_ALL_ORDERが発火')
+      const deleteAllArray = [...state]
+      deleteAllArray.splice(0)
+      console.log(deleteAllArray)
+      return deleteAllArray
     default:
       return state
   }
