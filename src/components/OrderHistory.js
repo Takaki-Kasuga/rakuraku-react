@@ -10,7 +10,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
 // import { connect } from "react-redux";
-import { cancel } from "../actions";
+// import { cancel } from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router-dom";
 import firebase from "../firebase/firebase";
@@ -152,8 +152,8 @@ const OrderHistory = () => {
 
   const changeToDetail = path => history.push(path)
 
-  const cancel = (index) => {
-    if (orderedItemsArray[index].orderedItems.status === 1 || orderedItemsArray[index].orderedItems.status === 2) {
+  const cancel = (index, statusJudge) => {
+    if (statusJudge === 1 || statusJudge === 2) {
       firebase.firestore().collection(`users/${userIdState.uid}/orders`).doc(orderedItemsArray[index].orderedItemsId).get()
         .then(async (doc) => {
           const order = doc.data();
@@ -166,7 +166,6 @@ const OrderHistory = () => {
         });
     }
   }
-
 
   const StatusJudge = (props) => {
     const statusJudge = Number(useSelector((state) => state.setOrderedItems[props.index].orderedItems.status))
@@ -181,7 +180,7 @@ const OrderHistory = () => {
       )
     } else if (statusJudge === 1 || statusJudge === 2) {
       return (
-        <Button onClick={() => cancel(props.index)}>キャンセル</Button>
+        <Button onClick={() => cancel(props.index, statusJudge)}>キャンセル</Button>
       )
     } else {
       return (
