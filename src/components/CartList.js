@@ -30,6 +30,7 @@ import Icon from '@material-ui/core/Icon';
 // 注文に進むアイコン
 import Fab from '@material-ui/core/Fab';
 import NavigationIcon from '@material-ui/icons/Navigation';
+import { gridNumberComparer } from '@material-ui/data-grid';
 
 
 export const CartList = () => {
@@ -234,16 +235,37 @@ export const CartList = () => {
 
   // 金額関連処理
   let everyToppingTotalPrice = 0
-  let totalItemPrice = 0
+  let totalToppingPrice = 0
+
 
   // 商品の合計金額の処理
-  let totalToppingPrice = 0
+  // let totalItemPrice = 0
+  // if (rows.length !== 0) {
+  //   rows.forEach((totalItem) => {
+  //     console.log(totalItem)
+  //     totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
+  //     console.log(totalItemPrice)
+  //   })
+  // }
+  let totalPrice = 0
   if (rows.length !== 0) {
     rows.forEach((totalItem) => {
-      totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
-      console.log(totalItemPrice)
+      let toppingPrice = 0
+      if (totalItem.toppingItem.length !== 0) {
+        totalItem.toppingItem.forEach((toppingItem) => {
+          if (toppingItem.toppingPriceL) {
+            toppingPrice += toppingItem.toppingPriceL
+          } else if (toppingItem.toppingPriceM) {
+            toppingPrice += toppingItem.toppingPriceM
+          }
+        })
+      }
+      // console.log(price)
+      totalPrice += ((totalItem.itemPriceAndCount.itemPrice + toppingPrice) * totalItem.itemPriceAndCount.itemCount)
+      console.log(totalPrice)
     })
   }
+
 
   console.log(totalToppingPrice)
 
@@ -329,9 +351,9 @@ export const CartList = () => {
                   </TableCell>
                   <TableCell align="right">
                     <div>
-                      <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
-                      <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)).toLocaleString()}円<br />（税抜き）</p>
-                      <p style={{ color: 'red' }} className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円<br />（税込）</p>
+                      <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount) * 0.1).toLocaleString()}円</p>
+                      <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount)).toLocaleString()}円<br />（税抜き）</p>
+                      <p style={{ color: 'red' }} className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount) * 1.1).toLocaleString()}円<br />（税込）</p>
                     </div>
                   </TableCell>
                   <TableCell align="right" style={{ width: '120px' }}>
@@ -354,9 +376,9 @@ export const CartList = () => {
           </Table>
 
           <div className={classes.priceItemCenter}>
-            <p className={classes.setLeftText}>合計金額：{(totalItemPrice + totalToppingPrice).toLocaleString()}円（税抜き）</p>
-            <p className={classes.setLeftText}>消費税合計：{((totalItemPrice + totalToppingPrice) * 0.1).toLocaleString()}円</p>
-            <h3 style={{ color: 'red', textAlign: 'center' }} className={classes.setLeftText}>合計金額：{Number(Number((totalItemPrice + totalToppingPrice)) + Number(((totalItemPrice + totalToppingPrice) * 0.1))).toLocaleString()}円（税込）</h3>
+            <p className={classes.setLeftText}>合計金額：{Number(totalPrice).toLocaleString()}円（税抜き）</p>
+            <p className={classes.setLeftText}>消費税合計：{(Number(totalPrice) * 0.1).toLocaleString()}円</p>
+            <h3 style={{ color: 'red', textAlign: 'center' }} className={classes.setLeftText}>合計金額：{(Number(totalPrice) * 1.1).toLocaleString()}円（税込）</h3>
           </div>
           <Fab variant="extended" aria-label="like" className={classes.fab} onClick={() => { addOrder() }} className={classes.priceItemCenter}>
             <NavigationIcon className={classes.extendedIcon}
