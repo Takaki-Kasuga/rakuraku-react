@@ -204,15 +204,19 @@ export const cancel = () => ({
 export const signUp = (username, email, password, confirmPassword) => {
   return async (dispatch) => {
     await firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then(result => {
-        const user = result.user;
-        if (user) {
-          const user_id = result.user.uid;
-          const user_email = result.user.email;
-          dispatch(setUserInfo(user_id, username, user_email));
-        }
-      }).catch((error) => {
-        alert('ユーザー登録に失敗しました。お手数ですがもう1度お試しください')
+      .then(async result => {
+        await firebase.auth().currentUser.updateProfile({
+          displayName: username
+        }).then(result2 => {
+          const user = result.user;
+          if (user) {
+            const user_id = result.user.uid;
+            const user_email = result.user.email;
+            dispatch(setUserInfo(user_id, username, user_email));
+          }
+        }).catch((error) => {
+          alert('ユーザー登録に失敗しました。お手数ですがもう1度お試しください')
+        })
       })
   }
 }
