@@ -127,7 +127,6 @@ export const Detail = () => {
 
   let totleToppingPrice = 0
   useEffect(() => {
-    console.log('トッピングプライスの初期化')
     dispatch(defaultSelectedToppings())
     selectedToppingState.forEach((price) => {
       if (price.toppingPriceL) {
@@ -135,25 +134,17 @@ export const Detail = () => {
       } else if (price.toppingPriceM) {
         totleToppingPrice += price.toppingPriceM
       }
-      console.log('回転数')
 
     })
-    console.log('発火')
-    console.log(totleToppingPrice)
   }, [])
   // トッピングリストの合計金額
-  console.log(selectedToppingState)
   selectedToppingState.forEach((price) => {
     if (price.toppingPriceL) {
       totleToppingPrice += price.toppingPriceL
     } else if (price.toppingPriceM) {
       totleToppingPrice += price.toppingPriceM
     }
-    console.log('回転数')
-
   })
-  console.log('発火')
-  console.log(totleToppingPrice)
 
 
 
@@ -218,18 +209,11 @@ export const Detail = () => {
         return Object.keys(value).length !== 2
       })
 
-      console.log('selectedToppingArrayが発火')
-      console.log(selectedToppingArray)
-      console.log('updateOrderItemStateが発火')
-      console.log(updateOrderItemState)
-
-
       // 商品に紐づくIDを取得
       const ordersRef = firebase
         .firestore().collection('users')
       const ref = ordersRef.doc();
       const uniqueItemId = ref.id;
-      console.log(uniqueItemId)
       // 初回の値を入れるときstateの[]配列が0の時
       // // トッピングの有無により値が変わる
       if (updateOrderItemState.length === 0) {
@@ -240,7 +224,6 @@ export const Detail = () => {
             .firestore().collection('users').doc(userIdState.uid).collection('orders');
           const ref = ordersRef.doc();
           const uniqueItemId = ref.id;
-          console.log(uniqueItemId)
 
           setOrderInfo((orderInfo) => {
             orderInfo.orderItems.push({
@@ -251,14 +234,11 @@ export const Detail = () => {
               toppingInfo: selectedToppingArray
             })
           })
-          console.log('新規入力')
           firebase
             .firestore()
             .collection(`users/${userIdState.uid}/orders`)
             .add(orderInfo)
             .then((doc) => {
-              console.log('成功しました。')
-              console.log(doc.id)
               setOrderInfo(orderInfo.uniqueId = doc.id)
               dispatch(orderInfomation(orderInfo))
               dispatch(updateOrderItems(orderInfo.orderItems))
@@ -273,7 +253,6 @@ export const Detail = () => {
           setOrderInfo((orderInfo) => {
             setOrderItemsState.forEach((oldOrderItems) => {
               orderInfo.orderItems.push(oldOrderItems)
-              console.log(oldOrderItems)
             })
             orderInfo.orderItems.push({
               itemId: Number(id),
@@ -283,7 +262,6 @@ export const Detail = () => {
             })
           })
           dispatch(orderInfomation(orderInfo.orderItems))
-          console.log(orderInfo.orderItems)
           dispatch(setOrderItems(orderInfo.orderItems))
           handleLink('/cartlist')
         }
@@ -296,14 +274,10 @@ export const Detail = () => {
         // .firestore().collection('users').doc(userIdState.uid).collection('orders');
         const ref = ordersRef.doc();
         const uniqueItemId = ref.id;
-        console.log(uniqueItemId)
-        console.log(updateOrderItemState)
         setOrderInfo((orderInfo) => {
           updateOrderItemState.forEach((oldOrderItems) => {
             orderInfo.orderItems.push(oldOrderItems)
-            console.log(oldOrderItems)
           })
-          console.log(orderInfo.orderItems)
           orderInfo.orderItems.push({
             uniqueItemId: uniqueItemId,
             itemId: Number(id),
@@ -312,9 +286,7 @@ export const Detail = () => {
             toppingInfo: selectedToppingArray
           })
         })
-        console.log(orderInfo)
         // 更新するとき
-        console.log('追加入力')
         if (userIdState.login_user) {
           firebase
             .firestore()
@@ -324,23 +296,18 @@ export const Detail = () => {
               orderItems: orderInfo.orderItems,
             })
             .then(() => {
-              console.log('成功しました。')
               dispatch(updateOrderItems(orderInfo.orderItems))
               dispatch(orderInfomation(orderInfo))
             })
             .catch((error) => {
-              console.log('失敗しました。')
               console.log(error)
             })
           // 画面遷移
           handleLink('/cartlist')
         } else {
-          console.log('発火しました。')
-          console.log(setOrderItemsState)
           setOrderInfo((orderInfo) => {
             setOrderItemsState.forEach((oldOrderItems) => {
               orderInfo.orderItems.push(oldOrderItems)
-              console.log(oldOrderItems)
             })
             orderInfo.orderItems.push({
               itemId: Number(id),
@@ -350,7 +317,6 @@ export const Detail = () => {
             })
           })
           dispatch(orderInfomation(orderInfo.orderItems))
-          console.log(orderInfo.orderItems)
           dispatch(setOrderItems(orderInfo.orderItems))
           handleLink('/cartlist')
         }

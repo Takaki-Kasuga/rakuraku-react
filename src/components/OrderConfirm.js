@@ -38,7 +38,6 @@ import Button from '@material-ui/core/Button';
 
 
 const OrderConfirm = () => {
-    // console.log('OrderConfirmが発火')
     const dispatch = useDispatch();
     const orderState = useSelector((state) => state.orderState);
     const toppingState = useSelector((state) => state.toppingState)
@@ -171,14 +170,12 @@ const OrderConfirm = () => {
 
     const DateTime = () => {
         let datedate = new Date(destinationPreDate);
-        // console.log(datedate);
         let plusHour = destinationPreTime * 60 * 60 * 1000; //des〜が1なら＋1時間のミリ秒＝10時のミリ秒
 
         let makeDateTime = datedate.getTime() + plusHour
         let dateTime = new Date(makeDateTime)
 
         let date = new Date();//今日
-        // console.log(dateTime - date);
 
         if (!(destinationPreDate && destinationPreTime)) {
             errorMessages.errorPreTime = '配達日時を入力して下さい'
@@ -342,7 +339,6 @@ const OrderConfirm = () => {
                         dispatch(items(itemArray))
                         dispatch(orderForCartInfomation(itemArray))
                     });
-                console.log(userIdState.login_user)
                 if (userIdState.login_user) {
                     firebase
                         .firestore()
@@ -350,21 +346,15 @@ const OrderConfirm = () => {
                         .get()
                         .then((snapshot) => {
                             snapshot.forEach((doc) => {
-                                console.log(doc.id)
                                 //オブジェクトの中身
-                                console.log(doc.data())
                                 const fetchData = doc.data()
                                 //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
                                 //uniqueIdはdeleteのときに必要
                                 fetchData.uniqueId = doc.id
-                                console.log(fetchData)
                                 if (fetchData.status === 0) {
-                                    console.log('ステータス0')
                                     let { orderItems } = fetchData
                                     dispatch(orderInfomation(orderItems))
                                     dispatch(setOrderItems(orderItems))
-                                    console.log(rows.length)
-                                    console.log(rows)
                                 }
                             }
                             );
@@ -396,7 +386,6 @@ const OrderConfirm = () => {
                         dispatch(items(itemArray))
                         dispatch(orderForCartInfomation(itemArray))
                     });
-                console.log(userIdState.login_user)
                 if (userIdState.login_user) {
                     firebase
                         .firestore()
@@ -404,21 +393,15 @@ const OrderConfirm = () => {
                         .get()
                         .then((snapshot) => {
                             snapshot.forEach((doc) => {
-                                console.log(doc.id)
                                 //オブジェクトの中身
-                                console.log(doc.data())
                                 const fetchData = doc.data()
                                 //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
                                 //uniqueIdはdeleteのときに必要
                                 fetchData.uniqueId = doc.id
-                                console.log(fetchData)
                                 if (fetchData.status === 0) {
-                                    console.log('ステータス0')
                                     let { orderItems } = fetchData
                                     dispatch(orderInfomation(orderItems))
                                     dispatch(setOrderItems(orderItems))
-                                    console.log(rows.length)
-                                    console.log(rows)
                                 }
                             }
                             );
@@ -437,9 +420,6 @@ const OrderConfirm = () => {
                 let id = null
                 let data = null
                 snapshot.forEach((doc) => {
-                    console.log(doc)
-                    console.log(doc.data())
-                    console.log(doc.id)
                     id = doc.id
                     data = doc.data()
                 })
@@ -449,7 +429,6 @@ const OrderConfirm = () => {
                         .collection(`users/${userIdState.uid}/orders`)
                         .add(data)
                         .then((snapshot) => {
-                            console.log('値を追加することができました。')
                             // addすることに成功したら。
                             firebase
                                 .firestore()
@@ -457,22 +436,15 @@ const OrderConfirm = () => {
                                 .get()
                                 .then((snapshot) => {
                                     snapshot.forEach((doc) => {
-                                        console.log(doc.id)
                                         //オブジェクトの中身
-                                        console.log(doc.data())
                                         const fetchData = doc.data()
                                         //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
                                         //uniqueIdはdeleteのときに必要
                                         fetchData.uniqueId = doc.id
-                                        console.log(fetchData)
                                         if (fetchData.status === 0) {
-                                            console.log('ステータス0')
                                             const { orderItems } = fetchData
-                                            console.log(orderItems)
                                             dispatch(orderInfomation(orderItems))
                                             dispatch(setOrderItems(orderItems))
-                                            console.log(rows.length)
-                                            console.log(rows)
                                         }
                                     }
                                     );
@@ -501,13 +473,8 @@ const OrderConfirm = () => {
     }
     //state.orderStateの値（オブジェクト）をrowsに入れる
     const rows = [];
-    console.log(orderItemsArray)
-    // console.log(orderItemsArray)
-    // console.log(orderForCartItemArray)
     orderItemsArray.forEach((order) => {
         const filterObject = orderForCartItemArray.find(element => element.id === order.itemId)
-        console.log(filterObject);
-        console.log(order);
         //注文確認画面なのでstatusが0の商品のみ取得
 
         const fetchData2 = createData(
@@ -540,9 +507,6 @@ const OrderConfirm = () => {
             })
             .then(() => {
                 console.log('成功しました。')
-                // console.log(doc.id)
-
-                // setOrderInfo(orderInfo.uniqueId = doc.id)
             })
             .catch((error) => {
                 console.log('失敗しました。')
@@ -586,16 +550,6 @@ const OrderConfirm = () => {
 
     // 商品の合計金額の処理
     let totalToppingPrice = 0
-    //rowsの中のオブジェクト（row）が0以外なら
-    //rowsはordersの中のstatus:0のオブジェクトをつつむ配列
-    //ordersのstatus:0のアイテム（注文確認画面に表示されているアイテム）
-    //の合計金額を1つずつ取得しforEachで足していく
-    // if (rows.length !== 0) {
-    //     rows.forEach((totalItem) => {
-    //         totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
-    //     })
-    // }
-
     let totalPrice = 0
     if (rows.length !== 0) {
         rows.forEach((totalItem) => {
@@ -609,9 +563,7 @@ const OrderConfirm = () => {
                     }
                 })
             }
-            // console.log(price)
             totalPrice += ((totalItem.itemPriceAndCount.itemPrice + toppingPrice) * totalItem.itemPriceAndCount.itemCount)
-            console.log(totalPrice)
         })
     }
     return (
