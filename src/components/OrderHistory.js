@@ -14,7 +14,7 @@ import Paper from "@material-ui/core/Paper";
 import { useDispatch, useSelector } from "react-redux";
 // import { useHistory } from "react-router-dom";
 import firebase from "../firebase/firebase";
-import { setOrdered, resetOrdered, changeOrderedStatus } from '../actions/index'
+import { setOrdered, resetOrdered, changeOrderedStatus, items, orderForCartInfomation } from '../actions/index'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
@@ -34,6 +34,7 @@ const OrderHistory = () => {
   const orderForCartItemArray = useSelector((state) => state.orderForCartState) //商品情報取得
   const orderedItemsArray = useSelector((state) => state.setOrderedItems) //注文情報取得
   const dispatch = useDispatch();
+  const orderItemsArray = useSelector((state) => state.setOrderItems) //カート情報取得
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -107,25 +108,42 @@ const OrderHistory = () => {
   }
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        dispatch(resetOrdered());
-        firebase
-          .firestore()
-          .collection(`users/${userIdState.uid}/orders`)
-          .get()
-          .then((snapshot) => {
-            snapshot.forEach((doc) => {
-              if (Number(doc.data().status) !== 0) {
-                const orderedItemsId = doc.id;
-                const orderedItems = doc.data();
-                // const orderedItems = doc.data().orderItems;
-                dispatch(setOrdered(orderedItemsId, orderedItems));
-              }
-            });
-          });
-      }
-    })
+    firebase
+      .firestore()
+      .collection(`items/`)
+      .get()
+      .then((snapshot) => {
+        const itemArray = []
+        snapshot.forEach((doc) => {
+          itemArray.push(doc.data())
+        })
+        dispatch(items(itemArray))
+        dispatch(orderForCartInfomation(itemArray))
+        console.log('orderForCartItemArrayの中身')
+        console.log(orderForCartItemArray);
+        console.log(orderItemsArray)
+
+
+        firebase.auth().onAuthStateChanged((user) => {
+          if (user) {
+            dispatch(resetOrdered());
+            firebase
+              .firestore()
+              .collection(`users/${userIdState.uid}/orders`)
+              .get()
+              .then((snapshot) => {
+                snapshot.forEach((doc) => {
+                  if (Number(doc.data().status) !== 0) {
+                    const orderedItemsId = doc.id;
+                    const orderedItems = doc.data();
+                    // const orderedItems = doc.data().orderItems;
+                    dispatch(setOrdered(orderedItemsId, orderedItems));
+                  }
+                });
+              });
+          }
+        })
+      })
   }, []);
 
   function createData(itemInfo, itemPriceAndCount, toppingItem, uniqueId, itemId, destinationPreDate, destinationPreTime) {
@@ -247,8 +265,8 @@ const OrderHistory = () => {
                       <TableCell>配達指定日</TableCell>
                     </TableRow>
                   </TableHead>
-                  {childRows.map((row) => (
-                    <TableBody>
+                  {childRows.map((row, index) => (
+                    <TableBody key={index}>
                       <TableRow key={index} style={{ alignItems: 'flex-start' }}>
                         <TableCell className={classes.cardMediaStyle} component="th" scope="row">
 
