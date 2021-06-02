@@ -553,6 +553,7 @@ const OrderConfirm = () => {
         console.log(props)
         if (props.destinationPayMethod === 2) {
             setCreditPay(true);
+            console.log('destinationPayMethod  === 2')
             return (
                 <React.Fragment>
                     <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
@@ -562,6 +563,7 @@ const OrderConfirm = () => {
                 </React.Fragment>
             )
         } else if (props.destinationPayMethod === 1) {
+            console.log('destinationPayMethod  ===1')
             return (
                 <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
                     onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress !== '' || errorMessages.errorTel !== '' || errorMessages.errorPreTime !== '' || errorMessages.errorPayMethod !== ''}>
@@ -569,6 +571,7 @@ const OrderConfirm = () => {
                     この内容で注文する</Button>
             )
         } else {
+            console.log('destinationPayMethod  === 処理が通る')
             return (
                 <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
                     disabled={true}>

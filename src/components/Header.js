@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 
 import firebase from '../firebase/firebase';
 
-import { deleteAllOrder } from '../actions/index'
+import { deleteAllOrder, deleteAllOrderItems } from '../actions/index'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,13 +56,14 @@ const Header = () => {
         const clickLogout = () => {
             dispatch(logout());
             dispatch(deleteAllOrder());
+            dispatch(deleteAllOrderItems());
             history.push("/");
         };
         if (props.user === true) {
             return (
                 <React.Fragment>
                     <Button color="secondary" onClick={() => history.push('/useraccount')}>アカウント</Button>
-                    <Button color="secondary" onClick={() => { clickLogout(); deleteAllOrder() }}>ログアウト</Button>
+                    <Button color="secondary" onClick={() => { clickLogout(); }}>ログアウト</Button>
                 </React.Fragment>
             )
         } else {

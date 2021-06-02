@@ -2,7 +2,9 @@ import { SET_ORDER_ITEMS, DELETE_ORDER_INFO, DELETE_ORDER_INFO_NOLOGIN, DELETE_A
 
 export default (state = [], action) => {
   switch (action.type) {
+
     case SET_ORDER_ITEMS:
+      console.log(action)
       console.log('SET_ORDER_ITEMS')
       const mostNewCartArray = [...state]
       mostNewCartArray.splice(0)
@@ -11,6 +13,7 @@ export default (state = [], action) => {
           mostNewCartArray.push(pushList)
         })
       }
+      console.log(mostNewCartArray)
       return mostNewCartArray;
     case DELETE_ORDER_INFO:
       console.log('DELETE_ORDER_INFO')
@@ -32,6 +35,7 @@ export default (state = [], action) => {
       console.log('DELETE_ALL_ORDERが発火')
       const deleteAllArray = [...state]
       deleteAllArray.splice(0)
+      console.log(deleteAllArray)
       return deleteAllArray
     default:
       return state
