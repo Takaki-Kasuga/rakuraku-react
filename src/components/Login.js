@@ -80,6 +80,7 @@ export const Login = () => {
         const uniqueItemId = ref.id;
         obj.uniqueItemId = uniqueItemId
       })
+      console.log(setOrderItemsState)
       firebase
         .firestore()
         .collection(`cache/`)
@@ -87,7 +88,6 @@ export const Login = () => {
         .then((snapshot) => {
           localStorage.setItem('routingJudge', Number(getRoutingJudge));
           dispatch(loginWithGoogle());
-
         });
     } else {
       dispatch(loginWithGoogle());
