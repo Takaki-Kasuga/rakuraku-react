@@ -216,14 +216,6 @@ export const Home = () => {
           })
           dispatch(seachItems([searchValue, itemArray]))
         });
-      // dispatch(judgeScreenStatus(searchValue))
-      // if (!itemState.length) {
-      //   setJudgeScreenStatus(false)
-      //   console.log(judgeScreenStatus)
-      // } else {
-      //   setJudgeScreenStatus(true)
-      //   console.log(judgeScreenStatus)
-      // }
     } else {
       firebase
         .firestore()
@@ -255,12 +247,10 @@ export const Home = () => {
 
   const changeToStatus = () => {
     setJudgeScreenStatus(true)
-    console.log(judgeScreenStatus)
   }
 
   const userIdState = useSelector((state) => state.userIdState)
   const test = () => {
-    console.log('testが発火')
     firebase
       .firestore()
       .collection(`users/${userIdState.uid}/orders`)
@@ -370,11 +360,6 @@ export const Home = () => {
                               Rks
                           </Avatar>
                           }
-                          // action={
-                          //   <IconButton aria-label="settings">
-                          //     <MoreVertIcon />
-                          //   </IconButton>
-                          // }
                           title={item.name}
                         />
                         <CardMedia
@@ -386,9 +371,6 @@ export const Home = () => {
                           <Typography gutterBottom variant="h5" component="h2">
                             {item.name}
                           </Typography>
-                          {/* <Typography variant="body2" color="textSecondary" component="p">
-                            {item.description}
-                          </Typography> */}
                           <Typography variant="body2" color="textSecondary" component="p">
                             Mサイズ：{(item.price.Msize).toLocaleString()}円（税抜き）
                             </Typography>
@@ -396,14 +378,6 @@ export const Home = () => {
                             Lサイズ：{(item.price.Lsize).toLocaleString()}円（税抜き）
                             </Typography>
                         </CardContent>
-                        {/* <CardActions disableSpacing>
-                          <IconButton aria-label="add to favorites">
-                            <FavoriteIcon />
-                          </IconButton>
-                          <IconButton aria-label="share">
-                            <ShareIcon />
-                          </IconButton>
-                        </CardActions> */}
                       </Card>
                     )
                   })}

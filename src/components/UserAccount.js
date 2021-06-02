@@ -33,8 +33,6 @@ const UserAccount = () => {
     const getState = (state) => state;
     const stateContent = useSelector(getState);
 
-    console.log('stateContentです')
-    console.log(stateContent)
     return (
         <React.Fragment>
             <h2>アカウント情報</h2>

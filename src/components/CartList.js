@@ -107,8 +107,6 @@ export const CartList = () => {
   const orderUniqueIdState = useSelector((state) => state.orderUniqueIdState)
   const userIdState = useSelector((state) => state.userIdState)
   const deleteOrder = (index) => {
-    console.log(index)
-    console.log(orderItemsArray)
     if (window.confirm('本当に削除しますか？')) {
       // ログインしているユーザーの処理（Firebaseの値の削除）
       if (userIdState.login_user) {
@@ -119,12 +117,8 @@ export const CartList = () => {
           .doc(orderUniqueIdState)
           .get()
           .then((snapshot) => {
-            console.log('ログイン状態でかつ現在のカートリストの情報を持ってくる。')
             if (Number(snapshot.data().status) === 0 && snapshot.data().orderItems.length > 0) {
               dispatch(deleteOrderInfomation(orderItemsArray[index].uniqueItemId))
-              console.log(snapshot)
-              console.log(snapshot.data())
-              console.log(snapshot.id)
               const newDeleteDataArray = []
               const orderItems = snapshot.data().orderItems
               orderItems.forEach((orderItem) => {
@@ -132,7 +126,6 @@ export const CartList = () => {
                   newDeleteDataArray.push(orderItem)
                 }
               })
-              console.log(newDeleteDataArray)
               if (newDeleteDataArray.length === 0) {
                 firebase
                   .firestore()
@@ -140,7 +133,6 @@ export const CartList = () => {
                   .doc(orderUniqueIdState)
                   .delete()
                   .then(() => {
-                    console.log('消去に成功しました。')
                   })
               } else {
                 firebase
@@ -151,7 +143,6 @@ export const CartList = () => {
                     orderItems: newDeleteDataArray,
                   })
                   .then(() => {
-                    console.log('成功しました。')
                   })
               }
             }
@@ -185,9 +176,6 @@ export const CartList = () => {
         })
         dispatch(items(itemArray))
         dispatch(orderForCartInfomation(itemArray))
-        console.log('orderForCartItemArrayの中身')
-        console.log(orderForCartItemArray);
-        console.log(orderItemsArray)
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
             firebase
@@ -196,11 +184,9 @@ export const CartList = () => {
               .get()
               .then((snapshot) => {
                 snapshot.forEach((doc) => {
-                  console.log(doc.id);
                   if (Number(doc.data().status) === 0 && doc.data().orderItems.length > 0) {
                     // Firestoreから取得した「カートに入った状態のorderItems」をstoreのstateに保存(ただし、orderItemが空ではない時)
                     const orderItems = doc.data().orderItems;
-                    console.log('setOrderItems(orderItems)')
                     dispatch(setOrderItems(orderItems));
                   }
                 })
@@ -210,13 +196,10 @@ export const CartList = () => {
       });
   }, []);
 
-  console.log(orderItemsArray)
   // firebaseの取得を終えた段階で発火（rowsに追加）
-  console.log(orderItemsArray)
   orderItemsArray.forEach((order) => {
     // statusが0（購入前）の商品を取ってくる
     const filterObject = orderForCartItemArray.find(element => element.id === order.itemId)
-    console.log(filterObject);
     const fetchData = createData(
       { itemPath: filterObject.imagePath, itemName: filterObject.name },
       { itemPrice: order.itemPrice, itemCount: order.itemCount },
@@ -227,11 +210,6 @@ export const CartList = () => {
     // selectedToppingId.push(order.toppingInfo)
     rows.push(fetchData)
   })
-  console.log('rowsの中身')
-  console.log(rows)
-  console.log(orderItemsArray)
-  console.log(rows.length)
-  console.log(orderItemsArray.length)
 
   // 金額関連処理
   let everyToppingTotalPrice = 0
@@ -242,9 +220,7 @@ export const CartList = () => {
   // let totalItemPrice = 0
   // if (rows.length !== 0) {
   //   rows.forEach((totalItem) => {
-  //     console.log(totalItem)
   //     totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
-  //     console.log(totalItemPrice)
   //   })
   // }
   let totalPrice = 0
@@ -260,14 +236,11 @@ export const CartList = () => {
           }
         })
       }
-      // console.log(price)
       totalPrice += ((totalItem.itemPriceAndCount.itemPrice + toppingPrice) * totalItem.itemPriceAndCount.itemCount)
-      console.log(totalPrice)
     })
   }
 
 
-  console.log(totalToppingPrice)
 
 
 
@@ -321,15 +294,8 @@ export const CartList = () => {
                         )
                       })
                     }
-                    {console.log(row.toppingItem)}
-                    {console.log(row.toppingItem === false)}
-                    {console.log(row.toppingItem === true)}
                     {!row.toppingItem.length ? <p>0円</p> :
                       row.toppingItem.map((topping, index) => {
-                        // console.log(row.toppingItem === false)
-                        console.log('toppingItemでmapで回す')
-                        console.log(topping.toppingPrice)
-                        console.log(topping)
                         if (topping.toppingPriceM) {
                           everyToppingTotalPrice += topping.toppingPriceM
                           totalToppingPrice += topping.toppingPriceM
@@ -376,8 +342,8 @@ export const CartList = () => {
           </Table>
 
           <div className={classes.priceItemCenter}>
-            <p className={classes.setLeftText}>合計金額：{Number(totalPrice).toLocaleString()}円（税抜き）</p>
             <p className={classes.setLeftText}>消費税合計：{(Number(totalPrice) * 0.1).toLocaleString()}円</p>
+            <p className={classes.setLeftText}>合計金額：{Number(totalPrice).toLocaleString()}円（税抜き）</p>
             <h3 style={{ color: 'red', textAlign: 'center' }} className={classes.setLeftText}>合計金額：{(Number(totalPrice) * 1.1).toLocaleString()}円（税込）</h3>
           </div>
           <Fab variant="extended" aria-label="like" className={classes.fab} onClick={() => { addOrder() }} className={classes.priceItemCenter}>
