@@ -67,48 +67,51 @@ export const ResettingEmail = () => {
 
   return (
     <React.Fragment>
-      <h2 align="center">パスワード再設定</h2>
-      <p align="center">
-        パスワードの再設定メールを送信するメールアドレスを入力してください。
+      <div style={{ display: 'block', width: '650px', margin: '0 auto' }}>
+        <h2 align="center">パスワード再設定</h2>
+        <p align="center">
+          パスワードの再設定メールを送信するメールアドレスを入力してください。
       </p>
 
-      <form>
-        <div align="center">
-          <label>Email:</label>
-          <TextField
-            className={classes.textField}
-            style={{ margin: 8 }}
-            value={email}
-            type={"email"}
-            onChange={inputEmail}
-          />
-          <div>
-            <span>{errorMessage.emailError}</span>
+        <form>
+          <div style={{ display: 'block', marginBottom: '20px' }}>
+            <label>Email:</label>
+            <TextField
+              className={classes.textField}
+              style={{ margin: 8 }}
+              value={email}
+              type={"email"}
+              onChange={inputEmail}
+              style={{ width: '100%', }}
+            />
+            <div>
+              <span>{errorMessage.emailError}</span>
+            </div>
           </div>
-        </div>
-        <div align="center">
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={isDisabled}
-            onClick={passwordResetting}
-          >
-            再設定メールを送る
+          <div align="center" style={{ display: 'block', marginBottom: '20px', }}>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={isDisabled}
+              onClick={passwordResetting}
+            >
+              再設定メールを送る
           </Button>
-        </div>
-        <div>
-          <span>{resetMessage}</span>
-        </div>
-        <div align="center">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => history.push("/")}
-          >
-            トップページへ
+          </div>
+          <div>
+            <span>{resetMessage}</span>
+          </div>
+          <div align="center" style={{ display: 'block', marginBottom: '20px' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => history.push("/")}
+            >
+              トップページへ
           </Button>
-        </div>
-      </form>
+          </div>
+        </form>
+      </div>
     </React.Fragment>
   );
 }
