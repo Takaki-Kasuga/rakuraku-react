@@ -96,52 +96,55 @@ export const Login = () => {
 
   return (
     <React.Fragment>
-      <h2 align="center">メールアドレスでログインする</h2>
-      <form>
-        <div align="center">
-          <label>メールアドレス:</label>
-          <TextField value={email} type={"email"} onChange={inputEmail} />
-          <div>
-            <span>{errorMessage.emailError}</span>
+      <div style={{ display: 'block', width: '650px', margin: '0 auto' }}>
+        <h2 align="center">メールアドレスでログインする</h2>
+        <form>
+          <div style={{ display: 'block', marginBottom: '20px' }}>
+            <label>メールアドレス:</label><br />
+            <TextField value={email} type={"email"} onChange={inputEmail} style={{ width: '100%', }} />
+            <div>
+              <span>{errorMessage.emailError}</span>
+            </div>
           </div>
-        </div>
-        <div align="center">
-          <label>パスワード:</label>
-          <TextField
-            value={password}
-            type={"password"}
-            onChange={inputPassword}
-          />
-          <div>
-            <span>{errorMessage.passwordError}</span>
+          <div style={{ display: 'block', marginBottom: '20px' }}>
+            <label>パスワード:</label><br />
+            <TextField
+              value={password}
+              type={"password"}
+              onChange={inputPassword}
+              style={{ width: '100%', }}
+            />
+            <div>
+              <span>{errorMessage.passwordError}</span>
+            </div>
           </div>
-        </div>
-        <div align="center">
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={login}
-            disabled={isDisabled}
-          >
-            ログイン
+          <div align="center" style={{ display: 'block', marginBottom: '20px' }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={login}
+              disabled={isDisabled}
+            >
+              ログイン
           </Button>
+          </div>
+        </form>
+
+        <div align="center" style={{ display: 'block', marginBottom: '20px' }}>
+          <Link to="/registeremail">新規ユーザー登録はこちら</Link>
         </div>
-      </form>
 
-      <div align="center">
-        <Link to="/registeremail">新規ユーザー登録はこちら</Link>
-      </div>
+        <div align="center" style={{ display: 'block', marginBottom: '20px' }}>
+          <Link to="/resettingemail">パスワード再設定はこちら</Link>
+        </div>
 
-      <div align="center">
-        <Link to="/resettingemail">パスワード再設定はこちら</Link>
-      </div>
-
-      <div>
-        <h3 align="center">Googleでログインする</h3>
-        <div align="center">
-          <Button variant="contained" color="primary" onClick={googleLogin}>
-            Googleでログイン
+        <div style={{ display: 'block', marginBottom: '20px' }}>
+          <h3 align="center">Googleでログインする</h3>
+          <div align="center">
+            <Button variant="contained" color="primary" onClick={googleLogin}>
+              Googleでログイン
           </Button>
+          </div>
         </div>
       </div>
     </React.Fragment>
