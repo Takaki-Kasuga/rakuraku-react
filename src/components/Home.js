@@ -367,44 +367,43 @@ export const Home = () => {
                         <CardHeader
                           avatar={
                             <Avatar aria-label="recipe" className={classes.avatar}>
-                              Me
+                              Rks
                           </Avatar>
                           }
-                          action={
-                            <IconButton aria-label="settings">
-                              <MoreVertIcon />
-                            </IconButton>
-                          }
-                          title="Shrimp and Chorizo Paella"
-                          subheader="September 14, 2016"
+                          // action={
+                          //   <IconButton aria-label="settings">
+                          //     <MoreVertIcon />
+                          //   </IconButton>
+                          // }
+                          title={item.name}
                         />
                         <CardMedia
                           className={classes.media}
                           image={item.imagePath}
-                          title="Paella dish"
+                          title={item.name}
                         />
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="h2">
                             {item.name}
                           </Typography>
-                          <Typography variant="body2" color="textSecondary" component="p">
+                          {/* <Typography variant="body2" color="textSecondary" component="p">
                             {item.description}
-                          </Typography>
-                          <Typography variant="body2" color="textSecondary" component="p">
-                            Lサイズ：{(item.price.Lsize).toLocaleString()}円（税抜き）
-                            </Typography>
+                          </Typography> */}
                           <Typography variant="body2" color="textSecondary" component="p">
                             Mサイズ：{(item.price.Msize).toLocaleString()}円（税抜き）
                             </Typography>
+                          <Typography variant="body2" color="textSecondary" component="p">
+                            Lサイズ：{(item.price.Lsize).toLocaleString()}円（税抜き）
+                            </Typography>
                         </CardContent>
-                        <CardActions disableSpacing>
+                        {/* <CardActions disableSpacing>
                           <IconButton aria-label="add to favorites">
                             <FavoriteIcon />
                           </IconButton>
                           <IconButton aria-label="share">
                             <ShareIcon />
                           </IconButton>
-                        </CardActions>
+                        </CardActions> */}
                       </Card>
                     )
                   })}
