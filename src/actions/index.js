@@ -22,6 +22,8 @@ export const SET_ORDERED = 'SET_ORDERED';
 export const RESET_ORDERED = 'RESET_ORDERED';
 export const DELETE_ORDER_ITEMS = 'DELETE_ORDER_ITEMS';
 export const CHANGE_ORDERED_STATUS = 'CHANGE_ORDERED_STATUS';
+export const DELETE_UNIQUE_ID = 'DELETE_UNIQUE_ID';
+export const DELETE_ALL_ORDER_ITEMS = 'DELETE_ALL_ORDER_ITEMS';
 
 
 export const CANCEL = 'cancel'
@@ -260,5 +262,18 @@ export const deleteOrderItems = (deleteOrderItems) => {
   return ({
     type: DELETE_ORDER_ITEMS,
     deleteOrderItemsId: deleteOrderItems
+  })
+}
+
+export const deleteUniqueId = (deleteUniqueId) => {
+  return ({
+    type: DELETE_UNIQUE_ID,
+    deleteUniqueIdreset: deleteUniqueId
+  })
+}
+export const deleteAllOrderItems = (deleteAllOrderItems) => {
+  return ({
+    type: DELETE_ALL_ORDER_ITEMS,
+    deleteAllOrderItemsreset: deleteAllOrderItems
   })
 }

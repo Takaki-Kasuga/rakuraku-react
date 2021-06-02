@@ -1,4 +1,4 @@
-import { UPDATE_ORDER_ITEMS, DELETE_ORDER_ITEMS } from '../actions/index'
+import { UPDATE_ORDER_ITEMS, DELETE_ORDER_ITEMS, DELETE_ALL_ORDER_ITEMS } from '../actions/index'
 
 export default (state = [], action) => {
   switch (action.type) {
@@ -20,6 +20,12 @@ export default (state = [], action) => {
       })
       deleteArray.splice(deleteIndex, 1)
       return deleteArray
+
+    case DELETE_ALL_ORDER_ITEMS:
+      console.log('DELETE_ALL_ORDER_ITEMS')
+      const deleteAllArray = [...state]
+      deleteAllArray.splice(0)
+      return deleteAllArray
     default:
       return state
   }

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import firebase from '../firebase/firebase';
-import { orderInfomation, setOrderItems, orderForCartInfomation, items, toppings, deleteAllOrder } from '../actions/index'
+import { orderInfomation, setOrderItems, orderForCartInfomation, items, toppings, deleteAllOrder, updateOrderItems, orderUniqueId, deleteUniqueId, deleteAllOrderItems } from '../actions/index'
 
 //テーブル
 import { makeStyles } from '@material-ui/core/styles';
@@ -507,6 +507,32 @@ const OrderConfirm = () => {
             })
             .then(() => {
                 console.log('成功しました。')
+                dispatch(deleteAllOrderItems())
+                firebase
+                    .firestore()
+                    .collection(`users/${userIdState.uid}/orders`)
+                    .get()
+                    .then((snapshot) => {
+                        console.log('orederの情報を取ってくる。')
+                        snapshot.forEach((doc) => {
+                            console.log(doc.id)
+                            console.log(doc.data())
+                            const fetchData = doc.data()
+                            fetchData.uniqueId = doc.id
+                            console.log(fetchData)
+                            dispatch(orderInfomation(fetchData))
+                            // ステータスが0のオーダー情報のみ取得して各stateに商品オブジェクトと一意のオーダーIDを追加
+                            if (doc.data().status === 0) {
+                                console.log('status0が存在することはありません')
+                                console.log('値を更新')
+                                dispatch(updateOrderItems(doc.data().orderItems))
+                                dispatch(orderUniqueId(doc.id))
+                            } else {
+                                dispatch(deleteUniqueId())
+                            }
+                        }
+                        );
+                    });
             })
             .catch((error) => {
                 console.log('失敗しました。')
