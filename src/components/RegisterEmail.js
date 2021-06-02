@@ -3,6 +3,8 @@ import { Button, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from "react-redux";
 import { signUp } from "../actions/index.js";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from 'react-router-dom'
+
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -11,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 export const RegisterEmail = () => {
   const classes = useStyles();
+  const history = useHistory()
+  const handleLink = path => history.push(path)
+
   const errors = {
     nameError: " ",
     emailError: " ",
@@ -118,7 +123,7 @@ export const RegisterEmail = () => {
   return (
     <React.Fragment>
       <h2 align="center">新規登録</h2>
-      <p align="center">登録を持って利用規約に同意したものとみなします。</p>
+      <p align="center">登録を持って<span style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => { handleLink('/termofuse') }}>利用規約</span>に同意したものとみなします。</p>
       <form>
         <div>
           <label>名前:</label>

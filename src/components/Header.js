@@ -62,7 +62,7 @@ const Header = () => {
             return (
                 <React.Fragment>
                     <Button color="secondary" onClick={() => history.push('/useraccount')}>アカウント</Button>
-                    <Button color="secondary" onClick={clickLogout}>ログアウト</Button>
+                    <Button color="secondary" onClick={() => { clickLogout(); deleteAllOrder() }}>ログアウト</Button>
                 </React.Fragment>
             )
         } else {

@@ -220,6 +220,8 @@ export const Detail = () => {
         // 新規で入力する時
         if (userIdState.login_user) {
           // 商品に紐づくIDを取得
+          console.log(userIdState.login_user)
+          console.log(userIdState.uid)
           const ordersRef = firebase
             .firestore().collection('users').doc(userIdState.uid).collection('orders');
           const ref = ordersRef.doc();
@@ -288,6 +290,7 @@ export const Detail = () => {
         })
         // 更新するとき
         if (userIdState.login_user) {
+          console.log(orderUniqueIdState)
           firebase
             .firestore()
             .collection(`users/${userIdState.uid}/orders`)

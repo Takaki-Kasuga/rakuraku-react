@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import firebase from '../firebase/firebase';
-import { orderInfomation, setOrderItems, orderForCartInfomation, items, toppings, deleteAllOrder } from '../actions/index'
+import { orderInfomation, setOrderItems, orderForCartInfomation, items, toppings, deleteAllOrder, updateOrderItems, orderUniqueId, deleteUniqueId, deleteAllOrderItems } from '../actions/index'
 
 //テーブル
 import { makeStyles } from '@material-ui/core/styles';
@@ -446,6 +446,10 @@ const OrderConfirm = () => {
                                             dispatch(orderInfomation(orderItems))
                                             dispatch(setOrderItems(orderItems))
                                         }
+                                        if (doc.data().status === 0) {
+                                            dispatch(updateOrderItems(doc.data().orderItems))
+                                            dispatch(orderUniqueId(doc.id))
+                                        }
                                     }
                                     );
                                 });
@@ -507,6 +511,32 @@ const OrderConfirm = () => {
             })
             .then(() => {
                 console.log('成功しました。')
+                dispatch(deleteAllOrderItems())
+                firebase
+                    .firestore()
+                    .collection(`users/${userIdState.uid}/orders`)
+                    .get()
+                    .then((snapshot) => {
+                        console.log('orederの情報を取ってくる。')
+                        snapshot.forEach((doc) => {
+                            console.log(doc.id)
+                            console.log(doc.data())
+                            const fetchData = doc.data()
+                            fetchData.uniqueId = doc.id
+                            console.log(fetchData)
+                            dispatch(orderInfomation(fetchData))
+                            // ステータスが0のオーダー情報のみ取得して各stateに商品オブジェクトと一意のオーダーIDを追加
+                            if (doc.data().status === 0) {
+                                console.log('status0が存在することはありません')
+                                console.log('値を更新')
+                                dispatch(updateOrderItems(doc.data().orderItems))
+                                dispatch(orderUniqueId(doc.id))
+                            } else {
+                                dispatch(deleteUniqueId())
+                            }
+                        }
+                        );
+                    });
             })
             .catch((error) => {
                 console.log('失敗しました。')
@@ -546,24 +576,13 @@ const OrderConfirm = () => {
 
     // 金額関連処理
     let everyToppingTotalPrice = 0
-    // let totalItemPrice = 0
+    let totalItemPrice = 0
 
     // 商品の合計金額の処理
     let totalToppingPrice = 0
-    let totalPrice = 0
     if (rows.length !== 0) {
         rows.forEach((totalItem) => {
-            let toppingPrice = 0
-            if (totalItem.toppingItem.length !== 0) {
-                totalItem.toppingItem.forEach((toppingItem) => {
-                    if (toppingItem.toppingPriceL) {
-                        toppingPrice += toppingItem.toppingPriceL
-                    } else if (toppingItem.toppingPriceM) {
-                        toppingPrice += toppingItem.toppingPriceM
-                    }
-                })
-            }
-            totalPrice += ((totalItem.itemPriceAndCount.itemPrice + toppingPrice) * totalItem.itemPriceAndCount.itemCount)
+            totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
         })
     }
     return (
@@ -646,9 +665,9 @@ const OrderConfirm = () => {
 
                                             <TableCell align="right">
                                                 <div>
-                                                    <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount) * 0.1).toLocaleString()}円</p>
-                                                    <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount)).toLocaleString()}円<br />（税抜き）</p>
-                                                    <p className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount) * 1.1).toLocaleString()}円<br />（税込）</p>
+                                                    <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
+                                                    <p className={classes.textSet}>金額：{Number((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)}円<br />（税込）</p>
+                                                    <p className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円<br />（税込）</p>
                                                 </div>
                                             </TableCell>
 
@@ -657,9 +676,9 @@ const OrderConfirm = () => {
                                 </TableBody>
                             </Table>
                             <div className={classes.priceItemCenter}>
-                                <p className={classes.setLeftText}>消費税合計：{(Number(totalPrice) * 0.1).toLocaleString()}円</p>
-                                <p className={classes.setLeftText}>合計金額：{Number(totalPrice).toLocaleString()}円（税抜き）</p>
-                                <h3 style={{ color: 'red', textAlign: 'center' }} className={classes.setLeftText}>合計金額：{(Number(totalPrice) * 1.1).toLocaleString()}円（税込）</h3>
+                                <p className={classes.setLeftText}>合計金額：{(totalItemPrice + totalToppingPrice).toLocaleString()}円（税抜）</p>
+                                <p className={classes.setLeftText}>消費税合計：{((totalItemPrice + totalToppingPrice) * 0.1).toLocaleString()}円</p>
+                                <h3 style={{ color: 'red' }} className={classes.setLeftText}>合計金額：{Number(Number((totalItemPrice + totalToppingPrice)) + Number(((totalItemPrice + totalToppingPrice) * 0.1))).toLocaleString()}円（税込）</h3>
                             </div>
                         </Paper>
                     </div>
