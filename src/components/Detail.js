@@ -331,7 +331,7 @@ export const Detail = () => {
   return (
     <>
       <h1 style={{ textAlign: 'center' }}>商品詳細画面</h1>
-      <div className={classes.root}>
+      <div className={classes.root} style={{ display: 'block', width: '90%', margin: '0 auto' }}>
         {!selectedItem ? <div className={classes.loading}>
           <LinearProgress variant="query" />
           <LinearProgress variant="query" color="secondary" />
