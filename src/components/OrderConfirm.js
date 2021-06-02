@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import firebase from '../firebase/firebase';
-import { orderInfomation,setOrderItems, orderForCartInfomation, items, toppings } from '../actions/index'
+import { orderInfomation,setOrderItems, orderForCartInfomation, items, toppings, deleteAllOrder } from '../actions/index'
 
 //テーブル
 import { makeStyles } from '@material-ui/core/styles';
@@ -43,7 +43,7 @@ const OrderConfirm = () => {
     const orderState = useSelector((state) => state.orderState);
     const toppingState = useSelector((state) => state.toppingState)
     const orderForCartItemArray = useSelector((state) => state.orderForCartState) //商品情報取得
-    const orderItemsArray = useSelector((state) => state.setOrderItems) //カート情報取得
+    const orderItemsArray = useSelector((state) => state.setOrderItems) //カート情報取得。注文確定後空にする。
     const history = useHistory();
     const handleLink = path => history.push(path);
 
@@ -373,32 +373,6 @@ const OrderConfirm = () => {
             });
     }, [])
 
-    //firestoreからordersを取得し、storeのstateに保存
-    // useEffect(() => {
-    //     if (userIdState.login_user) {
-    //         firebase
-    //             .firestore()
-    //             .collection(`users/${userIdState.uid}/orders`)
-    //             .get()
-    //             .then((snapshot) => {
-    //                 snapshot.forEach((doc) => {
-    //                     console.log(doc.id)
-    //                     //オブジェクトの中身
-    //                     console.log(doc.data())
-    //                     const fetchData = doc.data()
-    //                     //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
-    //                     //uniqueIdはdeleteのときに必要
-    //                     fetchData.uniqueId = doc.id
-    //                     console.log(fetchData)
-    //                     if (fetchData.status === 0) {
-    //                         console.log('ステータス0')
-    //                     }
-    //                     dispatch(orderInfomation(fetchData))
-    //                 }
-    //                 );
-    //             });
-    //     }
-    // }, [])
     useEffect(() => {
         firebase
             .firestore()
@@ -527,9 +501,9 @@ const OrderConfirm = () => {
     }
     //state.orderStateの値（オブジェクト）をrowsに入れる
     const rows = [];
-    console.log(orderItemsArray)
-    console.log(orderItemsArray)
-    console.log(orderForCartItemArray)
+    // console.log(orderItemsArray)
+    // console.log(orderItemsArray)
+    // console.log(orderForCartItemArray)
     orderItemsArray.forEach((order) => {
         const filterObject = orderForCartItemArray.find(element => element.id === order.itemId)
         console.log(filterObject);
@@ -548,7 +522,6 @@ const OrderConfirm = () => {
 
     const orderUniqueIdState = useSelector((state) => state.orderUniqueIdState)
     const addDestination = () => {
-        alert('宛先情報を追加')
         firebase
             .firestore()
             .collection(`users/${userIdState.uid}/orders/`)
@@ -576,10 +549,35 @@ const OrderConfirm = () => {
                 console.log(error)
             })
     }
+    const addUserInfo =()=>{
+        firebase
+            .firestore()
+            .collection(`users/${userIdState.uid}/userInfo/`)
+            .add({
+                destinationName: destinationName,
+                destinationEmail: destinationEmail,
+                destinationZipcode: destinationZipcode,
+                destinationAddress: destinationAddress,
+                destinationTel: destinationTel,
+                destinationPreDate: destinationPreDate,
+                destinationPreTime: destinationPreTime,
+                destinationPayMethod: Number(destinationPayMethod),
+                creditcardNo: creditCardNum,
+            })
+            .then(()=>{
+                console.log('userInfo登録成功')
+            })
+            .catch((error)=>{
+                console.log('userInfo登録失敗')
+                console.log(error)
+            })
+    }
 
     const orderFinish = ()=>{
         addDestination();
+        addUserInfo();
         handleLink('/ordercomplete')
+        dispatch(deleteAllOrder())//カートの中身を0にする。
     }
 
     // 金額関連処理
@@ -600,6 +598,7 @@ const OrderConfirm = () => {
     return (
         <React.Fragment>
             {!rows.length ? <h2>カートに商品がありません</h2> :
+            // <div>三項演算子の位置を変えるときに復活させる
                 <div>
                     <h2 className={classes.title}>注文内容確認</h2>
                     <Paper className={classes.root}>
@@ -693,7 +692,8 @@ const OrderConfirm = () => {
                         </div>
                     </Paper>
                 </div>
-            }
+                }
+                {/* 三項演算子falseの終わり}はReact.Fragmentの直前に変更する */}
             <div class={classes.form}>
                 <h2>お届け先情報</h2>
                 <div style={{ padding: 10 }}>
@@ -831,7 +831,7 @@ const OrderConfirm = () => {
                     </Grid>
                 </div>
             </div>
-
+        {/* </div> 三項演算子の位置を修正したときに復活させる*/}
         </React.Fragment >
     )
 }
