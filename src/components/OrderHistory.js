@@ -320,9 +320,9 @@ const OrderHistory = () => {
                         </TableCell>
                         <TableCell align="right">
                           <div>
-                            <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
-                            <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)).toLocaleString()}円<br />（税抜き）</p>
-                            <p style={{ color: 'red' }} className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円<br />（税込）</p>
+                            <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount) * 0.1).toLocaleString()}円</p>
+                            <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount)).toLocaleString()}円<br />（税抜き）</p>
+                            <p style={{ color: 'red' }} className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount) * 1.1).toLocaleString()}円<br />（税込）</p>
                           </div>
                         </TableCell>
                         <TableCell>
