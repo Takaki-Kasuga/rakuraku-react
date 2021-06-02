@@ -122,7 +122,7 @@ const OrderConfirm = () => {
 
     //支払い方法
     const destinationPayMethodChange = useCallback((e) => {
-        setDestinationPayMethod(e.target.value);
+        setDestinationPayMethod(Number(e.target.value));
     }, [setDestinationPayMethod])
 
     //クレカ番号
