@@ -25,12 +25,11 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SELECTED_TOPPINGS:
       console.log('SELECTED_TOPPINGSが発火')
-      console.log(action)
       const selectedToppingArray = [...state]
       selectedToppingArray.splice((Number(action.selectedToppingsList.id) - 1), 1, action.selectedToppingsList)
-      console.log(selectedToppingArray)
       return selectedToppingArray;
     case DEFAULT_SELECTED_TOPPINGS:
+      console.log('DEFAULT_SELECTED_TOPPINGSが発火')
       const defaultSelectedToppingArray = [...initialState]
       return defaultSelectedToppingArray;
     default:

@@ -3,7 +3,7 @@ import { SET_ORDERED, RESET_ORDERED, CHANGE_ORDERED_STATUS } from '../actions/in
 export default (state = [], action) => {
   switch (action.type) {
     case SET_ORDERED:
-      console.log(action)
+      console.log('SET_ORDEREDが発火')
       const ob = [...state, action];
       return ob;
     case RESET_ORDERED:
@@ -11,9 +11,8 @@ export default (state = [], action) => {
       mostNewCartArray.splice(0)
       return mostNewCartArray;
     case CHANGE_ORDERED_STATUS:
-      console.log(state);
+      console.log('CHANGE_ORDERED_STATUSが発火')
       state[action.index].orderedItems.status = action.status
-      console.log(state);
       return state
     default:
       return state

@@ -71,22 +71,27 @@ export const Login = () => {
 
   const googleLogin = () => {
     // 一意のid作成
-    const ordersRef = firebase
-      .firestore().collection('cache')
-    setOrderItemsState.forEach((obj) => {
-      const ref = ordersRef.doc();
-      const uniqueItemId = ref.id;
-      obj.uniqueItemId = uniqueItemId
-    })
-    firebase
-      .firestore()
-      .collection(`cache/`)
-      .add({ orderItems: setOrderItemsState, status: 0 })
-      .then((snapshot) => {
-        localStorage.setItem('routingJudge', Number(getRoutingJudge));
-        dispatch(loginWithGoogle());
-      });
-
+    console.log(getRoutingJudge)
+    if (getRoutingJudge && setOrderItemsState.length !== 0) {
+      const ordersRef = firebase
+        .firestore().collection('cache')
+      setOrderItemsState.forEach((obj) => {
+        const ref = ordersRef.doc();
+        const uniqueItemId = ref.id;
+        obj.uniqueItemId = uniqueItemId
+      })
+      console.log(setOrderItemsState)
+      firebase
+        .firestore()
+        .collection(`cache/`)
+        .add({ orderItems: setOrderItemsState, status: 0 })
+        .then((snapshot) => {
+          localStorage.setItem('routingJudge', Number(getRoutingJudge));
+          dispatch(loginWithGoogle());
+        });
+    } else {
+      dispatch(loginWithGoogle());
+    }
   }
 
   return (
