@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 
 //ロゴ画像
 import logo from '../img/header_logo.png'
@@ -39,6 +39,7 @@ const Header = () => {
     const style = {
         width: "157.2px",
         height: "25.2px",
+        cursor: 'pointer'
     }
 
     const stateContent = useSelector(getState);
@@ -76,9 +77,9 @@ const Header = () => {
             <div className={classes.root}>
                 <AppBar position="static" color="inherit">
                     <Toolbar>
-                        <Typography variant="h6" className={classes.title}>
-                            <a href="/"><img src={logo} style={style} /></a>
-                        </Typography>
+                            <Typography variant="h6" className={classes.title}>
+                                <img src={logo} style={style} onClick={()=>{history.push('/')}}/>
+                            </Typography>
                         <LoginOrLogout user={loginUser} />
                         <Button color="secondary" onClick={() => history.push('/cartlist')}>ショッピングカート</Button>
                         <Button color="secondary" onClick={() => history.push('/orderhistory')}>注文履歴</Button>
