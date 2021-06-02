@@ -66,6 +66,7 @@ const OrderConfirm = () => {
     const [destinationPreDate, setDestinationPreDate] = useState('');
     const [destinationPreTime, setDestinationPreTime] = useState('');
     const [destinationPayMethod, setDestinationPayMethod] = useState('');
+    // const [daibiki, setDaibiki] = useState('');
     const [creditCardNum, setCreditCardNum] = useState('');
     const [errorMessages, setErrorMessages] = useState(errors);
 
@@ -124,6 +125,11 @@ const OrderConfirm = () => {
     const destinationPayMethodChange = useCallback((e) => {
         setDestinationPayMethod(Number(e.target.value));
     }, [setDestinationPayMethod])
+
+    // //代引き
+    // const daibikiChange = useCallback((e) => {
+    //     setDaibiki(e.target.value);
+    // },[setDaibiki]);
 
     //クレカ番号
     const creditCardNumChange = useCallback((e) => {
@@ -213,7 +219,7 @@ const OrderConfirm = () => {
     let creditCard
     if (!destinationPayMethod) {
         errorMessages.errorPayMethod = 'お支払い方法を選択してください'
-    } else if (destinationPayMethod) {
+        } else if (destinationPayMethod) {
         errorMessages.errorPayMethod = ''
         creditCard = (<div style={{ padding: 10 }}>
             <TextField
@@ -229,7 +235,7 @@ const OrderConfirm = () => {
         if (creditCardNum) {
             errorMessages.errorCreditCardNum = ''
         }
-    } else if (destinationPayMethod === '1') {
+         } else if (destinationPayMethod === '1') {
         errorMessages.errorPayMethod = ''
     }
 
@@ -672,6 +678,7 @@ const OrderConfirm = () => {
                                                 })
                                             }
                                         </TableCell>
+                                
 
                                         <TableCell align="right">
                                             <div>
@@ -693,7 +700,7 @@ const OrderConfirm = () => {
                     </Paper>
                 </div>
             
-            {/* 三項演算子falseの終わり}はReact.Fragmentの直前に変更する */}
+            
             <div class={classes.form}>
                 <h2>お届け先情報</h2>
                 <div style={{ padding: 10 }}>
@@ -822,11 +829,13 @@ const OrderConfirm = () => {
                     <Grid container alignItems="center" justify="center" style={{ margin: 10 }}>
                         <Grid>
                             <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
-                                onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress != '' || errorMessages.errorTel != '' || errorMessages.errorPreTime != '' || (errorMessages.errorPayMethod != '' && errorMessages.creditCardNum != '')}>
+                                onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress != '' || errorMessages.errorTel != '' || errorMessages.errorPreTime != '' || errorMessages.errorPayMethod != '' }>
 
-                                この内容で注文する</Button>
+                                この内容で注文する
+                                </Button>
                             <Button style={{ marginLeft: '10px' }} variant="outlined" color="inherit" onClick={clear}>クリア</Button>
                             {/* <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button> */}
+                        
                         </Grid>
                     </Grid>
                 </div>
