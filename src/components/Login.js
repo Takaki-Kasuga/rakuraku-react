@@ -38,7 +38,6 @@ export const Login = () => {
     const new_value = e.target.value;
     setEmail(new_value)
     if (new_value === "") {
-      console.log('空です')
       errorMessage.emailError = "メールアドレスを入力してください"
       isDisabledCheck();
     } else if (new_value.indexOf("@") == -1) {
@@ -84,7 +83,6 @@ export const Login = () => {
       .collection(`cache/`)
       .add({ orderItems: setOrderItemsState, status: 0 })
       .then((snapshot) => {
-        console.log('成功しました。')
         localStorage.setItem('routingJudge', Number(getRoutingJudge));
         dispatch(loginWithGoogle());
       });

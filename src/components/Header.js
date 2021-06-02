@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 //ロゴ画像
 import logo from '../img/header_logo.png'
@@ -47,7 +47,6 @@ const Header = () => {
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user) => {
-            console.log(stateContent);
             setLoginUser(stateContent);
         })
     }, [stateContent]);
@@ -59,7 +58,6 @@ const Header = () => {
             dispatch(deleteAllOrder());
             history.push("/");
         };
-        console.log(props);
         if (props.user === true) {
             return (
                 <React.Fragment>
@@ -77,9 +75,9 @@ const Header = () => {
             <div className={classes.root}>
                 <AppBar position="static" color="inherit">
                     <Toolbar>
-                            <Typography variant="h6" className={classes.title}>
-                                <img src={logo} style={style} onClick={()=>{history.push('/')}}/>
-                            </Typography>
+                        <Typography variant="h6" className={classes.title}>
+                            <img src={logo} style={style} onClick={() => { history.push('/') }} />
+                        </Typography>
                         <LoginOrLogout user={loginUser} />
                         <Button color="secondary" onClick={() => history.push('/cartlist')}>ショッピングカート</Button>
                         <Button color="secondary" onClick={() => history.push('/orderhistory')}>注文履歴</Button>

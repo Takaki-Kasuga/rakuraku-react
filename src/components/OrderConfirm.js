@@ -38,7 +38,6 @@ import Button from '@material-ui/core/Button';
 
 
 const OrderConfirm = () => {
-    // console.log('OrderConfirmが発火')
     const dispatch = useDispatch();
     const orderState = useSelector((state) => state.orderState);
     const toppingState = useSelector((state) => state.toppingState)
@@ -66,7 +65,6 @@ const OrderConfirm = () => {
     const [destinationPreDate, setDestinationPreDate] = useState('');
     const [destinationPreTime, setDestinationPreTime] = useState('');
     const [destinationPayMethod, setDestinationPayMethod] = useState('');
-    // const [daibiki, setDaibiki] = useState('');
     const [creditCardNum, setCreditCardNum] = useState('');
     const [errorMessages, setErrorMessages] = useState(errors);
 
@@ -126,11 +124,6 @@ const OrderConfirm = () => {
         setDestinationPayMethod(Number(e.target.value));
     }, [setDestinationPayMethod])
 
-    // //代引き
-    // const daibikiChange = useCallback((e) => {
-    //     setDaibiki(e.target.value);
-    // },[setDaibiki]);
-
     //クレカ番号
     const creditCardNumChange = useCallback((e) => {
         setCreditCardNum(e.target.value);
@@ -177,14 +170,12 @@ const OrderConfirm = () => {
 
     const DateTime = () => {
         let datedate = new Date(destinationPreDate);
-        // console.log(datedate);
         let plusHour = destinationPreTime * 60 * 60 * 1000; //des〜が1なら＋1時間のミリ秒＝10時のミリ秒
 
         let makeDateTime = datedate.getTime() + plusHour
         let dateTime = new Date(makeDateTime)
 
         let date = new Date();//今日
-        // console.log(dateTime - date);
 
         if (!(destinationPreDate && destinationPreTime)) {
             errorMessages.errorPreTime = '配達日時を入力して下さい'
@@ -219,7 +210,7 @@ const OrderConfirm = () => {
     let creditCard
     if (!destinationPayMethod) {
         errorMessages.errorPayMethod = 'お支払い方法を選択してください'
-        } else if (destinationPayMethod) {
+    } else if (destinationPayMethod) {
         errorMessages.errorPayMethod = ''
         creditCard = (<div style={{ padding: 10 }}>
             <TextField
@@ -235,7 +226,7 @@ const OrderConfirm = () => {
         if (creditCardNum) {
             errorMessages.errorCreditCardNum = ''
         }
-         } else if (destinationPayMethod === '1') {
+    } else if (destinationPayMethod === '1') {
         errorMessages.errorPayMethod = ''
     }
 
@@ -348,7 +339,6 @@ const OrderConfirm = () => {
                         dispatch(items(itemArray))
                         dispatch(orderForCartInfomation(itemArray))
                     });
-                console.log(userIdState.login_user)
                 if (userIdState.login_user) {
                     firebase
                         .firestore()
@@ -356,21 +346,15 @@ const OrderConfirm = () => {
                         .get()
                         .then((snapshot) => {
                             snapshot.forEach((doc) => {
-                                console.log(doc.id)
                                 //オブジェクトの中身
-                                console.log(doc.data())
                                 const fetchData = doc.data()
                                 //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
                                 //uniqueIdはdeleteのときに必要
                                 fetchData.uniqueId = doc.id
-                                console.log(fetchData)
                                 if (fetchData.status === 0) {
-                                    console.log('ステータス0')
                                     let { orderItems } = fetchData
                                     dispatch(orderInfomation(orderItems))
                                     dispatch(setOrderItems(orderItems))
-                                    console.log(rows.length)
-                                    console.log(rows)
                                 }
                             }
                             );
@@ -402,7 +386,6 @@ const OrderConfirm = () => {
                         dispatch(items(itemArray))
                         dispatch(orderForCartInfomation(itemArray))
                     });
-                console.log(userIdState.login_user)
                 if (userIdState.login_user) {
                     firebase
                         .firestore()
@@ -410,21 +393,15 @@ const OrderConfirm = () => {
                         .get()
                         .then((snapshot) => {
                             snapshot.forEach((doc) => {
-                                console.log(doc.id)
                                 //オブジェクトの中身
-                                console.log(doc.data())
                                 const fetchData = doc.data()
                                 //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
                                 //uniqueIdはdeleteのときに必要
                                 fetchData.uniqueId = doc.id
-                                console.log(fetchData)
                                 if (fetchData.status === 0) {
-                                    console.log('ステータス0')
                                     let { orderItems } = fetchData
                                     dispatch(orderInfomation(orderItems))
                                     dispatch(setOrderItems(orderItems))
-                                    console.log(rows.length)
-                                    console.log(rows)
                                 }
                             }
                             );
@@ -443,9 +420,6 @@ const OrderConfirm = () => {
                 let id = null
                 let data = null
                 snapshot.forEach((doc) => {
-                    console.log(doc)
-                    console.log(doc.data())
-                    console.log(doc.id)
                     id = doc.id
                     data = doc.data()
                 })
@@ -455,7 +429,6 @@ const OrderConfirm = () => {
                         .collection(`users/${userIdState.uid}/orders`)
                         .add(data)
                         .then((snapshot) => {
-                            console.log('値を追加することができました。')
                             // addすることに成功したら。
                             firebase
                                 .firestore()
@@ -463,22 +436,15 @@ const OrderConfirm = () => {
                                 .get()
                                 .then((snapshot) => {
                                     snapshot.forEach((doc) => {
-                                        console.log(doc.id)
                                         //オブジェクトの中身
-                                        console.log(doc.data())
                                         const fetchData = doc.data()
                                         //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
                                         //uniqueIdはdeleteのときに必要
                                         fetchData.uniqueId = doc.id
-                                        console.log(fetchData)
                                         if (fetchData.status === 0) {
-                                            console.log('ステータス0')
                                             const { orderItems } = fetchData
-                                            console.log(orderItems)
                                             dispatch(orderInfomation(orderItems))
                                             dispatch(setOrderItems(orderItems))
-                                            console.log(rows.length)
-                                            console.log(rows)
                                         }
                                     }
                                     );
@@ -507,13 +473,8 @@ const OrderConfirm = () => {
     }
     //state.orderStateの値（オブジェクト）をrowsに入れる
     const rows = [];
-    console.log(orderItemsArray)
-    // console.log(orderItemsArray)
-    // console.log(orderForCartItemArray)
     orderItemsArray.forEach((order) => {
         const filterObject = orderForCartItemArray.find(element => element.id === order.itemId)
-        console.log(filterObject);
-        console.log(order);
         //注文確認画面なのでstatusが0の商品のみ取得
 
         const fetchData2 = createData(
@@ -546,9 +507,6 @@ const OrderConfirm = () => {
             })
             .then(() => {
                 console.log('成功しました。')
-                // console.log(doc.id)
-
-                // setOrderInfo(orderInfo.uniqueId = doc.id)
             })
             .catch((error) => {
                 console.log('失敗しました。')
@@ -592,10 +550,6 @@ const OrderConfirm = () => {
 
     // 商品の合計金額の処理
     let totalToppingPrice = 0
-    //rowsの中のオブジェクト（row）が0以外なら
-    //rowsはordersの中のstatus:0のオブジェクトをつつむ配列
-    //ordersのstatus:0のアイテム（注文確認画面に表示されているアイテム）
-    //の合計金額を1つずつ取得しforEachで足していく
     if (rows.length !== 0) {
         rows.forEach((totalItem) => {
             totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
@@ -678,7 +632,6 @@ const OrderConfirm = () => {
                                                 })
                                             }
                                         </TableCell>
-                                
 
                                         <TableCell align="right">
                                             <div>
@@ -700,7 +653,7 @@ const OrderConfirm = () => {
                     </Paper>
                 </div>
             
-            
+            {/* 三項演算子falseの終わり}はReact.Fragmentの直前に変更する */}
             <div class={classes.form}>
                 <h2>お届け先情報</h2>
                 <div style={{ padding: 10 }}>
@@ -829,13 +782,11 @@ const OrderConfirm = () => {
                     <Grid container alignItems="center" justify="center" style={{ margin: 10 }}>
                         <Grid>
                             <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
-                                onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress != '' || errorMessages.errorTel != '' || errorMessages.errorPreTime != '' || errorMessages.errorPayMethod != '' }>
+                                onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress != '' || errorMessages.errorTel != '' || errorMessages.errorPreTime != '' || (errorMessages.errorPayMethod != '' && errorMessages.creditCardNum != '')}>
 
-                                この内容で注文する
-                                </Button>
+                                この内容で注文する</Button>
                             <Button style={{ marginLeft: '10px' }} variant="outlined" color="inherit" onClick={clear}>クリア</Button>
                             {/* <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button> */}
-                        
                         </Grid>
                     </Grid>
                 </div>
