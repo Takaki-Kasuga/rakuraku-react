@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import firebase from '../firebase/firebase';
-import { orderInfomation,setOrderItems, orderForCartInfomation, items, toppings, deleteAllOrder } from '../actions/index'
+import { orderInfomation, setOrderItems, orderForCartInfomation, items, toppings, deleteAllOrder } from '../actions/index'
 
 //テーブル
 import { makeStyles } from '@material-ui/core/styles';
@@ -67,7 +67,7 @@ const OrderConfirm = () => {
     const [destinationPreTime, setDestinationPreTime] = useState('');
     const [destinationPayMethod, setDestinationPayMethod] = useState('');
     const [creditCardNum, setCreditCardNum] = useState('');
-    const [errorMessages,setErrorMessages] =useState(errors);
+    const [errorMessages, setErrorMessages] = useState(errors);
 
 
 
@@ -122,7 +122,7 @@ const OrderConfirm = () => {
 
     //支払い方法
     const destinationPayMethodChange = useCallback((e) => {
-        setDestinationPayMethod(e.target.value);
+        setDestinationPayMethod(Number(e.target.value));
     }, [setDestinationPayMethod])
 
     //クレカ番号
@@ -226,10 +226,10 @@ const OrderConfirm = () => {
             />
             <div style={{ color: 'red' }}>{errorMessages.errorCreditCardNum}</div>
         </div>)
-        if(creditCardNum){
-            errorMessages.errorCreditCardNum =''
+        if (creditCardNum) {
+            errorMessages.errorCreditCardNum = ''
         }
-    }else if(destinationPayMethod === '1') {
+    } else if (destinationPayMethod === '1') {
         errorMessages.errorPayMethod = ''
     }
 
@@ -360,12 +360,12 @@ const OrderConfirm = () => {
                                 console.log(fetchData)
                                 if (fetchData.status === 0) {
                                     console.log('ステータス0')
+                                    let { orderItems } = fetchData
+                                    dispatch(orderInfomation(orderItems))
+                                    dispatch(setOrderItems(orderItems))
+                                    console.log(rows.length)
+                                    console.log(rows)
                                 }
-                                let { orderItems } = fetchData
-                                dispatch(orderInfomation(orderItems))
-                                dispatch(setOrderItems(orderItems))
-                                console.log(rows.length)
-                                console.log(rows)
                             }
                             );
                         });
@@ -414,12 +414,12 @@ const OrderConfirm = () => {
                                 console.log(fetchData)
                                 if (fetchData.status === 0) {
                                     console.log('ステータス0')
+                                    let { orderItems } = fetchData
+                                    dispatch(orderInfomation(orderItems))
+                                    dispatch(setOrderItems(orderItems))
+                                    console.log(rows.length)
+                                    console.log(rows)
                                 }
-                                let { orderItems } = fetchData
-                                dispatch(orderInfomation(orderItems))
-                                dispatch(setOrderItems(orderItems))
-                                console.log(rows.length)
-                                console.log(rows)
                             }
                             );
                         });
@@ -467,13 +467,13 @@ const OrderConfirm = () => {
                                         console.log(fetchData)
                                         if (fetchData.status === 0) {
                                             console.log('ステータス0')
+                                            const { orderItems } = fetchData
+                                            console.log(orderItems)
+                                            dispatch(orderInfomation(orderItems))
+                                            dispatch(setOrderItems(orderItems))
+                                            console.log(rows.length)
+                                            console.log(rows)
                                         }
-                                        const { orderItems } = fetchData
-                                        console.log(orderItems)
-                                        dispatch(orderInfomation(orderItems))
-                                        dispatch(setOrderItems(orderItems))
-                                        console.log(rows.length)
-                                        console.log(rows)
                                     }
                                     );
                                 });
@@ -492,7 +492,7 @@ const OrderConfirm = () => {
                 console.log('キャッシュデータが存在しません')
             });
     }, [])
-    
+
 
 
 
@@ -501,7 +501,7 @@ const OrderConfirm = () => {
     }
     //state.orderStateの値（オブジェクト）をrowsに入れる
     const rows = [];
-    // console.log(orderItemsArray)
+    console.log(orderItemsArray)
     // console.log(orderItemsArray)
     // console.log(orderForCartItemArray)
     orderItemsArray.forEach((order) => {
@@ -527,16 +527,16 @@ const OrderConfirm = () => {
             .collection(`users/${userIdState.uid}/orders/`)
             .doc(orderUniqueIdState)
             .update({
-              destinationName: destinationName,
-              destinationEmail: destinationEmail,
-              destinationZipcode: destinationZipcode,
-              destinationAddress: destinationAddress,
-              destinationTel: destinationTel,
-              destinationPreDate: destinationPreDate,
-              destinationPreTime: destinationPreTime,
-              destinationPayMethod: destinationPayMethod,
-              creditcardNo: creditCardNum,
-              status: destinationPayMethod,
+                destinationName: destinationName,
+                destinationEmail: destinationEmail,
+                destinationZipcode: destinationZipcode,
+                destinationAddress: destinationAddress,
+                destinationTel: destinationTel,
+                destinationPreDate: destinationPreDate,
+                destinationPreTime: destinationPreTime,
+                destinationPayMethod: destinationPayMethod,
+                creditcardNo: creditCardNum,
+                status: destinationPayMethod,
             })
             .then(() => {
                 console.log('成功しました。')
@@ -549,7 +549,7 @@ const OrderConfirm = () => {
                 console.log(error)
             })
     }
-    const addUserInfo =()=>{
+    const addUserInfo = () => {
         firebase
             .firestore()
             .collection(`users/${userIdState.uid}/userInfo/`)
@@ -564,16 +564,16 @@ const OrderConfirm = () => {
                 destinationPayMethod: Number(destinationPayMethod),
                 creditcardNo: creditCardNum,
             })
-            .then(()=>{
+            .then(() => {
                 console.log('userInfo登録成功')
             })
-            .catch((error)=>{
+            .catch((error) => {
                 console.log('userInfo登録失敗')
                 console.log(error)
             })
     }
 
-    const orderFinish = ()=>{
+    const orderFinish = () => {
         addDestination();
         addUserInfo();
         handleLink('/ordercomplete')
@@ -598,7 +598,7 @@ const OrderConfirm = () => {
     return (
         <React.Fragment>
             {!rows.length ? <h2>カートに商品がありません</h2> :
-            // <div>三項演算子の位置を変えるときに復活させる
+                <div>
                 <div>
                     <h2 className={classes.title}>注文内容確認</h2>
                     <Paper className={classes.root}>
@@ -692,8 +692,8 @@ const OrderConfirm = () => {
                         </div>
                     </Paper>
                 </div>
-                }
-                {/* 三項演算子falseの終わり}はReact.Fragmentの直前に変更する */}
+            
+            {/* 三項演算子falseの終わり}はReact.Fragmentの直前に変更する */}
             <div class={classes.form}>
                 <h2>お届け先情報</h2>
                 <div style={{ padding: 10 }}>
@@ -822,7 +822,7 @@ const OrderConfirm = () => {
                     <Grid container alignItems="center" justify="center" style={{ margin: 10 }}>
                         <Grid>
                             <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
-                            onClick={ orderFinish }disabled={errorMessages.errorName !==''||errorMessages.errorEmail !=='' || errorMessages.errorZipcode !==''||errorMessages.errorAddress !=''|| errorMessages.errorTel !=''|| errorMessages.errorPreTime !=''|| (errorMessages.errorPayMethod !='' && errorMessages.creditCardNum !='')}>
+                                onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress != '' || errorMessages.errorTel != '' || errorMessages.errorPreTime != '' || (errorMessages.errorPayMethod != '' && errorMessages.creditCardNum != '')}>
 
                                 この内容で注文する</Button>
                             <Button style={{ marginLeft: '10px' }} variant="outlined" color="inherit" onClick={clear}>クリア</Button>
@@ -831,7 +831,8 @@ const OrderConfirm = () => {
                     </Grid>
                 </div>
             </div>
-        {/* </div> 三項演算子の位置を修正したときに復活させる*/}
+        </div>
+        }
         </React.Fragment >
     )
 }
