@@ -70,6 +70,15 @@ const OrderConfirm = () => {
     const [isDisabled, setIsDisabled] = useState(true);
     const [creditPay, setCreditPay] = useState(false);
 
+    const [nameJudge, setNameJudge] = useState(true);
+    const [emailJudge, setEmailJudge] = useState(true);
+    const [zipCodeJudge, setZipCodeJudge] = useState(true);
+    const [addressJudge, setAddressJudge] = useState(true);
+    const [telJudge, setTelJudge] = useState(true);
+    const [dateJudge, setDateJudge] = useState(true);
+    const [timeJudge, setTimeJudge] = useState(true);
+    const [payMethodsJudge, setPayMethodsJudge] = useState(true);
+    const [creditJudge, setCreditJudge] = useState(true);
 
 
     const clear = () => {
@@ -93,72 +102,87 @@ const OrderConfirm = () => {
 
     // //フォームの値が変わったときに発動させる関数を定義
     //名前
-    const destinationNameChange = useCallback((e) => {
+    const destinationNameChange = (e) => {
         setDestinationName(e.target.value);
         const new_value = e.target.value;
         if (!new_value) {
             errorMessages.errorName = '名前を入力してください'
+            setNameJudge(true);
         } else {
             errorMessages.errorName = ''
+            setNameJudge(false);
         }
-    }, [setDestinationName])
+    }
 
     //メールアドレス
-    const destinationEmailChange = useCallback((e) => {
+    const destinationEmailChange = (e) => {
         setDestinationEmail(e.target.value);
         const new_value = e.target.value;
         if (!new_value) {
             errorMessages.errorEmail = 'メールアドレスを入力してください'
             //     //indexOfは文字列から引数が見つからなかったら-1を返す
+            setEmailJudge(true);
         } else if (new_value.indexOf('@') === -1) {
             errorMessages.errorEmail = 'メールアドレスの形式が不正です'
+            setEmailJudge(true);
         } else {
-            errorMessages.errorEmail = ''
+            errorMessages.errorEmail = '';
+            setEmailJudge(false);
         }
-    }, [setDestinationEmail])
+    }
+
+
 
     //郵便番号
-    const destinationZipcodeChange = useCallback((e) => {
+    const destinationZipcodeChange = (e) => {
         setDestinationZipcode(e.target.value);
         const new_value = e.target.value;
         if (!new_value) {
             errorMessages.errorZipcode = '郵便番号を入力してください'
+            setZipCodeJudge(true)
         } else if (!new_value.match(/^[0-9]{3}-[0-9]{4}$/)) {
             errorMessages.errorZipcode = '郵便番号の形式が不正です'
+            setZipCodeJudge(true)
         } else {
             errorMessages.errorZipcode = ''
+            setZipCodeJudge(false)
+            setAddressJudge(false)
         }
-    }, [setDestinationZipcode])
+    }
 
     //住所
-    const destinationAddressChange = useCallback((e) => {
+    const destinationAddressChange = (e) => {
         setDestinationAddress(e.target.value);
         const new_value = e.target.value;
         if (!new_value) {
             errorMessages.errorAddress = '住所を入力してください'
+            setAddressJudge(true)
         } else {
             errorMessages.errorAddress = ''
+            setAddressJudge(false)
         }
-    }, [setDestinationAddress])
+    }
 
     //電話番号
-    const destinationTelChange = useCallback((e) => {
+    const destinationTelChange = (e) => {
         setDestinationTel(e.target.value);
         const new_value = e.target.value;
         if (!new_value) {
             errorMessages.errorTel = '電話番号を入力してください'
         } else if (!new_value.match(/^0\d{1,4}-\d{1,4}-\d{3,4}$/)) {
             errorMessages.errorTel = '電話番号の形式が不正です'
+            setTelJudge(true)
         } else {
             errorMessages.errorTel = ''
+            setTelJudge(false)
         }
-    }, [setDestinationTel])
+    }
 
     //配達希望日
-    const destinationPreDateChange = useCallback((e) => {
+    const destinationPreDateChange = (e) => {
         setDestinationPreDate(e.target.value);
-        const new_value = e.target.value;
-    }, [setDestinationPreDate])
+        setDateJudge(false)
+    }
 
     const DateTime = () => {
         let datedate = new Date(destinationPreDate);
@@ -182,17 +206,13 @@ const OrderConfirm = () => {
 
     if (!destinationPreDate) {
         errorMessages.destinationPreDate = '配達希望日を入力してください'
+        // setDateJudge(true)
     } else {
         errorMessages.destinationPreDate = ''
         DateTime();
     }
 
     //配達希望時間
-    const destinationPreTimeChange = useCallback((e) => {
-        setDestinationPreTime(e.target.value);
-        const new_value = e.target.value;
-    }, [setDestinationPreTime])
-
     if (!destinationPreTime) {
         errorMessages.errorPreTime = '配達日時を入力して下さい'
     } else {
@@ -200,28 +220,43 @@ const OrderConfirm = () => {
         DateTime();
     }
 
+    const destinationPreTimeChange = (e) => {
+        setDestinationPreTime(e.target.value);
+        setTimeJudge(false);
+    }
+
     //支払い方法
-    const destinationPayMethodChange = useCallback((e) => {
-        setDestinationPayMethod(Number(e.target.value));
-        errorMessages.errorCreditCardNum = 'カード番号を入力してください'
-    }, [setDestinationPayMethod])
+
+    const destinationPayMethodChange = (e) => {
+        const new_value = Number(e.target.value)
+        setDestinationPayMethod(new_value);
+        if (new_value === 1) {
+            errorMessages.errorCreditCardNum = ''
+            setPayMethodsJudge(false)
+        } else if (new_value === 2) {
+            errorMessages.errorCreditCardNum = 'カード番号を入力してください'
+            setPayMethodsJudge(true)
+        }
+    }
 
     //クレカ番号
-    const creditCardNumChange = useCallback((e) => {
+    const creditCardNumChange = (e) => {
         setCreditCardNum(e.target.value);
         const new_value = e.target.value;
         console.log(typeof new_value)
         if (!new_value) {//クレカはもともと値入っている
             console.log('カード番号について！')
             errorMessages.errorCreditCardNum = 'カード番号を入力してください'
+            setCreditJudge(true)
         } else if (!(new_value.match(/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/))) {
             errorMessages.errorCreditCardNum = 'クレジット番号を正しく入力してください'
-            // isDisabledCheck();
+            setCreditJudge(true)
         } else {
             errorMessages.errorCreditCardNum = ''
-            // isDisabledCheck();
+            setCreditJudge(false)
+            setPayMethodsJudge(false)
         }
-    }, [setCreditCardNum]);
+    }
 
     const getState = (state) => state.userIdState.login_user;
 
@@ -526,11 +561,7 @@ const OrderConfirm = () => {
 
     // 商品の合計金額の処理
     let totalToppingPrice = 0
-    // if (rows.length !== 0) {
-    //     rows.forEach((totalItem) => {
-    //         totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
-    //     })
-    // }
+
     let totalPrice = 0
     if (rows.length !== 0) {
         rows.forEach((totalItem) => {
@@ -550,14 +581,13 @@ const OrderConfirm = () => {
 
 
     const OrderButtons = (props) => {
-        console.log(props)
         if (props.destinationPayMethod === 2) {
             setCreditPay(true);
             console.log('destinationPayMethod  === 2')
             return (
                 <React.Fragment>
                     <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
-                        onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress !== '' || errorMessages.errorTel !== '' || errorMessages.errorPreTime !== '' || errorMessages.errorPayMethod !== '' || errorMessages.errorCreditCardNum !== ''}>
+                        onClick={orderFinish} disabled={props.nameJudge === true || props.emailJudge === true || props.zipCodeJudge === true || props.addressJudge === true || props.telJudge === true || errorMessages.errorPreTime !== "" || props.payMethodsJudge === true || props.creditJudge === true}>
                         この内容で注文する
                     </Button>
                 </React.Fragment>
@@ -566,7 +596,7 @@ const OrderConfirm = () => {
             console.log('destinationPayMethod  ===1')
             return (
                 <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
-                    onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress !== '' || errorMessages.errorTel !== '' || errorMessages.errorPreTime !== '' || errorMessages.errorPayMethod !== ''}>
+                    onClick={orderFinish} disabled={props.nameJudge === true || props.emailJudge === true || props.zipCodeJudge === true || props.addressJudge === true || props.telJudge === true || errorMessages.errorPreTime !== "" || props.payMethodsJudge === true}>
 
                     この内容で注文する</Button>
             )
@@ -840,7 +870,7 @@ const OrderConfirm = () => {
                                     }
 
                                     <div style={{ marginTop: '50px', marginBottom: '50px' }}>
-                                        <OrderButtons destinationPayMethod={destinationPayMethod} />
+                                        <OrderButtons destinationPayMethod={destinationPayMethod} nameJudge={nameJudge} emailJudge={emailJudge} zipCodeJudge={zipCodeJudge} addressJudge={addressJudge} telJudge={telJudge} dateJudge={dateJudge} timeJudge={timeJudge} payMethodsJudge={payMethodsJudge} creditJudge={creditJudge} />
                                         <Button style={{ marginLeft: '10px' }} variant="outlined" color="inherit" onClick={clear}>クリア</Button>
                                     </div>
                                 </Grid>
