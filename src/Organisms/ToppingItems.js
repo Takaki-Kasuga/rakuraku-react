@@ -35,7 +35,6 @@ export const ToppingItems = () => {
   const dispatch = useDispatch()
   const toppingState = useSelector((state) => state.toppingState)
   const selectedToppingState = useSelector((state) => state.selectedToppingState)
-  console.log(toppingState)
 
 
   const [hawaiianSolt, setHawaiianSolt] = useState(0)
@@ -62,9 +61,7 @@ export const ToppingItems = () => {
       }
     }
 
-    console.log(hawaiianSoltObject)
     dispatch(selectedToppings(hawaiianSoltObject))
-    console.log(selectedToppingState)
 
   }, [hawaiianSolt])
 
@@ -96,7 +93,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(hawaiianMayonnaiseObject))
-    console.log(hawaiianMayonnaise)
   }, [hawaiianMayonnaise])
 
   // ハワイアントマト
@@ -125,7 +121,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(hawaiianTomatoObject))
-    console.log(hawaiianTomato)
   }, [hawaiianTomato])
 
   // ブルーチーズ
@@ -154,7 +149,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(blueCheeseObject))
-    console.log(blueCheese)
   }, [blueCheese])
 
   // ハワイアンチョコレート
@@ -183,7 +177,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(hawaiianChocolateObject))
-    console.log(hawaiianChocolate)
   }, [hawaiianChocolate])
 
 
@@ -213,7 +206,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(anchovyObject))
-    console.log(anchovy)
   }, [anchovy])
 
   // えび
@@ -242,7 +234,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(shrimpObject))
-    console.log(shrimp)
   }, [shrimp])
 
   // ガーリックライス
@@ -271,7 +262,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(garlicRiceObject))
-    console.log(garlicRice)
   }, [garlicRice])
 
   // トロピカルフルーツ
@@ -300,7 +290,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(tropicalFruitsObject))
-    console.log(tropicalFruits)
   }, [tropicalFruits])
 
   // ハワイ産蜂蜜
@@ -329,7 +318,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(hawaiianHoneyObject))
-    console.log(hawaiianHoney)
   }, [hawaiianHoney])
 
   // ココナッツ
@@ -358,7 +346,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(coconutObject))
-    console.log(coconut)
   }, [coconut])
 
   // マンゴー
@@ -387,7 +374,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(mangoObject))
-    console.log(mango)
   }, [mango])
 
   // パイナップル
@@ -416,7 +402,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(pineappleObject))
-    console.log(pineapple)
   }, [pineapple])
 
   // もち
@@ -445,7 +430,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(mochiObject))
-    console.log(mochi)
   }, [mochi])
 
   // コーヒー
@@ -475,7 +459,6 @@ export const ToppingItems = () => {
 
 
     dispatch(selectedToppings(coffeeObject))
-    console.log(coffee)
   }, [coffee])
 
   // スプライト
@@ -504,7 +487,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(spriteObject))
-    console.log(sprite)
   }, [sprite])
 
   // ジンジャーエール
@@ -533,7 +515,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(gingerAleObject))
-    console.log(gingerAle)
   }, [gingerAle])
 
   // コーラ
@@ -562,7 +543,6 @@ export const ToppingItems = () => {
     }
 
     dispatch(selectedToppings(colaObject))
-    console.log(cola)
   }, [cola])
 
 
