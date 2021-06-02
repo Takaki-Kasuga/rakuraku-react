@@ -214,7 +214,7 @@ export const TermOfUse = () => {
 
           <div align="center">
 
-            <Button tyle={{ width: '300px', margin: '0 auto' }} variant="contained" color="primary" disabled={!state.checkedA} onClick={() => {
+            <Button style={{ width: '300px', margin: '0 auto' }} variant="contained" color="primary" disabled={!state.checkedA} onClick={() => {
               handleLink('/registeremail')
             }}>
               登録画面へ戻る
