@@ -215,8 +215,11 @@ export const signUp = (username, email, password, confirmPassword) => {
             dispatch(setUserInfo(user_id, username, user_email));
           }
         }).catch((error) => {
-          alert('ユーザー登録に失敗しました。お手数ですがもう1度お試しください')
+          alert('ユーザー登録に失敗しました。お手数ですがもう一度やり直してください')
         })
+      }).catch((error) => {
+        console.log(error)
+        alert('入力したメールアドレスはすでに使用されています。')
       })
   }
 }

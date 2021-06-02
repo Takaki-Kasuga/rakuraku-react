@@ -216,14 +216,6 @@ export const Home = () => {
           })
           dispatch(seachItems([searchValue, itemArray]))
         });
-      // dispatch(judgeScreenStatus(searchValue))
-      // if (!itemState.length) {
-      //   setJudgeScreenStatus(false)
-      //   console.log(judgeScreenStatus)
-      // } else {
-      //   setJudgeScreenStatus(true)
-      //   console.log(judgeScreenStatus)
-      // }
     } else {
       firebase
         .firestore()
@@ -255,12 +247,10 @@ export const Home = () => {
 
   const changeToStatus = () => {
     setJudgeScreenStatus(true)
-    console.log(judgeScreenStatus)
   }
 
   const userIdState = useSelector((state) => state.userIdState)
   const test = () => {
-    console.log('testが発火')
     firebase
       .firestore()
       .collection(`users/${userIdState.uid}/orders`)
@@ -367,44 +357,27 @@ export const Home = () => {
                         <CardHeader
                           avatar={
                             <Avatar aria-label="recipe" className={classes.avatar}>
-                              Me
+                              Rks
                           </Avatar>
                           }
-                          action={
-                            <IconButton aria-label="settings">
-                              <MoreVertIcon />
-                            </IconButton>
-                          }
-                          title="Shrimp and Chorizo Paella"
-                          subheader="September 14, 2016"
+                          title={item.name}
                         />
                         <CardMedia
                           className={classes.media}
                           image={item.imagePath}
-                          title="Paella dish"
+                          title={item.name}
                         />
                         <CardContent>
                           <Typography gutterBottom variant="h5" component="h2">
                             {item.name}
                           </Typography>
                           <Typography variant="body2" color="textSecondary" component="p">
-                            {item.description}
-                          </Typography>
+                            Mサイズ：{(item.price.Msize).toLocaleString()}円（税抜き）
+                            </Typography>
                           <Typography variant="body2" color="textSecondary" component="p">
                             Lサイズ：{(item.price.Lsize).toLocaleString()}円（税抜き）
                             </Typography>
-                          <Typography variant="body2" color="textSecondary" component="p">
-                            Mサイズ：{(item.price.Msize).toLocaleString()}円（税抜き）
-                            </Typography>
                         </CardContent>
-                        <CardActions disableSpacing>
-                          <IconButton aria-label="add to favorites">
-                            <FavoriteIcon />
-                          </IconButton>
-                          <IconButton aria-label="share">
-                            <ShareIcon />
-                          </IconButton>
-                        </CardActions>
                       </Card>
                     )
                   })}
