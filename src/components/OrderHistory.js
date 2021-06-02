@@ -22,13 +22,10 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import { useHistory } from 'react-router-dom'
 
-import {
-  Link
-} from 'react-router-dom';
+
 
 
 const OrderHistory = () => {
-
   const history = useHistory();
   const userIdState = useSelector((state) => state.userIdState);
   const orderForCartItemArray = useSelector((state) => state.orderForCartState) //商品情報取得

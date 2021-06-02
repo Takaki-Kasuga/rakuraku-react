@@ -23,6 +23,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 export const TermOfUse = () => {
+
+  
+   const classes = useStyles();
+    
   const [state, setState] = React.useState({
     checkedA: false,
   });
@@ -34,11 +38,10 @@ export const TermOfUse = () => {
   const history = useHistory()
   const handleLink = path => history.push(path)
 
-
-  const classes = useStyles();
   return (
     <React.Fragment>
       <div style={{ 'margin-bottom': '150px', marginTop: '30px', padding: '30px' }}>
+
         <h1 align="center">利用規約</h1>
         <div>
           <div>
