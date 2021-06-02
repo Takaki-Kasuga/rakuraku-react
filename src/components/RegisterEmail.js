@@ -124,8 +124,8 @@ export const RegisterEmail = () => {
     <React.Fragment>
       <h2 align="center">新規登録</h2>
       <p align="center">登録を持って<span style={{ fontWeight: 'bold', cursor: 'pointer' }} onClick={() => { handleLink('/termofuse') }}>利用規約</span>に同意したものとみなします。</p>
-      <form>
-        <div>
+      <form style={{ display: 'block', width: '650px', margin: '0 auto' }}>
+        <div style={{ display: 'block', marginBottom: '20px' }}>
           <label>名前:</label>
           <TextField
             fullWidth={true}
@@ -137,7 +137,7 @@ export const RegisterEmail = () => {
             <span>{errorMessage.nameError}</span>
           </div>
         </div>
-        <div>
+        <div style={{ display: 'block', marginBottom: '20px' }}>
           <label>メールアドレス:</label>
           <TextField
             fullWidth={true}
@@ -149,7 +149,7 @@ export const RegisterEmail = () => {
             <span>{errorMessage.emailError}</span>
           </div>
         </div>
-        <div>
+        <div style={{ display: 'block', marginBottom: '20px' }}>
           <label>パスワード(6文字以上):</label>
           <TextField
             fullWidth={true}
@@ -157,12 +157,13 @@ export const RegisterEmail = () => {
             value={password}
             type={"password"}
             onChange={inputPassword}
+            style={{ width: '100%' }}
           />
           <div>
             <span>{errorMessage.passwordError}</span>
           </div>
         </div>
-        <div>
+        <div style={{ display: 'block', marginBottom: '20px' }}>
           <label>確認用パスワード:</label>
           <TextField
             fullWidth={true}
@@ -174,7 +175,7 @@ export const RegisterEmail = () => {
             <span>{errorMessage.confirmPasswordError}</span>
           </div>
         </div>
-        <div align="center">
+        <div align="center" style={{ display: 'block', marginBottom: '20px' }}>
           <Button
             variant="contained"
             color="primary"
@@ -183,6 +184,8 @@ export const RegisterEmail = () => {
           >
             登録
           </Button>
+          <br />
+          <br />
           <div align="center">
             <Button variant="contained" color="primary" onClick={clear}>
               クリア
