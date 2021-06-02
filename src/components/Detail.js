@@ -197,7 +197,7 @@ export const Detail = () => {
 
   // Firebaseのorderにカート情報を追加する
   const [orderInfo, setOrderInfo] = useState({
-    status: 0,
+    status: Number(0),
     orderItems: [
       // {
       //   id: 'id',
