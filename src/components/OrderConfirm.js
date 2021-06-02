@@ -572,264 +572,253 @@ const OrderConfirm = () => {
 
     // 金額関連処理
     let everyToppingTotalPrice = 0
-    // let totalItemPrice = 0
+    let totalItemPrice = 0
 
     // 商品の合計金額の処理
     let totalToppingPrice = 0
-    let totalPrice = 0
     if (rows.length !== 0) {
         rows.forEach((totalItem) => {
-            let toppingPrice = 0
-            if (totalItem.toppingItem.length !== 0) {
-                totalItem.toppingItem.forEach((toppingItem) => {
-                    if (toppingItem.toppingPriceL) {
-                        toppingPrice += toppingItem.toppingPriceL
-                    } else if (toppingItem.toppingPriceM) {
-                        toppingPrice += toppingItem.toppingPriceM
-                    }
-                })
-            }
-            totalPrice += ((totalItem.itemPriceAndCount.itemPrice + toppingPrice) * totalItem.itemPriceAndCount.itemCount)
+            totalItemPrice += totalItem.itemPriceAndCount.itemPrice * totalItem.itemPriceAndCount.itemCount
         })
     }
     return (
         <React.Fragment>
             {!rows.length ? <h2>カートに商品がありません</h2> :
                 <div>
-                    <div>
-                        <h2 className={classes.title}>注文内容確認</h2>
-                        <Paper className={classes.root}>
-                            <Table className={classes.table} aria-label="simple table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell align="center">商品名</TableCell>
-                                        <TableCell align="right">商品個数と値段（税抜き）</TableCell>
-                                        <TableCell align="right">トッピングの値段（税抜き）</TableCell>
-                                        <TableCell align="right">小計</TableCell>
-                                        <TableCell align="right"></TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {rows.map((row, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell component="th" scope="row">
+                <div>
+                    <h2 className={classes.title}>注文内容確認</h2>
+                    <Paper className={classes.root}>
+                        <Table className={classes.table} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="center">商品名</TableCell>
+                                    <TableCell align="right">商品個数と値段（税抜き）</TableCell>
+                                    <TableCell align="right">トッピングの値段（税抜き）</TableCell>
+                                    <TableCell align="right">小計</TableCell>
+                                    <TableCell align="right"></TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows.map((row, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell component="th" scope="row">
 
-                                                <Card className={classes.card}>
-                                                    <CardContent>
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            {row.itemInfo.itemName}
-                                                        </Typography>
-                                                    </CardContent>
-                                                    <CardMedia
-                                                        className={classes.media}
-                                                        image={row.itemInfo.itemPath}
-                                                        title="Contemplative Reptile"
-                                                    />
-                                                </Card>
-                                            </TableCell>
+                                            <Card className={classes.card}>
+                                                <CardContent>
+                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                        {row.itemInfo.itemName}
+                                                    </Typography>
+                                                </CardContent>
+                                                <CardMedia
+                                                    className={classes.media}
+                                                    image={row.itemInfo.itemPath}
+                                                    title="Contemplative Reptile"
+                                                />
+                                            </Card>
+                                        </TableCell>
 
-                                            <TableCell align="right" className={classes.itemPriceStyle}>
-                                                <p>金額:{Number(row.itemPriceAndCount.itemPrice).toLocaleString()}円</p>
-                                                <p>個数：{row.itemPriceAndCount.itemCount}個</p>
-                                            </TableCell>
+                                        <TableCell align="right" className={classes.itemPriceStyle}>
+                                            <p>金額:{Number(row.itemPriceAndCount.itemPrice).toLocaleString()}円</p>
+                                            <p>個数：{row.itemPriceAndCount.itemCount}個</p>
+                                        </TableCell>
 
-                                            <TableCell align="right" className={classes.toppingStyle}>
-                                                {/* everyToppingTotalPriceの初期化 */}
-                                                {!row.toppingItem ? <span style={{ display: 'none' }}></span> :
-                                                    row.toppingItem.map((topping, index) => {
-                                                        everyToppingTotalPrice = 0
+                                        <TableCell align="right" className={classes.toppingStyle}>
+                                            {/* everyToppingTotalPriceの初期化 */}
+                                            {!row.toppingItem ? <span style={{ display: 'none' }}></span> :
+                                                row.toppingItem.map((topping, index) => {
+                                                    everyToppingTotalPrice = 0
+                                                    return (
+                                                        <span key={index} style={{ display: 'none' }}></span>
+                                                    )
+                                                })
+                                            }
+                                            {!row.toppingItem.length ? <p>0円</p> :
+                                                row.toppingItem.map((topping, index) => {
+                                                    if (topping.toppingPriceM) {
+                                                        totalToppingPrice += topping.toppingPriceM
+                                                        everyToppingTotalPrice += topping.toppingPriceM
                                                         return (
-                                                            <span key={index} style={{ display: 'none' }}></span>
-                                                        )
-                                                    })
-                                                }
-                                                {!row.toppingItem.length ? <p>0円</p> :
-                                                    row.toppingItem.map((topping, index) => {
-                                                        if (topping.toppingPriceM) {
-                                                            totalToppingPrice += topping.toppingPriceM
-                                                            everyToppingTotalPrice += topping.toppingPriceM
-                                                            return (
-                                                                <div key={index}>
-                                                                    <p>
-                                                                        {topping.toppigName}<br />：
+                                                            <div key={index}>
+                                                                <p>
+                                                                    {topping.toppigName}<br />：
                                                                 {Number(topping.toppingPriceM).toLocaleString()}円</p>
-                                                                </div>
-                                                            )
-                                                        } else if (topping.toppingPriceL) {
-                                                            totalToppingPrice += topping.toppingPriceL
-                                                            everyToppingTotalPrice += topping.toppingPriceL
-                                                            return (
-                                                                <div key={index}>
-                                                                    <p>
-                                                                        {topping.toppigName}<br />：
+                                                            </div>
+                                                        )
+                                                    } else if (topping.toppingPriceL) {
+                                                        totalToppingPrice += topping.toppingPriceL
+                                                        everyToppingTotalPrice += topping.toppingPriceL
+                                                        return (
+                                                            <div key={index}>
+                                                                <p>
+                                                                    {topping.toppigName}<br />：
                                                                 {Number(topping.toppingPriceL).toLocaleString()}円</p>
-                                                                </div>
-                                                            )
-                                                        }
-                                                    })
-                                                }
-                                            </TableCell>
+                                                            </div>
+                                                        )
+                                                    }
+                                                })
+                                            }
+                                        </TableCell>
 
-                                            <TableCell align="right">
-                                                <div>
-                                                    <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount) * 0.1).toLocaleString()}円</p>
-                                                    <p className={classes.textSet}>金額：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount)).toLocaleString()}円<br />（税抜き）</p>
-                                                    <p className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice + everyToppingTotalPrice) * row.itemPriceAndCount.itemCount) * 1.1).toLocaleString()}円<br />（税込）</p>
-                                                </div>
-                                            </TableCell>
+                                        <TableCell align="right">
+                                            <div>
+                                                <p className={classes.textSet}>消費税：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 0.1).toLocaleString()}円</p>
+                                                <p className={classes.textSet}>金額：{Number((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice)}円<br />（税込）</p>
+                                                <p className={classes.textSet}>合計金額：{Number(((row.itemPriceAndCount.itemPrice * row.itemPriceAndCount.itemCount) + everyToppingTotalPrice) * 1.1).toLocaleString()}円<br />（税込）</p>
+                                            </div>
+                                        </TableCell>
 
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                            <div className={classes.priceItemCenter}>
-                                <p className={classes.setLeftText}>消費税合計：{(Number(totalPrice) * 0.1).toLocaleString()}円</p>
-                                <p className={classes.setLeftText}>合計金額：{Number(totalPrice).toLocaleString()}円（税抜き）</p>
-                                <h3 style={{ color: 'red', textAlign: 'center' }} className={classes.setLeftText}>合計金額：{(Number(totalPrice) * 1.1).toLocaleString()}円（税込）</h3>
-                            </div>
-                        </Paper>
-                    </div>
-
-                    {/* 三項演算子falseの終わり}はReact.Fragmentの直前に変更する */}
-                    <div class={classes.form}>
-                        <h2>お届け先情報</h2>
-                        <div style={{ padding: 10 }}>
-                            <TextField
-                                id="name"
-                                label="お名前"
-                                style={{ width: 300 }}
-                                variant="outlined"
-                                placeholder="楽々　楽子"
-                                value={destinationName}
-                                onChange={destinationNameChange}
-                            />
-                            <div className={classes.error}>{errorMessages.errorName}</div>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                        <div className={classes.priceItemCenter}>
+                            <p className={classes.setLeftText}>合計金額：{(totalItemPrice + totalToppingPrice).toLocaleString()}円（税抜）</p>
+                            <p className={classes.setLeftText}>消費税合計：{((totalItemPrice + totalToppingPrice) * 0.1).toLocaleString()}円</p>
+                            <h3 style={{ color: 'red' }} className={classes.setLeftText}>合計金額：{Number(Number((totalItemPrice + totalToppingPrice)) + Number(((totalItemPrice + totalToppingPrice) * 0.1))).toLocaleString()}円（税込）</h3>
                         </div>
-                        <div style={{ padding: 10 }}>
-                            <TextField
-                                id="destinationEmail"
-                                label="メールアドレス"
-                                style={{ width: 300 }}
-                                variant="outlined"
-                                placeholder="XXX@XXXX"
-                                value={destinationEmail}
-                                onChange={destinationEmailChange}
-                            />
-                            <div className={classes.error}>{errorMessages.errorEmail}</div>
-                        </div>
-                        <div style={{ padding: 10 }}>
-                            <TextField
-                                id="destinationZipcode"
-                                label="郵便番号"
-                                style={{ width: 300 }}
-                                variant="outlined"
-                                placeholder="XXX-XXXX"
-                                value={destinationZipcode}
-                                onChange={destinationZipcodeChange}
-                            />
-                            <div className={classes.error}>{errorMessages.errorZipcode}</div>
-                        </div>
-                        <div style={{ padding: 10 }}>
-                            <TextField
-                                id="destinationAddress"
-                                label="住所"
-                                style={{ width: 300 }}
-                                variant="outlined"
-                                value={destinationAddress}
-                                onChange={destinationAddressChange}
-                            />
-                            <div className={classes.error}>{errorMessages.errorAddress}</div>
-                        </div>
-                        <div style={{ padding: 10 }}>
-                            <TextField
-                                id="destinationTel"
-                                label="電話番号"
-                                style={{ width: 300 }}
-                                variant="outlined"
-                                placeholder="XXX-XXXX-XXXX"
-                                value={destinationTel}
-                                onChange={destinationTelChange}
-                            />
-                            <div className={classes.error}>{errorMessages.errorTel}</div>
-                        </div>
-                        <div>
-                            <form className={classes.form} noValidate>
-                                <TextField
-                                    id="date"
-                                    label="配達希望日"
-                                    style={{ width: 300 }}
-                                    type="date"
-                                    // defaultValue={new Date()}
-                                    className={classes.textField}
-                                    onChange={destinationPreDateChange}
-                                    value={destinationPreDate}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                /><br />
-                                <div className={classes.error}>{errorMessages.errorPreDate}</div>
-                            </form>
-                        </div>
-
-
-                        <FormControl>
-                            <FormLabel component="legend">配達希望時間</FormLabel>
-                            <Select
-                                style={{ width: 300 }}
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={destinationPreTime}
-                                onChange={destinationPreTimeChange}
-                            >
-                                <MenuItem value={1}>10時</MenuItem>
-                                <MenuItem value={2}>11時</MenuItem>
-                                <MenuItem value={3}>12時</MenuItem>
-                                <MenuItem value={4}>13時</MenuItem>
-                                <MenuItem value={5}>14時</MenuItem>
-                                <MenuItem value={6}>15時</MenuItem>
-                                <MenuItem value={7}>16時</MenuItem>
-                                <MenuItem value={8}>17時</MenuItem>
-                                <MenuItem value={9}>18時</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <div className={classes.error}>{errorMessages.errorPreTime}</div>
-
-                        <div style={{ padding: 10 }}>
-                            <FormControl component="fieldset">
-                                <FormLabel component="legend">お支払い方法</FormLabel>
-                                <RadioGroup
-                                    SelectedItem
-                                    row
-                                    aria-label="payMethod"
-                                    // defaultValue="credit"
-                                    name="destinationPayMethod"
-                                    value={destinationPayMethod}
-                                    onChange={destinationPayMethodChange}
-                                    style={{ padding: 10 }}
-                                >
-                                    <FormControlLabel value="1" control={<Radio />} label="代金引換" />
-                                    <FormControlLabel value="2" control={<Radio />} label="クレジットカード" />
-                                </RadioGroup>
-                            </FormControl>
-                        </div>
-                        <div className={classes.error}>{errorMessages.errorPayMethod}</div>
-                        {creditCard}
-
-                        <div>
-                            <Grid container alignItems="center" justify="center" style={{ margin: 10 }}>
-                                <Grid>
-                                    <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
-                                        onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress != '' || errorMessages.errorTel != '' || errorMessages.errorPreTime != '' || (errorMessages.errorPayMethod != '' && errorMessages.creditCardNum != '')}>
-
-                                        この内容で注文する</Button>
-                                    <Button style={{ marginLeft: '10px' }} variant="outlined" color="inherit" onClick={clear}>クリア</Button>
-                                    {/* <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button> */}
-                                </Grid>
-                            </Grid>
-                        </div>
-                    </div>
+                    </Paper>
                 </div>
-            }
+            
+            {/* 三項演算子falseの終わり}はReact.Fragmentの直前に変更する */}
+            <div class={classes.form}>
+                <h2>お届け先情報</h2>
+                <div style={{ padding: 10 }}>
+                    <TextField
+                        id="name"
+                        label="お名前"
+                        style={{ width: 300 }}
+                        variant="outlined"
+                        placeholder="楽々　楽子"
+                        value={destinationName}
+                        onChange={destinationNameChange}
+                    />
+                    <div className={classes.error}>{errorMessages.errorName}</div>
+                </div>
+                <div style={{ padding: 10 }}>
+                    <TextField
+                        id="destinationEmail"
+                        label="メールアドレス"
+                        style={{ width: 300 }}
+                        variant="outlined"
+                        placeholder="XXX@XXXX"
+                        value={destinationEmail}
+                        onChange={destinationEmailChange}
+                    />
+                    <div className={classes.error}>{errorMessages.errorEmail}</div>
+                </div>
+                <div style={{ padding: 10 }}>
+                    <TextField
+                        id="destinationZipcode"
+                        label="郵便番号"
+                        style={{ width: 300 }}
+                        variant="outlined"
+                        placeholder="XXX-XXXX"
+                        value={destinationZipcode}
+                        onChange={destinationZipcodeChange}
+                    />
+                    <div className={classes.error}>{errorMessages.errorZipcode}</div>
+                </div>
+                <div style={{ padding: 10 }}>
+                    <TextField
+                        id="destinationAddress"
+                        label="住所"
+                        style={{ width: 300 }}
+                        variant="outlined"
+                        value={destinationAddress}
+                        onChange={destinationAddressChange}
+                    />
+                    <div className={classes.error}>{errorMessages.errorAddress}</div>
+                </div>
+                <div style={{ padding: 10 }}>
+                    <TextField
+                        id="destinationTel"
+                        label="電話番号"
+                        style={{ width: 300 }}
+                        variant="outlined"
+                        placeholder="XXX-XXXX-XXXX"
+                        value={destinationTel}
+                        onChange={destinationTelChange}
+                    />
+                    <div className={classes.error}>{errorMessages.errorTel}</div>
+                </div>
+                <div>
+                    <form className={classes.form} noValidate>
+                        <TextField
+                            id="date"
+                            label="配達希望日"
+                            style={{ width: 300 }}
+                            type="date"
+                            // defaultValue={new Date()}
+                            className={classes.textField}
+                            onChange={destinationPreDateChange}
+                            value={destinationPreDate}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        /><br />
+                        <div className={classes.error}>{errorMessages.errorPreDate}</div>
+                    </form>
+                </div>
+
+
+                <FormControl>
+                    <FormLabel component="legend">配達希望時間</FormLabel>
+                    <Select
+                        style={{ width: 300 }}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={destinationPreTime}
+                        onChange={destinationPreTimeChange}
+                    >
+                        <MenuItem value={1}>10時</MenuItem>
+                        <MenuItem value={2}>11時</MenuItem>
+                        <MenuItem value={3}>12時</MenuItem>
+                        <MenuItem value={4}>13時</MenuItem>
+                        <MenuItem value={5}>14時</MenuItem>
+                        <MenuItem value={6}>15時</MenuItem>
+                        <MenuItem value={7}>16時</MenuItem>
+                        <MenuItem value={8}>17時</MenuItem>
+                        <MenuItem value={9}>18時</MenuItem>
+                    </Select>
+                </FormControl>
+                <div className={classes.error}>{errorMessages.errorPreTime}</div>
+
+                <div style={{ padding: 10 }}>
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">お支払い方法</FormLabel>
+                        <RadioGroup
+                            SelectedItem
+                            row
+                            aria-label="payMethod"
+                            // defaultValue="credit"
+                            name="destinationPayMethod"
+                            value={destinationPayMethod}
+                            onChange={destinationPayMethodChange}
+                            style={{ padding: 10 }}
+                        >
+                            <FormControlLabel value="1" control={<Radio />} label="代金引換" />
+                            <FormControlLabel value="2" control={<Radio />} label="クレジットカード" />
+                        </RadioGroup>
+                    </FormControl>
+                </div>
+                <div className={classes.error}>{errorMessages.errorPayMethod}</div>
+                {creditCard}
+
+                <div>
+                    <Grid container alignItems="center" justify="center" style={{ margin: 10 }}>
+                        <Grid>
+                            <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
+                                onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress != '' || errorMessages.errorTel != '' || errorMessages.errorPreTime != '' || (errorMessages.errorPayMethod != '' && errorMessages.creditCardNum != '')}>
+
+                                この内容で注文する</Button>
+                            <Button style={{ marginLeft: '10px' }} variant="outlined" color="inherit" onClick={clear}>クリア</Button>
+                            {/* <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button> */}
+                        </Grid>
+                    </Grid>
+                </div>
+            </div>
+        </div>
+        }
         </React.Fragment >
     )
 }
