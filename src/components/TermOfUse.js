@@ -1,18 +1,41 @@
 import React from 'react';
 import { Button } from "@material-ui/core";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
+import { useHistory } from 'react-router-dom'
+// チェックボックス
+import { green } from '@material-ui/core/colors';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 //CSSで中央揃えにしたい。
 const useStyles = makeStyles(() => ({
   kiyaku: {
     // height:600px,
-}
+  }
 }));
 
 export const TermOfUse = () => {
-   const classes = useStyles();
-    return (
-      <React.Fragment>
+  const [state, setState] = React.useState({
+    checkedA: true,
+  });
+  const handleChange = (event) => {
+    setState({ ...state, [event.target.name]: event.target.checked });
+    console.log(state.checkedA)
+  };
+
+  const history = useHistory()
+  const handleLink = path => history.push(path)
+
+
+  const classes = useStyles();
+  return (
+    <React.Fragment>
+      <div style={{ 'margin-bottom': '150px', marginTop: '30px', padding: '30px' }}>
         <h1 align="center">利用規約</h1>
         <div>
           <div className={classes.kiyaku}>
@@ -175,16 +198,27 @@ export const TermOfUse = () => {
             </ol>
             <p>以上</p>
           </div>
+          <div style={{ width: '300px', margin: '0 auto', 'margin-bottom': '20px' }}>
+            <FormGroup row>
+              <FormControlLabel
+                control={<Checkbox checked={state.checkedA} onChange={handleChange} name="checkedA" />}
+                label="利用規約を確認しました。"
+              />
+            </FormGroup>
+          </div>
+
           <div align="center">
-            <a href="./registeremail" style={{ textDecoration: "none" }}>
-              <Button variant="contained" color="primary">
-                登録画面へ戻る
+
+            <Button tyle={{ width: '300px', margin: '0 auto' }} variant="contained" color="primary" disabled={!state.checkedA} onClick={() => {
+              handleLink('/')
+            }}>
+              登録画面へ戻る
               </Button>
-            </a>
+
           </div>
         </div>
-      </React.Fragment>
-    );
+      </div>
+    </React.Fragment>
+  );
 }
-
 
