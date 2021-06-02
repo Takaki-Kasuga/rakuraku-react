@@ -598,7 +598,7 @@ const OrderConfirm = () => {
     return (
         <React.Fragment>
             {!rows.length ? <h2>カートに商品がありません</h2> :
-                // <div>三項演算子の位置を変えるときに復活させる
+                <div>
                 <div>
                     <h2 className={classes.title}>注文内容確認</h2>
                     <Paper className={classes.root}>
@@ -692,7 +692,7 @@ const OrderConfirm = () => {
                         </div>
                     </Paper>
                 </div>
-            }
+            
             {/* 三項演算子falseの終わり}はReact.Fragmentの直前に変更する */}
             <div class={classes.form}>
                 <h2>お届け先情報</h2>
@@ -831,7 +831,8 @@ const OrderConfirm = () => {
                     </Grid>
                 </div>
             </div>
-            {/* </div> 三項演算子の位置を修正したときに復活させる*/}
+        </div>
+        }
         </React.Fragment >
     )
 }
