@@ -67,6 +67,8 @@ const OrderConfirm = () => {
     const [destinationPayMethod, setDestinationPayMethod] = useState('');
     const [creditCardNum, setCreditCardNum] = useState('');
     const [errorMessages, setErrorMessages] = useState(errors);
+    const [isDisabled, setIsDisabled] = useState(true);
+    const [creditPay, setCreditPay] = useState(false);
 
 
 
@@ -79,94 +81,84 @@ const OrderConfirm = () => {
         setDestinationPreDate('');
         setDestinationPreTime('');
         setDestinationPayMethod('');
-        setDestinationPayMethod('')
+        setDestinationPayMethod('');
+        setCreditPay(false);
+        errorMessages.errorName = '名前を入力してください';
+        errorMessages.errorEmail = 'メールアドレスを入力してください';
+        errorMessages.errorZipcode = '郵便番号を入力してください';
+        errorMessages.errorAddress = '住所を入力してください';
+        errorMessages.errorTel = '電話番号を入力してください';
+        errorMessages.destinationPreDate = '配達希望日を入力してください'
     }
-
 
     // //フォームの値が変わったときに発動させる関数を定義
     //名前
     const destinationNameChange = useCallback((e) => {
         setDestinationName(e.target.value);
+        const new_value = e.target.value;
+        if (!new_value) {
+            errorMessages.errorName = '名前を入力してください'
+        } else {
+            errorMessages.errorName = ''
+        }
     }, [setDestinationName])
 
     //メールアドレス
     const destinationEmailChange = useCallback((e) => {
         setDestinationEmail(e.target.value);
+        const new_value = e.target.value;
+        if (!new_value) {
+            errorMessages.errorEmail = 'メールアドレスを入力してください'
+            //     //indexOfは文字列から引数が見つからなかったら-1を返す
+        } else if (new_value.indexOf('@') === -1) {
+            errorMessages.errorEmail = 'メールアドレスの形式が不正です'
+        } else {
+            errorMessages.errorEmail = ''
+        }
     }, [setDestinationEmail])
 
     //郵便番号
     const destinationZipcodeChange = useCallback((e) => {
         setDestinationZipcode(e.target.value);
+        const new_value = e.target.value;
+        if (!new_value) {
+            errorMessages.errorZipcode = '郵便番号を入力してください'
+        } else if (!new_value.match(/^[0-9]{3}-[0-9]{4}$/)) {
+            errorMessages.errorZipcode = '郵便番号の形式が不正です'
+        } else {
+            errorMessages.errorZipcode = ''
+        }
     }, [setDestinationZipcode])
 
     //住所
     const destinationAddressChange = useCallback((e) => {
         setDestinationAddress(e.target.value);
+        const new_value = e.target.value;
+        if (!new_value) {
+            errorMessages.errorAddress = '住所を入力してください'
+        } else {
+            errorMessages.errorAddress = ''
+        }
     }, [setDestinationAddress])
 
     //電話番号
     const destinationTelChange = useCallback((e) => {
         setDestinationTel(e.target.value);
+        const new_value = e.target.value;
+        if (!new_value) {
+            errorMessages.errorTel = '電話番号を入力してください'
+        } else if (!new_value.match(/^0\d{1,4}-\d{1,4}-\d{3,4}$/)) {
+            errorMessages.errorTel = '電話番号の形式が不正です'
+        } else {
+            errorMessages.errorTel = ''
+        }
     }, [setDestinationTel])
 
     //配達希望日
     const destinationPreDateChange = useCallback((e) => {
         setDestinationPreDate(e.target.value);
+        const new_value = e.target.value;
     }, [setDestinationPreDate])
-
-    //配達希望時間
-    const destinationPreTimeChange = useCallback((e) => {
-        setDestinationPreTime(e.target.value);
-    }, [setDestinationPreTime])
-
-    //支払い方法
-    const destinationPayMethodChange = useCallback((e) => {
-        setDestinationPayMethod(Number(e.target.value));
-    }, [setDestinationPayMethod])
-
-    //クレカ番号
-    const creditCardNumChange = useCallback((e) => {
-        setCreditCardNum(e.target.value);
-    }, [setCreditCardNum]);
-
-
-    //エラーメッセージ
-    if (!destinationName) {
-        errorMessages.errorName = '名前を入力してください'
-    } else {
-        errorMessages.errorName = ''
-    }
-
-    if (!destinationEmail) {
-        errorMessages.errorEmail = 'メールアドレスを入力してください'
-        //     //indexOfは文字列から引数が見つからなかったら-1を返す
-    } else if (destinationEmail.indexOf('@') === -1) {
-        errorMessages.errorEmail = 'メールアドレスの形式が不正です'
-    } else {
-        errorMessages.errorEmail = ''
-    }
-
-    if (!destinationZipcode) {
-        errorMessages.errorZipcode = '郵便番号を入力してください'
-    } else if (!destinationZipcode.match(/^[0-9]{3}-[0-9]{4}$/)) {
-        errorMessages.errorZipcode = '郵便番号の形式が不正です'
-    } else {
-        errorMessages.errorZipcode = ''
-    }
-
-    if (!destinationAddress) {
-        errorMessages.errorAddress = '住所を入力してください'
-    } else {
-        errorMessages.errorAddress = ''
-    }
-
-    if (!destinationTel) {
-        errorMessages.errorTel = '電話番号を入力してください'
-    } else if (!destinationTel.match(/^0\d{1,4}-\d{1,4}-\d{3,4}$/)) {
-        errorMessages.errorTel = '電話番号の形式が不正です'
-    } else {
-        errorMessages.errorTel = ''
-    }
 
     const DateTime = () => {
         let datedate = new Date(destinationPreDate);
@@ -188,10 +180,6 @@ const OrderConfirm = () => {
         }
     }
 
-    if (!(destinationPreDate && destinationPreTime)) {
-        errorMessages.errorPreTime = '配達日時を入力して下さい'
-    }
-
     if (!destinationPreDate) {
         errorMessages.destinationPreDate = '配達希望日を入力してください'
     } else {
@@ -199,36 +187,41 @@ const OrderConfirm = () => {
         DateTime();
     }
 
-    // if (!creditCardNum && destinationPayMethod === '2') {//クレカはもともと値入っている
-    //     errorMessages.errorCreditCardNum = 'カード番号を入力してください'
-    // } else if(!creditCardNum && destinationPayMethod === '1'){
-    //     errorMessages.errorCreditCardNum = ''
-    // }
+    //配達希望時間
+    const destinationPreTimeChange = useCallback((e) => {
+        setDestinationPreTime(e.target.value);
+        const new_value = e.target.value;
+    }, [setDestinationPreTime])
 
-    // let destinationTime = (destinationPreDate).
-    //支払いがクレカ（2）のときにフォームとエラー分のdivタグを設置
-    let creditCard
-    if (!destinationPayMethod) {
-        errorMessages.errorPayMethod = 'お支払い方法を選択してください'
-    } else if (destinationPayMethod) {
-        errorMessages.errorPayMethod = ''
-        creditCard = (<div style={{ padding: 10 }}>
-            <TextField
-                id="credit"
-                label="クレジットカード番号"
-                variant="outlined"
-                placeholder="XXXX-XXXX-XXXX"
-                value={creditCardNum}
-                onChange={creditCardNumChange}
-            />
-            <div style={{ color: 'red' }}>{errorMessages.errorCreditCardNum}</div>
-        </div>)
-        if (creditCardNum) {
-            errorMessages.errorCreditCardNum = ''
-        }
-    } else if (destinationPayMethod === '1') {
-        errorMessages.errorPayMethod = ''
+    if (!destinationPreTime) {
+        errorMessages.errorPreTime = '配達日時を入力して下さい'
+    } else {
+        errorMessages.errorPreTime = ''
+        DateTime();
     }
+
+    //支払い方法
+    const destinationPayMethodChange = useCallback((e) => {
+        setDestinationPayMethod(Number(e.target.value));
+        errorMessages.errorCreditCardNum = 'カード番号を入力してください'
+    }, [setDestinationPayMethod])
+
+    //クレカ番号
+    const creditCardNumChange = useCallback((e) => {
+        setCreditCardNum(e.target.value);
+        const new_value = e.target.value;
+        console.log(typeof new_value)
+        if (!new_value) {//クレカはもともと値入っている
+            console.log('カード番号について！')
+            errorMessages.errorCreditCardNum = 'カード番号を入力してください'
+        } else if (!(new_value.match(/^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}$/))) {
+            errorMessages.errorCreditCardNum = 'クレジット番号を正しく入力してください'
+            // isDisabledCheck();
+        } else {
+            errorMessages.errorCreditCardNum = ''
+            // isDisabledCheck();
+        }
+    }, [setCreditCardNum]);
 
     const getState = (state) => state.userIdState.login_user;
 
@@ -315,53 +308,6 @@ const OrderConfirm = () => {
 
     const userIdState = useSelector((state) => state.userIdState)
     const location = useLocation();
-
-    useEffect(() => {
-        firebase
-            .firestore()
-            .collection(`topping/`)
-            .get()
-            .then((snapshot) => {
-                const toppingArray = []
-                snapshot.forEach((doc) => {
-                    toppingArray.push(doc.data())
-                })
-                dispatch(toppings(toppingArray[0].array))
-                firebase
-                    .firestore()
-                    .collection(`items/`)
-                    .get()
-                    .then((snapshot) => {
-                        const itemArray = []
-                        snapshot.forEach((doc) => {
-                            itemArray.push(doc.data())
-                        })
-                        dispatch(items(itemArray))
-                        dispatch(orderForCartInfomation(itemArray))
-                    });
-                if (userIdState.login_user) {
-                    firebase
-                        .firestore()
-                        .collection(`users/${userIdState.uid}/orders`)
-                        .get()
-                        .then((snapshot) => {
-                            snapshot.forEach((doc) => {
-                                //オブジェクトの中身
-                                const fetchData = doc.data()
-                                //ordersの一意のid（ごちゃごちゃのやつ）にuniquedIdというプロパティ名を付けてfetchDateにくっつける
-                                //uniqueIdはdeleteのときに必要
-                                fetchData.uniqueId = doc.id
-                                if (fetchData.status === 0) {
-                                    let { orderItems } = fetchData
-                                    dispatch(orderInfomation(orderItems))
-                                    dispatch(setOrderItems(orderItems))
-                                }
-                            }
-                            );
-                        });
-                }
-            });
-    }, [])
 
     useEffect(() => {
         firebase
@@ -566,6 +512,56 @@ const OrderConfirm = () => {
             totalPrice += ((totalItem.itemPriceAndCount.itemPrice + toppingPrice) * totalItem.itemPriceAndCount.itemCount)
         })
     }
+
+
+    const OrderButtons = (props) => {
+        console.log(props)
+        if (props.destinationPayMethod === 2) {
+            setCreditPay(true);
+            return (
+                <React.Fragment>
+                    <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
+                        onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress !== '' || errorMessages.errorTel !== '' || errorMessages.errorPreTime !== '' || errorMessages.errorPayMethod !== '' || errorMessages.errorCreditCardNum !== ''}>
+                        この内容で注文する
+                    </Button>
+                </React.Fragment>
+            )
+        } else if (props.destinationPayMethod === 1) {
+            return (
+                <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
+                    onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress !== '' || errorMessages.errorTel !== '' || errorMessages.errorPreTime !== '' || errorMessages.errorPayMethod !== ''}>
+
+                    この内容で注文する</Button>
+            )
+        } else {
+            return (
+                <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
+                    disabled={true}>
+
+                    この内容で注文する</Button>
+            )
+        }
+    }
+
+    const CreditCard = (props) => {
+        const destinationPayMethod = props.destinationPayMethod;
+        if (!destinationPayMethod) {
+            errorMessages.errorPayMethod = 'お支払い方法を選択してください'
+            return <div className={classes.error}>{errorMessages.errorPayMethod}</div>
+        } else if (destinationPayMethod === 2) {
+            errorMessages.errorPayMethod = ''
+            return (
+                <div style={{ padding: 10 }}>
+                    <div style={{ color: 'red' }}>{errorMessages.errorCreditCardNum}</div>
+                </div>
+            )
+        } else if (destinationPayMethod === 1) {
+            errorMessages.errorPayMethod = ''
+            return <div className={classes.error}>{errorMessages.errorPayMethod}</div>
+        }
+    }
+
+
     return (
         <React.Fragment>
             {!rows.length ? <h2>カートに商品がありません</h2> :
@@ -777,7 +773,7 @@ const OrderConfirm = () => {
                                     aria-label="payMethod"
                                     // defaultValue="credit"
                                     name="destinationPayMethod"
-                                    value={destinationPayMethod}
+                                    value={String(destinationPayMethod)}
                                     onChange={destinationPayMethodChange}
                                     style={{ padding: 10 }}
                                 >
@@ -786,18 +782,29 @@ const OrderConfirm = () => {
                                 </RadioGroup>
                             </FormControl>
                         </div>
-                        <div className={classes.error}>{errorMessages.errorPayMethod}</div>
-                        {creditCard}
-
+                        <CreditCard destinationPayMethod={destinationPayMethod} />
                         <div>
                             <Grid container alignItems="center" justify="center" style={{ margin: 10 }}>
                                 <Grid>
-                                    <Button variant="outlined" color="primary" style={{ marginRight: '30px' }}
-                                        onClick={orderFinish} disabled={errorMessages.errorName !== '' || errorMessages.errorEmail !== '' || errorMessages.errorZipcode !== '' || errorMessages.errorAddress != '' || errorMessages.errorTel != '' || errorMessages.errorPreTime != '' || (errorMessages.errorPayMethod != '' && errorMessages.creditCardNum != '')}>
+                                    {creditPay ?
+                                        <div>
+                                            <TextField
+                                                id="credit"
+                                                label="クレジットカード番号"
+                                                variant="outlined"
+                                                placeholder="XXXX-XXXX-XXXX"
+                                                value={creditCardNum}
+                                                onChange={creditCardNumChange}
+                                            />
+                                        </div>
+                                        :
+                                        <div></div>
+                                    }
 
-                                        この内容で注文する</Button>
-                                    <Button style={{ marginLeft: '10px' }} variant="outlined" color="inherit" onClick={clear}>クリア</Button>
-                                    {/* <Button variant="outlined" color="inherit" onClick={addDestination}>追加する</Button> */}
+                                    <div style={{ marginTop: '50px', marginBottom: '50px' }}>
+                                        <OrderButtons destinationPayMethod={destinationPayMethod} />
+                                        <Button style={{ marginLeft: '10px' }} variant="outlined" color="inherit" onClick={clear}>クリア</Button>
+                                    </div>
                                 </Grid>
                             </Grid>
                         </div>
