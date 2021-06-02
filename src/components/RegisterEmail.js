@@ -58,7 +58,6 @@ export const RegisterEmail = () => {
     const new_value = e.target.value;
     setUsername(new_value)
     if (new_value === "") {
-      console.log('空です')
       errorMessage.nameError = "名前を入力してください"
       isDisabledCheck();
     } else {
@@ -71,7 +70,6 @@ export const RegisterEmail = () => {
     const new_value = e.target.value;
     setEmail(new_value)
     if (new_value === "") {
-      console.log('空です')
       errorMessage.emailError = "メールアドレスを入力してください"
       isDisabledCheck();
     } else if (new_value.indexOf("@") == -1) {
