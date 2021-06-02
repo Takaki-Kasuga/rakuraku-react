@@ -81,14 +81,20 @@ const OrderHistory = () => {
       width: '220px',
     },
     toppingStyle: {
-      // width: '180px',
       textAlign: 'left'
     },
     itemPriceStyle: {
-      // width: '100px',
       textAlign: 'left'
     },
   }));
+
+  const style = {
+    width: "100%",
+    display: "flex",
+    "justify-content": "center",
+    "margin-top": "100px",
+    "margin-bottom": "100px"
+  }
 
   const classes = useStyles();
 
@@ -119,10 +125,6 @@ const OrderHistory = () => {
         })
         dispatch(items(itemArray))
         dispatch(orderForCartInfomation(itemArray))
-        console.log('orderForCartItemArrayの中身')
-        console.log(orderForCartItemArray);
-        console.log(orderItemsArray)
-
 
         firebase.auth().onAuthStateChanged((user) => {
           if (user) {
@@ -178,8 +180,7 @@ const OrderHistory = () => {
           order.status = 9;
           firebase.firestore().collection(`users/${userIdState.uid}/orders`).doc(orderedItemsArray[index].orderedItemsId).update(order)
             .then(async () => {
-              await console.log('成功！');
-              dispatch(changeOrderedStatus(index));
+              await dispatch(changeOrderedStatus(index));
             });
         });
     }
@@ -252,10 +253,10 @@ const OrderHistory = () => {
       <div>
         {!parentRows.length ? <h2>注文した商品はありません</h2> :
           <Paper className={classes.root}>
-            <Table className={classes.table} aria-label="simple table">
+            <Table className={classes.table} aria-label="simple table" >
 
               {parentRows.map((childRows, index) => (
-                <div style={{ "margin-bottom": "100px" }} key={index}>
+                <div style={{ "margin-bottom": "50px" }} key={index}>
                   <TableHead>
                     <TableRow>
                       <TableCell>商品名</TableCell>
@@ -343,6 +344,11 @@ const OrderHistory = () => {
             </Table>
           </Paper>
         }
+        <div style={style}>
+          <Button variant="contained" color="primary" onClick={() => history.push("/")}>
+            メニュー一覧に戻る
+          </Button>
+        </div>
       </div>
     </>
   )
