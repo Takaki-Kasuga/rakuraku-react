@@ -11,6 +11,7 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case SET_USER_INFO:
+      console.log('SET_USER_INFOが発火')
       state.uid = action.uid;
       state.email = action.email;
       state.login_user = action.login_user;
@@ -19,6 +20,7 @@ export default (state = initialState, action) => {
       }
       return state;
     case DELETE_USER_INFO:
+      console.log('DELETE_USER_INFOが発火')
       state.uid = action.uid;
       state.name = action.name;
       state.email = action.email;
