@@ -161,7 +161,7 @@ function App() {
     <Router>
       <div>
         <Header />
-        <Link to='/termofuse'>利用規約</Link><br />
+        {/* <Link to='/termofuse'>利用規約</Link><br />
         <Link to='/resettingemail'>パスワード再設定</Link><br />
         <Link to='/registeremail'>ユーザー登録</Link><br />
         <Link to='/login'>ログイン</Link><br />
@@ -171,7 +171,7 @@ function App() {
         <Link to='/orderconfirm'>注文確認</Link><br />
         <Link to='/cartlist'>ショッピングカート</Link><br />
         <Link to='/detail/100'>詳細画面</Link><br />
-        <Link to='/'>トップページ</Link><br />
+        <Link to='/'>トップページ</Link><br /> */}
 
         <Switch>
           <Route path='/resettingemail' exact component={ResettingEmail} />

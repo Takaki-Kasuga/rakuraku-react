@@ -270,11 +270,11 @@ export const Home = () => {
     <>
 
       <CssBaseline />
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" style={{ 'margin-top': '50px' }}>
         <Grid container justify="center" spacing={spacing}>
           {itemState.length === 0 && !judgeScreenStatus ?
-            <div className={classes.full}>
-              <LinearProgressWithLabel value={progress} />
+            <div className={classes.full} style={{ textAlign: 'center' }}>
+              <h2>Loading....</h2>
             </div>
             : itemState.length === 0 && judgeScreenStatus ?
               <div>

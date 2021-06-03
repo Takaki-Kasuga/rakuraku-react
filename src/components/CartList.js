@@ -246,7 +246,7 @@ export const CartList = () => {
 
   return (
     <>
-      {!rows.length ? <h2>カートに商品がありません</h2> :
+      {!rows.length ? <h2 style={{ 'margin-top': '100px', textAlign: 'center' }}>カートに商品がありません</h2> :
         <Paper className={classes.root}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>

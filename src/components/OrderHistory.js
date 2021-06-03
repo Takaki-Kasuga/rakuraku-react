@@ -248,7 +248,7 @@ const OrderHistory = () => {
   return (
     <>
       <div>
-        {!parentRows.length ? <h2>注文した商品はありません</h2> :
+        {!parentRows.length ? <h2 style={{ 'margin-top': '100px', textAlign: 'center' }}>注文した商品はありません</h2> :
           <Paper className={classes.root}>
             <Table className={classes.table} aria-label="simple table" >
 
